@@ -1,6 +1,6 @@
 import React from 'react'
-import TransactionForm from './TransactionForm'
-
+//import TransactionForm from '..components/TransactionMainComponent/TransactionForm'
+import TransactionForm from "../components/TransactionMainComponent/TransactionForm"
 function MainTransaction() {
   return (
     <div className="p-8  rounded-lg bg-gray-100 p-8 min-h-screen border-4 border-green-200">

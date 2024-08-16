@@ -1,5 +1,5 @@
 import React from 'react'
-import LoanForm from './LoanForm'
+import LoanForm from '../components/LoanMainComponent/LoanForm'
 
 function MainLoan() {
   return (

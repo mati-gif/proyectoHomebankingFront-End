@@ -1,14 +1,14 @@
 import React from 'react'
 import { BrowserRouter as  Link } from 'react-router-dom';
 
-function Button() {
+function Button({bgColor,text}) {
   return (
     <div className='border-black border-2 flex flex-col justify-center items-center'>
-        <button className=" bg-[#a3a3a3] w-6/12 text-white mt-5 px-4 py-2 rounded">Register</button>
+        <button className={  `w-6/12 text-white mt-5 px-4 py-2 rounded ${bgColor}`}>{text}</button>
         <Link to="/">iniciar sesion</Link>
 
     </div>
   )
-}
+}//bg-[#a3a3a3]
 
-export default Button
+export default Button 

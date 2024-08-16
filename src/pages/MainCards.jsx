@@ -1,5 +1,5 @@
 import React from 'react'
-import CardsCard from './CardsCard'
+import CardsCard from '../components/CardsMainComponents/CardsCard'
 
 function MainCards() {
 

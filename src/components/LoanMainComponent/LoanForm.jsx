@@ -13,7 +13,7 @@ function LoanForm() {
         <LoanSelectAccountOrigen/>
 
         <TransactionAmoutImput/> {/* Es un componente que esta en la carpeta Transaction component */}
-<PaymentSelectLoan/>
+        <PaymentSelectLoan/>
 
 
 </form>
