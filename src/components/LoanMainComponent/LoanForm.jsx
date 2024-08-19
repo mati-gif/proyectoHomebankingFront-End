@@ -3,11 +3,12 @@ import TransactionAmoutImput from '../TransactionMainComponent/TransactionAmoutI
 import SelectLoan from './SelectLoan'
 import LoanSelectAccountOrigen from './LoanSelectAccountOrigen'
 import PaymentSelectLoan from './PaymentSelectLoan'
+import Button from '../Button'
 
 
 function LoanForm() {
   return (
-    <form className=' w-6/12 bg-gray-200 flex flex-col gap-10 border-black border-2 p-6 rounded-lg' action="">
+    <form className='  bg-[#d4d9dd] flex flex-col gap-10 border-black border-2 p-6 rounded-lg md:w-6/12' action="">
 
         <SelectLoan/>
         <LoanSelectAccountOrigen/>
@@ -15,7 +16,7 @@ function LoanForm() {
         <TransactionAmoutImput/> {/* Es un componente que esta en la carpeta Transaction component */}
         <PaymentSelectLoan/>
 
-
+        <Button  text="apply" bgColor="bg-[#48e]"/>
 </form>
 
   )

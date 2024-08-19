@@ -2,7 +2,7 @@ import React from 'react'
 
 function ImputEmailPassword() {
   return (
-    <div className="mb-4  w-96 flex flex-col justify-center gap-3">
+    <div className="mb-4  w-full flex flex-col justify-center gap-3 md:w-96">
         <label htmlFor="Email:" className="block text-gray-700 text-lg font-bold mb-2">
                 Email:
             </label>

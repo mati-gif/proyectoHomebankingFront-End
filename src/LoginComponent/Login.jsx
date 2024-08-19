@@ -3,15 +3,15 @@ import LoginForm from './LoginForm'
 
 function Login() {
   return (
-    <div className="p-8  rounded-lg bg-gray-100 p-8 min-h-screen border-4 border-green-200">
+    <div className=" bg-[#D5DBDB]  md:p-8  md:rounded-lg md:bg-gray-100 md:p-8 md:min-h-screen md:border-4 md:border-green-200">
 
     
     <div className='flex gap-32 '>
     
 
     
-    <div className=' w-6/12 bg-gray-200 flex flex-col  gap-5 border-black border-2 p-6 rounded-lg'>
-        <img src="https://s3-alpha-sig.figma.com/img/16d1/691c/341df824503b71bba69709c32add8454?Expires=1724630400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=YKBP6skzEtHyh2~O~eYYezPcHf1bUoEdn2T2wh7eVuX9WykE9-YfUwqhg~KD-ZTHXZ8tCLOVLuV4gcsgwZ1QUbbXOo3g7ahGIlg9jhQFjtRoYQrycvmunwfpm1svgbHgMPOCsNBXNCFEZ6t5GzY-67uVCJeb1dhtkfsaMHbiDINKpRczDCcNina8WAIRu3itOsiYfsLr4~nTHnXFehj4S~zsFkVTStHIWr54XI9IddUDCBywo30x2QtqYfGu8CcMmcyodLMYONdTSSG6WC328fDjhNk0UCs9MQP5xDT14N7f3PoLZ08We-n3EDqF59fEMVeGIDi-ds46UClGJpscoQ__" alt="" />
+    <div className=' hidden md:w-6/12 md:bg-gray-200 md:flex md:flex-col md:justify-center md:gap-5 md:border-black md:border-2 md:p-6 md:rounded-lg'>
+        <img src="https://media.istockphoto.com/id/962095876/es/foto/hombre-usando-banca-en-l%C3%ADnea-con-tarjeta-de-cr%C3%A9dito-en-el-dispositivo-de-pantalla-t%C3%A1ctil-banca.jpg?s=612x612&w=0&k=20&c=9Ec7VNswKfgl9Kpyw4_0GqBS9roLEhFz_RiFvrq7KsE=" alt="" />
         </div>
 
   <LoginForm/>

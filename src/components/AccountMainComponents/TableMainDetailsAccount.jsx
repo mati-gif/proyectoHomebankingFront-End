@@ -1,39 +1,38 @@
-import React from "react";
+import AccountTableDetailTransaction from "./AccountTableDetailTransaction";
 
-function TableMainDetailsAccount() {
+function TableMainDetailsAccount({ transacciones = [] }) {
   return (
-    <div className="border-4 border-blue-500 p-4 w-9/12 ">
+    <div className="border-4 border-blue-500 p-4 w-full">
       <h2 className="font-bold text-2xl mb-5">Transactions resume:</h2>
-      <table className="w-full table-auto">
-        <thead>
-          <tr className="bg-gray-800 text-white">
-            <th className="p-3 text-left">Type</th>
-            <th className="p-3 text-left">Amount</th>
-            <th className="p-3 text-left">Data</th>
-            <th className="p-3 text-left">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="bg-gray-700 text-white">
-            <td className="p-3 text-green-500">CREDIT</td>
-            <td className="p-3">$25,000.0</td>
-            <td className="p-3">24/04/23</td>
-            <td className="p-3">Test credit</td>
-          </tr>
-          <tr className="bg-gray-700 text-white">
-            <td className="p-3 text-red-500">DEBIT</td>
-            <td className="p-3">$5,000.0</td>
-            <td className="p-3">24/04/23</td>
-            <td className="p-3">Test debit</td>
-          </tr>
-          <tr className="bg-gray-700 text-white">
-            <td className="p-3 text-green-500">CREDIT</td>
-            <td className="p-3">$200.0</td>
-            <td className="p-3">24/04/23</td>
-            <td className="p-3">Coffe. VIN:083895</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white">
+          <thead className="bg-gray-800 text-white">
+            <tr>
+              <th className="p-2 text-left min-w-[80px]">Type</th>
+              <th className="p-2 text-left min-w-[80px]">Amount</th>
+              <th className="p-2 text-left min-w-[100px]">Date</th>
+              <th className="p-2 text-left min-w-[150px]">Description</th>
+            </tr>
+          </thead>
+          <tbody className="bg-blue-900">
+            {transacciones.length > 0 ? (
+              transacciones.map((item) => (
+                <AccountTableDetailTransaction 
+                  key={item.id} 
+                  type={item.type} 
+                  amount={item.amount} 
+                  date={item.date} 
+                  description={item.description} 
+                />
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="p-4 text-center">No transactions available.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
