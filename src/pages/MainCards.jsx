@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import CardsCard from '../components/CardsMainComponents/CardsCard'
 import { Link } from 'react-router-dom'
 import axios from "axios"
+import Button from '../components/Button'
 
 
 function MainCards() {
@@ -52,17 +53,21 @@ function MainCards() {
 
 
     return (
-        <div className="bg-[#E5EDF1] p-8 min-h-screen border-4 border-green-200">
-            <div className='border-orange-500 border-2 flex flex-col items-end justify-end'>
-                <button className="bg-green-500 text-white font-bold py-2 px-4 rounded-[10px] hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50" type="button" >
+        <div className="bg-[#E5EDF1] p-8 min-h-screen ">
+            <div className=' flex flex-col items-end justify-end'>
+{/*                 <button className="bg-green-500 text-white font-bold py-2 px-4 rounded-[10px] hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50" type="button" >
                     <Link to="/applyCard">apply a new card</Link>
-                </button>
+                </button> */}
+                <Button  className="bg-green-500 text-white font-bold py-2 px-4 rounded-[15px] hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50" type="button">
+                <Link to="/applyCard">apply a new card</Link>
+                </Button>
+
                 <h1 className="text-3xl font-bold text-center mb-8 mt-4 m-auto">Yours Cards</h1>
             </div>
             <h2 className="text-4xl font-bold mb-5">Credit Cards</h2>
             <div className=" flex justify-center gap-10 " >
 
-                {arrayCreditCards.map((item) => (
+                {arrayCreditCards.map((item) => ( 
                     <CardsCard key={item.id} typeCard={item.type} cardColor={item.color} numberCard={item.number} cvv={item.cvv} firstName={item.cardHolder} fechaVencimiento={item.thruDate} />
                 ))} 
             </div>

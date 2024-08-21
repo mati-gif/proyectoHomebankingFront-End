@@ -11,6 +11,7 @@ function TableMainDetailsAccount({ transacciones = [] }) {
               <th className="p-2 text-left min-w-[80px]">Type</th>
               <th className="p-2 text-left min-w-[80px]">Amount</th>
               <th className="p-2 text-left min-w-[100px]">Date</th>
+              <th className="p-2 text-left min-w-[100px]">time</th>
               <th className="p-2 text-left min-w-[150px]">Description</th>
             </tr>
           </thead>

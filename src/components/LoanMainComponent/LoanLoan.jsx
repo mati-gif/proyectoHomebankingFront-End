@@ -44,13 +44,13 @@ function LoanLoan() {
     }, [])
 
     return (
-        <div className="p-8  rounded-lg bg-[#E5EDF1] p-8 min-h-screen border-4 border-green-200">
+        <div className="p-8  rounded-lg bg-[#E5EDF1] p-8 min-h-screen ">
 
             <h1 className="text-3xl font-bold text-center mb-8 mt-4">Yours Loans</h1>
 
-            <div className='flex justify-center border-[#48e] border-2 md:w-full '>
+            <div className='flex justify-center  md:w-full '>
 
-                <div className=" gap-4 flex flex-col md:border-[#855] md:border-4 md:flex md:flex-row md:justify-center md:gap-10" >
+                <div className=" gap-4 flex flex-col  md:flex md:flex-row md:justify-center md:gap-10" >
 
                     {allLoans.map((item) => (
 

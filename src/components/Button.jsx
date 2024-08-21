@@ -1,13 +1,16 @@
-import React from 'react'
-import { BrowserRouter as  Link } from 'react-router-dom';
+import React from 'react';
 
-function Button({bgColor,text}) {
+function Button({ children, className, onClick }) {
   return (
-    <div className='border-black border-2 flex flex-col justify-center items-center'>
-        <button className={  `w-6/12 text-white mt-3 px-4 py-2 rounded ${bgColor}`}>{text}</button>
-      
+    <div className='flex flex-col justify-center items-center'>
+      <button
+        onClick={onClick} // Usa la función onClick pasada como prop
+        className={`text-white px-4 py-2 rounded ${className}`}
+      >
+        {children}
+      </button>
     </div>
-  )
-}//bg-[#a3a3a3]
+  );
+}
 
-export default Button 
+export default Button;

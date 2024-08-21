@@ -10,17 +10,45 @@ function CardsCard(props) {
         PLATINUM: 'bg-gradient-to-l from-[#95999c] to-[#d4d9dd] text-black',
     };
   return (
-    <div className={` w-96 h-56 p-4 rounded-lg shadow-md ${cardColors[props.cardColor]}`}>
-        <div className='flex  w-full border-black border-2 '>
-        <h3 className="text-sm font-bold">Color Tarjeta: {props.cardColor}</h3>
-        <h3 className=" text-2xl font-bold" >Tipo de tarjeta: {props.typeCard}</h3>
+    <div className="perspective-1000 w-96 h-56">
+    <div className={`card w-full h-full rounded-lg shadow-md ${cardColors[props.cardColor]}`}>
+      {/* Front Side */}
+      <div className={`card-side card-front p-4`}>
+        <div className='flex justify-between'>
+        <div className='flex  items-start '>
+          <img
+            className={`w-12 h-10 object-cover rounded-[20%] ${cardColors[props.cardColor]}`}
+            src="https://previews.123rf.com/images/miceking/miceking1603/miceking160300029/53109625-chip-de-la-tarjeta-de-cr%C3%A9dito-chip-de-la-tarjeta-sim.jpg"
+            alt=""
+          />
+          </div>
+          <div className=' flex flex-col   '>
+          {/* <h3 className="ml-3 text-sm font-bold">Color Tarjeta: {props.cardColor}</h3> */}
+          <h3 className="mt-4 text-2xl font-bold "> Tarjeta {props.typeCard}</h3>
+          <div className=' flex justify-end '>
+          <img className='w-10 h-8 object-cover rounded-[20%] ' src="https://previews.123rf.com/images/daboost/daboost2211/daboost221100084/193551686-ilustraci%C3%B3n-del-mapa-del-mundo-aislado-en-un-fondo-blanco.jpg" alt="" />
+          </div>
+          </div>
         </div>
-<h3 className="text-sm font-bold">Numero Tarjeta: {props.numberCard}</h3>
-<h3 className="text-sm font-bold">codigo de seguridad: {props.cvv}</h3>
-<h3 className="text-sm font-bold">Nombre y apellido: {props.firstName}</h3>
-<h3 className="text-sm font-bold">fecha vencimiento: {props.fechaVencimiento}</h3>
+        <div className=' text-center'> 
+        <h3 className="mt-2 text-lg font-bold"> {props.numberCard}</h3>
+        </div>
+        <h3 className="mt-2 text-sm font-bold">Card Holder: {props.firstName}</h3>
+        <h3 className="mt-2 text-sm font-bold">Due Date: {props.fechaVencimiento}</h3>
+      </div>
 
-</div>
+      {/* Back Side */}
+      <div className={`card-side card-back p-4 ${cardColors[props.cardColor]}`}>
+        <div className="flex flex-col justify-center items-center h-full gap-4">
+          <div className="w-96 h-12 bg-black"></div>
+          <div className='w-full h-12 bg-white flex justify-end items-center'>
+          <h3 className=" text-xl font-bold">CVV: {props.cvv}</h3>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
   )
 }
 

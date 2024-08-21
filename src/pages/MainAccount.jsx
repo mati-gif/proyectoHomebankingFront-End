@@ -4,6 +4,7 @@ import CardAccount from '../components/AccountMainComponents/CardAccount'
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom'
+import Swal from 'sweetalert2'; // Importa SweetAlert2
 
 function MainAccount() {
 
@@ -26,6 +27,7 @@ const [clientName, setClientName] = useState([]);  // Nuevo estado para almacena
 
 
 const solicitarDatosCuenta = ()=>{
+
 
 // let arrayAuxCuenta = []
 
@@ -64,7 +66,33 @@ solicitarDatosCuenta()
 },[])
 
 
+const añadirAccountArray = () => {
+  // Muestra la alerta de verificación usando SweetAlert2
+  Swal.fire({
+    title: 'Are you sure you want to create a new account?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#16A34A',
+    cancelButtonColor: '#9CA3AF',
+    confirmButtonText: 'Yes, generate',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Aquí debes realizar la lógica para generar la cuenta
+      // Este es el lugar donde puedes hacer la llamada a la API para crear la cuenta
+      // y actualizar el estado con la nueva cuenta.
 
+      // Ejemplo de cómo podrías hacerlo:
+      // setArrayAccount([...arrayAccount, { id: newId, number: 'newNumber', balance: 'newBalance', creationDate: 'newDate' }]);
+
+      Swal.fire(
+        'Creatted!',
+        'Your account has been generated.',
+        'success'
+      );
+    }
+  });
+};
 
 // const añadirAccountArray = ()=>{
 //   setCardAccountArray([...cardAccounArray,{id:3+(cardAccounArray.length+1),nombreCuenta:"VIN003"+(cardAccounArray.length+1),fondos:"$250.000"+(cardAccounArray.length+1),fechaCreacion:"25/05/23"+(cardAccounArray.length+1)}])
@@ -98,7 +126,7 @@ solicitarDatosCuenta()
         <img src="https://images.ctfassets.net/h7wmg0jhythh/59bBPtUVTa1ScIxYr6HZgZ/eb3e9026c052542f0df5cbf976f1d8da/2_AYUDA_708x275.webp" alt="" className="rounded-lg shadow-md w-full  md:w-2/3" />
       </div>
       <div className="flex justify-center  mb-6">
-    <button onClick={()=>añadirAccountArray()} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full shadow-md">
+    <button onClick={añadirAccountArray} className="bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 text-white font-bold py-2 px-4 rounded-full shadow-md">
       Request Account
     </button>
   </div>
@@ -108,10 +136,11 @@ solicitarDatosCuenta()
 
   <div  className=" flex justify-center flex-wrap  gap-10" >   
       
-      {arrayAccount.map((item)=>(
+      {arrayAccount.map((item)=>(//Itera sobre arrayAccount y renderiza un componente CardAccount para cada cuenta.
 
         <Link to={`/accounts/${item.id}`} >
         <CardAccount  key={item.id} number={item.number} balance={item.balance} creationDate={item.creationDate}/>
+        {/* Pasa los datos de la cuenta (number, balance, creationDate) al componente CardAccount para que se muestren. */}
 
         </Link>
 

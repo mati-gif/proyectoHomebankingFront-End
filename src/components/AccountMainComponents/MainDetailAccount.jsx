@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import AccountTableDetailTransaction from './AccountTableDetailTransaction';
 
 function MainDetailAccount() {
-  const { id } = useParams();
+  const { id } = useParams();// hook que me va a retornar un objeto , me va a traer params de la ruta.
 console.log(id);
 
 
