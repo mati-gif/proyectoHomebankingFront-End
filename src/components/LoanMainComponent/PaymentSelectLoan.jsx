@@ -1,14 +1,9 @@
-import React, {useEffect, useState} from "react"
+import React, { useEffect, useState } from "react"
 import axios from "axios"
 import Swal from 'sweetalert2'; // Importa SweetAlert2
 
 function PaymentSelectLoan() {
-
-
-
-
   return (
-
     <div className="mb-4 ">
       <label htmlFor="account" className=" block text-gray-700 text-lg font-bold mb-4">
         Payments
@@ -20,11 +15,6 @@ function PaymentSelectLoan() {
         <option value=""> 12</option>
         <option value=""> 24</option>
         <option value=""> 36</option>
-
-
-
-
-
       </select>
     </div>
   )

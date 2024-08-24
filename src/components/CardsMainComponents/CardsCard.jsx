@@ -1,7 +1,7 @@
 import React from 'react'
 
 function CardsCard(props) {
-
+//CardsCard es una representación de una tarjeta en la UI.
   console.log(props);
   
     const cardColors = {
@@ -24,7 +24,7 @@ function CardsCard(props) {
           </div>
           <div className=' flex flex-col   '>
           {/* <h3 className="ml-3 text-sm font-bold">Color Tarjeta: {props.cardColor}</h3> */}
-          <h3 className="mt-4 text-2xl font-bold "> Tarjeta {props.typeCard}</h3>
+          <h3 className="mt-4 text-2xl font-bold "> Card {props.typeCard}</h3>
           <div className=' flex justify-end '>
           <img className='w-10 h-8 object-cover rounded-[20%] ' src="https://previews.123rf.com/images/daboost/daboost2211/daboost221100084/193551686-ilustraci%C3%B3n-del-mapa-del-mundo-aislado-en-un-fondo-blanco.jpg" alt="" />
           </div>

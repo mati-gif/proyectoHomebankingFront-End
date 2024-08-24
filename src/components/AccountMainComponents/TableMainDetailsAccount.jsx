@@ -1,8 +1,9 @@
 import AccountTableDetailTransaction from "./AccountTableDetailTransaction";
 
-function TableMainDetailsAccount({ transacciones = [] }) {
+function TableMainDetailsAccount({ transactions = [] }) {// Este componente acepta un objeto de props que incluye transacciones, 
+  //con un valor por defecto de un array vacío ([]). Esto significa que si no se pasa transacciones al componente, se utilizará un array vacío.
   return (
-    <div className="border-4 border-blue-500 p-4 w-full">
+    <div className=" p-4 w-full">
       <h2 className="font-bold text-2xl mb-5">Transactions resume:</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white">
@@ -16,8 +17,8 @@ function TableMainDetailsAccount({ transacciones = [] }) {
             </tr>
           </thead>
           <tbody className="bg-blue-900">
-            {transacciones.length > 0 ? (
-              transacciones.map((item) => (
+            {transactions.length > 0 ? (
+              transactions.map((item) => (
                 <AccountTableDetailTransaction 
                   key={item.id} 
                   type={item.type} 

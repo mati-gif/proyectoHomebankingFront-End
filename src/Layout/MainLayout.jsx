@@ -9,15 +9,10 @@ function MainLayout({ children }) {
     return (
         <div>
             <Header>
-                <Nav/>
+                <Nav />
             </Header>
-            {/* <main className="">
-                {children}
-            </main> */}
-            
-        <Outlet/>
-            <Footer/>
-
+            <Outlet />
+            <Footer />
         </div>
     )
 }

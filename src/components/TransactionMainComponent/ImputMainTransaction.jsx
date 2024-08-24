@@ -2,28 +2,28 @@ import React, { useState } from 'react';
 import TransactionSelectAccountDestiny from './TransactionSelectAccountDestiny';
 
 function ImputMainTransaction() {
-    const [destinationType, setDestinationType] = useState('Otros');
-    const [selectedSourceAccount, setSelectedSourceAccount] = useState('');
-    const [selectedDestinationAccount, setSelectedDestinationAccount] = useState('');
+    const [destinationType, setDestinationType] = useState('Otros');//Controla si el tipo de destino es "Propio" o "Otros", y se inicializa en "Otros".
+    const [selectedSourceAccount, setSelectedSourceAccount] = useState('');// Almacena la cuenta de origen seleccionada.
+    const [selectedDestinationAccount, setSelectedDestinationAccount] = useState('');// Almacena la cuenta de destino seleccionada.
 
-    const handleDestinationTypeChange = (event) => {
-        setDestinationType(event.target.value);
-        setSelectedSourceAccount(''); // Resetear cuando se cambia el tipo de destino
+    const handleDestinationTypeChange = (event) => { //se ejecuta cuando el usuario cambia el tipo de destino (Propio u Otros)
+        setDestinationType(event.target.value); //Actualiza el estado destinationType con el nuevo valor.
+        setSelectedSourceAccount(''); // Resetear para limpiar las cuentas seleccionadas cuando se cambia el tipo de destino.
         setSelectedDestinationAccount('');
     };
 
-    const handleSourceAccountChange = (event) => {
-        setSelectedSourceAccount(event.target.value);
+    const handleSourceAccountChange = (event) => {//se ejecuta cuando el usuario selecciona una cuenta de origen. 
+        setSelectedSourceAccount(event.target.value);//Actualiza el estado selectedSourceAccount con la cuenta seleccionada.
         // Si se selecciona la cuenta de origen, resetear la cuenta destino si es la misma
         if (event.target.value === selectedDestinationAccount) {
-            setSelectedDestinationAccount('');
+            setSelectedDestinationAccount('');////Si la cuenta seleccionada es la misma que la cuenta de destino, resetea selectedDestinationAccount para evitar que ambas cuentas sean iguales.
         }
     };
 
-    const handleDestinationAccountChange = (event) => {
-        setSelectedDestinationAccount(event.target.value);
-        // Si se selecciona la cuenta de destino, resetear la cuenta de origen si es la misma
-        if (event.target.value === selectedSourceAccount) {
+    const handleDestinationAccountChange = (event) => {//se ejecuta cuando el usuario selecciona una cuenta de destino.
+        setSelectedDestinationAccount(event.target.value);//Actualiza el estado selectedDestinationAccount con la cuenta seleccionada.
+
+        if (event.target.value === selectedSourceAccount) { //Si la cuenta seleccionada es la misma que la cuenta de origen, resetea selectedSourceAccount para evitar que ambas cuentas sean iguales.
             setSelectedSourceAccount('');
         }
     };
@@ -50,7 +50,7 @@ function ImputMainTransaction() {
                         label="Source Account:"
                         selectedAccount={selectedSourceAccount}
                         onChange={handleSourceAccountChange}
-                        excludedAccount={selectedDestinationAccount}  // Excluir la cuenta destino
+                        excludedAccount={selectedDestinationAccount}  // Excluir la cuenta destino.
                     />
 
                     <TransactionSelectAccountDestiny

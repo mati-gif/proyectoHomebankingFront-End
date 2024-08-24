@@ -17,7 +17,7 @@ function LoanLoan() {
                 // arrayAuxCuenta = response.data
                 // console.log(arrayAuxCuenta);
 
-                setAllLoans(response.data.prestamos)
+                setAllLoans(response.data.loans)
 
 
 

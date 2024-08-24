@@ -64,10 +64,6 @@
   backface-visibility: hidden;
 }
 
-.card-front {
-  /* La parte delantera de la tarjeta */
-}
-
 .card-back {
   transform: rotateY(180deg);
   /* La parte trasera de la tarjeta */

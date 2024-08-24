@@ -18,13 +18,10 @@ function LoanSelectAccountOrigen() {
 
   }
 
-
   useEffect(() => {
-
 
     traerCuentas();
   }, []);
-
 
   return (
     <div className="mb-4 ">
