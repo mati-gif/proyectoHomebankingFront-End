@@ -8,28 +8,43 @@ import Swal from 'sweetalert2'; // Importa SweetAlert2
 import Button from "../components/Button";
 
 function MainAccount() {
-
-
   // useState es un hook que me permite añadir un estado a un componente. Este estado va a controlar que el componente se renderice cada vez que se actualice account 
-  // Aca tengo un estado, y defino que ese estado inicialmente va a tener como valor un objeto vacio. El nombre de ese estado va a ser "account", y va a tener un metodo 
-  // que me permite actualizar ese estado. Cada vez que se llama a ese estado React vuelve a renderizar el componente con el estado actualizado
+  // Aca tengo un estado, y defino que ese estado inicialmente va a tener como valor un objeto vacio. El nombre de ese estado va a ser "arrayAccount", y va a tener un metodo 
+  // que me permite actualizar ese estado. Cada vez que se llama a ese estado React vuelve a renderizar el componente con el estado actualizado.
   const [arrayAccount, setArrayAccount] = useState([]);
   const [clientName, setClientName] = useState("");  // Nuevo estado para almacenar el nombre del cliente
 
+
+  // if (response.status === 200) {
+  //   // Si el login es exitoso, realizar el axios.get
+  //   const userInfo = await axios.get('http://localhost:8080/api/auth/current', {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   });
+  
+  //   console.log('User info:', userInfo.data);
+  //   // Redirigir a la página deseada después de un login exitoso
+  //   navigate("/");
+  // }
   const solicitarDatosCuenta = () => {
 
-    axios.get("http://localhost:8080/api/clients/1")
+    const token = localStorage.getItem('token')
+    axios.get('http://localhost:8080/api/auth/current', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
       .then((response) => {
-
         setArrayAccount(response.data.accounts)
         console.log(response.data.accounts);
         console.log(response.data.cards);
         setClientName(response.data.firstName); // Asigna el nombre del cliente al estado clientName
+        console.log(response);
+        
       })
-
       .catch((error) => {
         console.log(error);
-
       })
   }
 

@@ -10,15 +10,15 @@ function LoanSelectAccountOrigen() {
   const traerCuentas = () => {
     axios.get("http://localhost:8080/api/clients/1")
       .then((response) => {
-        setAccounts(response.data.cuentas)
+        setAccounts(response.data.accounts)
       })
       .catch((error) => {
         console.log(error);
       });
-
   }
 
   useEffect(() => {
+console.log("se ejecuto el useEffect");
 
     traerCuentas();
   }, []);

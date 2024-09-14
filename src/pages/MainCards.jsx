@@ -51,8 +51,6 @@ function MainCards() {
                     <CardsCard key={item.id} typeCard={item.type} cardColor={item.color} numberCard={item.number} cvv={item.cvv} firstName={item.cardHolder} fechaVencimiento={item.thruDate} />
                 ))}
             </div>
-
-
         </div>
     )
 }

@@ -14,8 +14,6 @@ function MainTransaction() {
           <img src="https://www.shutterstock.com/image-photo/businessman-hand-using-mobile-phone-600nw-2385062097.jpg" alt="" />
         </div>
       </div>
-
-
     </div>
   )
 }

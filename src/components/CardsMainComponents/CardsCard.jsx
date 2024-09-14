@@ -12,7 +12,6 @@ function CardsCard(props) {
   return (
     <div className="perspective-1000 w-96 h-56">
     <div className={`card w-full h-full rounded-lg shadow-md ${cardColors[props.cardColor]}`}>
-      {/* Front Side */}
       <div className={`card-side card-front p-4`}>
         <div className='flex justify-between'>
         <div className='flex  items-start '>
@@ -23,7 +22,6 @@ function CardsCard(props) {
           />
           </div>
           <div className=' flex flex-col   '>
-          {/* <h3 className="ml-3 text-sm font-bold">Color Tarjeta: {props.cardColor}</h3> */}
           <h3 className="mt-4 text-2xl font-bold "> Card {props.typeCard}</h3>
           <div className=' flex justify-end '>
           <img className='w-10 h-8 object-cover rounded-[20%] ' src="https://previews.123rf.com/images/daboost/daboost2211/daboost221100084/193551686-ilustraci%C3%B3n-del-mapa-del-mundo-aislado-en-un-fondo-blanco.jpg" alt="" />
@@ -36,8 +34,7 @@ function CardsCard(props) {
         <h3 className="mt-2 text-sm font-bold">Card Holder: {props.firstName}</h3>
         <h3 className="mt-2 text-sm font-bold">Due Date: {props.fechaVencimiento}</h3>
       </div>
-
-      {/* Back Side */}
+      
       <div className={`card-side card-back p-4 ${cardColors[props.cardColor]}`}>
         <div className="flex flex-col justify-center items-center h-full gap-4">
           <div className="w-96 h-12 bg-black"></div>
