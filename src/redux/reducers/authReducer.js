@@ -1,9 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { LOGIN, LOGOUT, loadUser, logoutUser } from '../actions/authActions';
+import { LOGIN, LOGOUT, loadUser, logoutUser, authenticateUser } from '../actions/authActions';
 
 const initialState = {
     isLoggedIn: !!localStorage.getItem('token'), // Si hay un token en localStorage, el usuario está logueado
-    token: null,
+    token:  localStorage.getItem('token') || null, // Si hay un token en localStorage, lo cargamos al estado inicial
     email: null,
     name: null,
     status: 'idle', // Estado inicial de la solicitud
@@ -13,6 +13,33 @@ const initialState = {
 
 const authReducer = createReducer(initialState, (builder) => {
     builder
+
+        .addCase(authenticateUser.pending, (state) => {
+            return {
+                ...state,
+                status: "pending",
+                loading: true,
+                error: null,
+            };
+        })
+        .addCase(authenticateUser.fulfilled, (state, action) => {
+            console.log("Autenticación exitosa, token:", action.payload);
+            return {
+                ...state,
+                isLoggedIn: true,
+                token: action.payload.token,
+                status: "succeeded",
+                loading: false,
+            };
+        })
+        .addCase(authenticateUser.rejected, (state, action) => {
+            return {
+                ...state,
+                status: "failed",
+                loading: false,
+                error: action.error?.message || 'Error during authentication'
+            };
+        })
         // Estado de solicitud pendiente (pending)
         .addCase(loadUser.pending, (state) => {
             return {
@@ -24,12 +51,14 @@ const authReducer = createReducer(initialState, (builder) => {
         })
         // Estado cuando la solicitud es exitosa (fulfilled)
         .addCase(loadUser.fulfilled, (state, action) => {
+            console.log("Usuario cargado:", action.payload);
             return {
                 ...state, // Mantenemos el estado anterior
                 isLoggedIn: true,
                 token: action.payload.token,  // Asignamos el nuevo token
                 email: action.payload.email,  // Asignamos el email del usuario
                 name: action.payload.name,    // Asignamos el nombre del usuario
+                accounts: action.payload.accounts,  // Añadimos las cuentas al estado
                 status: "succeeded",          // La solicitud fue exitosa
                 loading: false,               // Ya no está cargando
             };

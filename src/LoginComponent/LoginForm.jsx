@@ -10,6 +10,9 @@ import { useDispatch } from 'react-redux';
 import { loadUser } from '../redux/actions/authActions';
 import Swal from 'sweetalert2'; // Asegúrate de importar Swal
 import { useSelector } from "react-redux";
+import { unwrapResult } from '@reduxjs/toolkit';
+import { authenticateUser } from '../redux/actions/authActions';
+
 
 
 function LoginForm() {
@@ -22,27 +25,16 @@ function LoginForm() {
 
   // Accedemos al estado de autenticación desde Redux
   const { status, isLoggedIn, error } = useSelector((state) => state.auth);
-
-  // Estado para controlar si el componente está montado
-  // const [isMounted, setIsMounted] = useState(false);
-
-
-  // useEffect(() => {
-  //   // Marcar el componente como montado
-  //   setIsMounted(true);
-
-  //   return () => {
-  //     // Marcar el componente como desmontado
-  //     setIsMounted(false);
-  //   };
-  // }, []);
+  console.log(status, isLoggedIn, error);
 
 
 
   // UseEffect para mostrar alertas basadas en el estado de autenticación
   useEffect(() => {
 
-    // if (!isMounted) return;
+    console.log('Status:', status);
+    console.log('IsLoggedIn:', isLoggedIn);
+    console.log('Error:', error);
 
     // Mostrar alerta cuando la autenticación está en progreso
     if (status === 'pending') {
@@ -60,6 +52,7 @@ function LoginForm() {
 
     // Mostrar alerta cuando la autenticación ha sido exitosa
     if (status === 'succeeded' && isLoggedIn) {
+      Swal.close(); // Cierra la alerta de "Logging in..."
       Swal.fire({
         title: 'Login Successful!',
         text: 'You have been logged in successfully.',
@@ -72,6 +65,7 @@ function LoginForm() {
 
     // Mostrar alerta si falla la autenticación
     if (status === 'failed') {
+      Swal.close(); // Cierra la alerta de "Logging in..." si falla
       Swal.fire({
         title: 'Login Failed!',
         text: error || 'There was a problem logging in. Please try again.',
@@ -133,31 +127,54 @@ function LoginForm() {
 
 
   const handleSubmit = async () => {
+
+    if (!validateForm()) return;
+
     try {
 
-      if (!validateForm()) {
-        return;
+      const resultAction = await dispatch(authenticateUser({ email, password }));
+      console.log("Resultado de authenticateUser:", resultAction);
+
+
+      const result = unwrapResult(resultAction);
+      console.log("Resultado desenrollado:", result);
+
+      // Asegúrate de que el token es correcto aquí
+      const token = localStorage.getItem('token');
+      console.log("Token recuperado de localStorage:", token);
+
+      if (!token) {
+        throw new Error("Token no encontrado en localStorage");
       }
 
-      const user = {
-        email,
-        password
-      };
-      console.log(user);
 
-      // Realizar el axios.post
-      const response = await axios.post('http://localhost:8080/api/auth/login', user);
-      console.log('Full Response:', response);
-
-      const token = response.data;
-      console.log("Token:", token);
-      localStorage.setItem('token', token);
 
       // Despachamos la acción para cargar el usuario
-      dispatch(loadUser(token));
-      navigate("/");
+      const userResult = await dispatch(loadUser(result.token));  // Asegúrate de esperar el resultado
+      console.log("Resultado de loadUser:", userResult);
+      unwrapResult(userResult);
 
-    }catch (error) {
+      // Redirige o realiza cualquier otra acción después de la autenticación exitosa
+      navigate("/");
+      // const user = {
+      //   email,
+      //   password
+      // };
+      // console.log(user);
+
+      // // Realizar el axios.post
+      // const response = await axios.post('http://localhost:8080/api/auth/login', user);
+      // console.log('Full Response:', response);
+
+      // const token = response.data;
+      // console.log("Token:", token);
+      // localStorage.setItem('token', token);
+
+      // // Despachamos la acción para cargar el usuario
+      // dispatch(loadUser(token));
+      // navigate("/");
+
+    } catch (error) {
       // Verifica si es un error de autenticación (401)
       if (error.response && error.response.status === 401) {
         Swal.fire({
@@ -166,14 +183,15 @@ function LoginForm() {
           icon: 'error',
           confirmButtonText: 'OK'
         });
-      } else {
-        Swal.fire({
-          title: 'Error',
-          text: error.response.data.message || 'An unexpected error occurred. Please try again.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
       }
+      // else {
+      //   Swal.fire({
+      //     title: 'Error',
+      //     text: error.response.data.message || 'An unexpected error occurred. Please try again.',
+      //     icon: 'error',
+      //     confirmButtonText: 'OK'
+      //   });
+      // }
     }
   };
 
