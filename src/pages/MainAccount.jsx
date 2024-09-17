@@ -6,46 +6,40 @@ import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'; // Importa SweetAlert2
 import Button from "../components/Button";
+import { useSelector } from "react-redux";
 
 function MainAccount() {
+
+
+
   // useState es un hook que me permite añadir un estado a un componente. Este estado va a controlar que el componente se renderice cada vez que se actualice account 
   // Aca tengo un estado, y defino que ese estado inicialmente va a tener como valor un objeto vacio. El nombre de ese estado va a ser "arrayAccount", y va a tener un metodo 
   // que me permite actualizar ese estado. Cada vez que se llama a ese estado React vuelve a renderizar el componente con el estado actualizado.
   const [arrayAccount, setArrayAccount] = useState([]);
   const [clientName, setClientName] = useState("");  // Nuevo estado para almacenar el nombre del cliente
+  const navigate = useNavigate(); // Declara useNavigate
 
+  const { isLoggedIn, token } = useSelector((state) => state.auth);
 
-  // if (response.status === 200) {
-  //   // Si el login es exitoso, realizar el axios.get
-  //   const userInfo = await axios.get('http://localhost:8080/api/auth/current', {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   });
+  console.log(token);
+
+  const solicitarDatosCuenta = async () => {
+
   
-  //   console.log('User info:', userInfo.data);
-  //   // Redirigir a la página deseada después de un login exitoso
-  //   navigate("/");
-  // }
-  const solicitarDatosCuenta = () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/auth/current', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    const token = localStorage.getItem('token')
-    axios.get('http://localhost:8080/api/auth/current', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-      .then((response) => {
-        setArrayAccount(response.data.accounts)
-        console.log(response.data.accounts);
-        console.log(response.data.cards);
-        setClientName(response.data.firstName); // Asigna el nombre del cliente al estado clientName
-        console.log(response);
-        
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+      setArrayAccount(response.data.accounts);
+      setClientName(response.data.firstName); // Asigna el nombre del cliente al estado clientName
+    } catch (error) {
+      console.log("Error fetching account data:", error);
+    }
+
+
   }
 
   // useEffect es un hook que me permite ejecutar efectos secundarios. se ejecuta cuando el componente se monta (por primera vez) y cada vez que el array de dependencia cambia, el id 
@@ -53,10 +47,17 @@ function MainAccount() {
   // useEffect tambien tiene un array de dependencia, el cual me indica que cada vez que el array se actualice, se va a renderizar de nuevo lo que hay dentro de use effect
   // En este caso depende de la id, que si cambia se ejecuta de nuevo
   useEffect(() => {
-    console.log("Se cargo el useEffect De los personajes");
-    solicitarDatosCuenta()
-  }, [])//si tuviera una dependencia por ejemplo arrayAccount se va a ejecutar cuando se modifica arrayAccount por
+    if (isLoggedIn) {
+      solicitarDatosCuenta();
+    } else {
+      // Redirigir al usuario si no está autenticado
+      navigate('/login'); // Cambia '/login' por la ruta de tu página de login
+    }
+  }, [isLoggedIn, token]);//si tuviera una dependencia por ejemplo arrayAccount se va a ejecutar cuando se modifica arrayAccount por
   //primera vez el componente y se renderiza y cada vez que algunas de las dependencias cambian.
+
+
+
 
   const añadirAccountArray = () => {
     // Muestra la alerta de verificación usando SweetAlert2

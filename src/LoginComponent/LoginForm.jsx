@@ -1,36 +1,179 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Img from '../components/Img';
 import ImputEmailPassword from '../components/ImputEmailPassword';
 import { Link } from 'react-router-dom';
+// Importamos useDispatch para despachar acciones y loginAction para manejar el estado de autenticación
+import { useDispatch } from 'react-redux';
+import { loadUser } from '../redux/actions/authActions';
+import Swal from 'sweetalert2'; // Asegúrate de importar Swal
+import { useSelector } from "react-redux";
+
 
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch(); // useDispatch para despachar la acción
 
-  const handleSubmit = async () => {
-    if (!email || !password) {
-      alert('Both email and password are required');
-      return;
+
+
+  // Accedemos al estado de autenticación desde Redux
+  const { status, isLoggedIn, error } = useSelector((state) => state.auth);
+
+  // Estado para controlar si el componente está montado
+  // const [isMounted, setIsMounted] = useState(false);
+
+
+  // useEffect(() => {
+  //   // Marcar el componente como montado
+  //   setIsMounted(true);
+
+  //   return () => {
+  //     // Marcar el componente como desmontado
+  //     setIsMounted(false);
+  //   };
+  // }, []);
+
+
+
+  // UseEffect para mostrar alertas basadas en el estado de autenticación
+  useEffect(() => {
+
+    // if (!isMounted) return;
+
+    // Mostrar alerta cuando la autenticación está en progreso
+    if (status === 'pending') {
+      Swal.fire({
+        title: 'Logging in...',
+        text: 'Please wait while we log you in.',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading(); // Muestra un spinner mientras está en proceso
+        },
+      });
     }
 
-    try {
-      // Realizar el axios.post
-      const response = await axios.post('http://localhost:8080/api/auth/login', {
-        email: email,
-        password: password,
+    // Mostrar alerta cuando la autenticación ha sido exitosa
+    if (status === 'succeeded' && isLoggedIn) {
+      Swal.fire({
+        title: 'Login Successful!',
+        text: 'You have been logged in successfully.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+      }).then(() => {
+        navigate('/'); // Redirigir al home después del login exitoso
       });
-console.log(response);
+    }
 
-      const token = response.data; 
+    // Mostrar alerta si falla la autenticación
+    if (status === 'failed') {
+      Swal.fire({
+        title: 'Login Failed!',
+        text: error || 'There was a problem logging in. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+  }, [status, isLoggedIn, error, navigate]);
+
+
+  // Validar el formulario antes de enviar
+  const validateForm = () => {
+
+    if (!email) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Email is required.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      return false;
+    }
+
+    if (!password) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Password is required.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      return false;
+    }
+
+    // Verificar si el email contiene espacios en blanco
+    if (email.includes(' ')) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Email should not contain spaces.Try again',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      return false;
+    }
+
+    // Verificar si la contraseña contiene espacios en blanco
+    if (password.includes(' ')) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Password should not contain spaces. Try again',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      return false;
+    }
+
+
+    return true; // Agrega esto para devolver true cuando el formulario sea válido
+  };
+
+
+  const handleSubmit = async () => {
+    try {
+
+      if (!validateForm()) {
+        return;
+      }
+
+      const user = {
+        email,
+        password
+      };
+      console.log(user);
+
+      // Realizar el axios.post
+      const response = await axios.post('http://localhost:8080/api/auth/login', user);
+      console.log('Full Response:', response);
+
+      const token = response.data;
+      console.log("Token:", token);
       localStorage.setItem('token', token);
+
+      // Despachamos la acción para cargar el usuario
+      dispatch(loadUser(token));
       navigate("/");
-    } catch (error) {
-      console.error('Login failed:', error);
-      alert('Login failed. Please check your credentials and try again.');
+
+    }catch (error) {
+      // Verifica si es un error de autenticación (401)
+      if (error.response && error.response.status === 401) {
+        Swal.fire({
+          title: 'Login Failed',
+          text: 'The email or password you entered is incorrect. Please try again.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: error.response.data.message || 'An unexpected error occurred. Please try again.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
     }
   };
 
@@ -42,13 +185,13 @@ console.log(response);
         <label htmlFor="Email" className="block text-gray-700 text-lg font-bold mb-2">
           Email:
         </label>
-        <input 
-          id="Email" 
-          name="Email" 
-          required 
-          placeholder='Email' 
-          className="border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none border-black border-2" 
-          type="email" 
+        <input
+          id="Email"
+          name="Email"
+          required
+          placeholder='Email'
+          className="border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none border-black border-2"
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -56,21 +199,21 @@ console.log(response);
         <label htmlFor="Password" className="block text-gray-700 text-lg font-bold mb-2">
           Password:
         </label>
-        <input 
-          id="Password" 
-          name="Password" 
-          required 
-          placeholder='Password' 
-          className="border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none border-black border-2" 
-          type="password" 
+        <input
+          id="Password"
+          name="Password"
+          required
+          placeholder='Password'
+          className="border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none border-black border-2"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
       <div className='flex flex-col'>
-        <Button 
-          className="w-52 bg-green-500 text-white font-bold py-2 px-2 rounded-[15px] hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50" 
-          type="button" 
+        <Button
+          className="w-52 bg-green-500 text-white font-bold py-2 px-2 rounded-[15px] hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+          type="button"
           onClick={handleSubmit}
         >
           Login
@@ -81,5 +224,6 @@ console.log(response);
     </div>
   );
 }
+
 
 export default LoginForm;
