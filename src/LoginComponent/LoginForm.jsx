@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Await, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Img from '../components/Img';
 import ImputEmailPassword from '../components/ImputEmailPassword';
@@ -8,10 +8,11 @@ import { Link } from 'react-router-dom';
 // Importamos useDispatch para despachar acciones y loginAction para manejar el estado de autenticación
 import { useDispatch } from 'react-redux';
 import { loadUser } from '../redux/actions/authActions';
-import Swal from 'sweetalert2'; // Asegúrate de importar Swal
+
 import { useSelector } from "react-redux";
 import { unwrapResult } from '@reduxjs/toolkit';
 import { authenticateUser } from '../redux/actions/authActions';
+import Swal from 'sweetalert2'; // Importa SweetAlert2
 
 
 
@@ -24,7 +25,7 @@ function LoginForm() {
 
 
   // Accedemos al estado de autenticación desde Redux
-  const { status, isLoggedIn, error } = useSelector((state) => state.auth);
+  const { status, isLoggedIn,error} = useSelector((state) => state.auth);
   console.log(status, isLoggedIn, error);
 
 
@@ -68,7 +69,7 @@ function LoginForm() {
       Swal.close(); // Cierra la alerta de "Logging in..." si falla
       Swal.fire({
         title: 'Login Failed!',
-        text: error || 'There was a problem logging in. Please try again.',
+        text:  'The email or password you entered is incorrect. Please try again...',
         icon: 'error',
         confirmButtonText: 'OK',
       });
@@ -132,7 +133,7 @@ function LoginForm() {
 
     try {
 
-      const resultAction = await dispatch(authenticateUser({ email, password }));
+      const resultAction =   dispatch(authenticateUser({ email, password }))
       console.log("Resultado de authenticateUser:", resultAction);
 
 
@@ -150,8 +151,8 @@ function LoginForm() {
 
 
       // Despachamos la acción para cargar el usuario
-      const userResult = await dispatch(loadUser(result.token));  // Asegúrate de esperar el resultado
-      console.log("Resultado de loadUser:", userResult);
+      const userResult =  dispatch(loadUser());  // Asegúrate de esperar el resultado
+      console.log("Resultado de loadUser:HOLAAAAAAAAAAAA", userResult);
       unwrapResult(userResult);
 
       // Redirige o realiza cualquier otra acción después de la autenticación exitosa
@@ -195,6 +196,10 @@ function LoginForm() {
     }
   };
 
+
+
+
+  
   return (
     <div className="mb-4 w-full flex flex-col justify-center gap-10 md:w-96">
       <Img />

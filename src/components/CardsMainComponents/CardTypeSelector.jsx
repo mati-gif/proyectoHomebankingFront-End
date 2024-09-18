@@ -12,8 +12,8 @@ function CardTypeSelector({ cardType, setCardTypeSelected }) {
         onChange={(e) => { setCardTypeSelected(e.target.value) }}
       >
         <option className='' value="">Select an option</option>
-        <option value="debit">Debit</option>
-        <option value="credit">Credit</option>
+        <option value="DEBIT">DEBIT</option>
+        <option value="CREDIT">CREDIT</option>
       </select>
     </div>
   )

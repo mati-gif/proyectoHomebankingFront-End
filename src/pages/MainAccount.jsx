@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'; // Importa SweetAlert2
 import Button from "../components/Button";
 import { useDispatch, useSelector } from 'react-redux';
-import { loadUser } from '../redux/actions/authActions';
+import { loadUser,createAccount } from '../redux/actions/authActions';
 
 function MainAccount() {
 
@@ -52,17 +52,25 @@ function MainAccount() {
   // useEffect tambien tiene un array de dependencia, el cual me indica que cada vez que el array se actualice, se va a renderizar de nuevo lo que hay dentro de use effect
   // En este caso depende de la id, que si cambia se ejecuta de nuevo
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (isLoggedIn && token) {
       // solicitarDatosCuenta();
-      navigate('/login'); // Cambia '/login' por la ruta de tu página de login
+      console.log(accounts);
+      
+      dispatch(loadUser(token))
+      .unwrap() .then((user) => {
+        setArrayAccount(user.accounts);
+      }) .catch((error) => {
+        console.error('Error loading user:', error);
+        navigate('/login');
+      });
 
     } else {
-      // Redirigir al usuario si no está autenticado
-      // navigate('/login'); // Cambia '/login' por la ruta de tu página de login
 
-      dispatch(loadUser(token));
+      // Redirigir al usuario si no está autenticado
+      navigate('/login'); // Cambia '/login' por la ruta de tu página de login
+
     }
-  }, [isLoggedIn, token, dispatch, navigate]);//si tuviera una dependencia por ejemplo arrayAccount se va a ejecutar cuando se modifica arrayAccount por
+  }, [isLoggedIn, dispatch, navigate,token]);//si tuviera una dependencia por ejemplo arrayAccount se va a ejecutar cuando se modifica arrayAccount por
   //primera vez el componente y se renderiza y cada vez que algunas de las dependencias cambian.
 
 
@@ -80,19 +88,21 @@ function MainAccount() {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        // Aquí debes realizar la lógica para generar la cuenta
-        // Este es el lugar donde puedes hacer la llamada a la API para crear la cuenta
-        // y actualizar el estado con la nueva cuenta.
 
-        // Ejemplo de cómo podrías hacerlo:
-        // setArrayAccount([...arrayAccount, { id: newId, number: 'newNumber', balance: 'newBalance', creationDate: 'newDate' }]);
-
-        Swal.fire(
-          'Creatted!',
-          'Your account has been generated.',
-          'success'
-        );
+        dispatch(createAccount()).unwrap()
+        .then(() => {
+          Swal.fire('Created!', 'Your account has been generated.', 'success');
+          // Refresh the accounts after creating a new one
+          dispatch(loadUser()).unwrap()
+            .then((user) => {
+              setArrayAccount(user.accounts);
+            });
+        })
+        .catch((error) => {
+          Swal.fire('Failed!', 'Could not create the account.', 'error');
+        });
       }
+
     });
   };
 
@@ -113,7 +123,7 @@ function MainAccount() {
           </Link>
         ))}
       </div>
-      <div className="flex justify-center flex-wrap gap-10">
+      {/* <div className="flex justify-center flex-wrap gap-10">
         {accounts && accounts.length > 0 ? (
           accounts.map((account) => (
             <Link key={account.id} to={`/accounts/${account.id}`}>
@@ -123,7 +133,7 @@ function MainAccount() {
         ) : (
           <p>No accounts found.</p>
         )}
-      </div>
+      </div> */}
     </div>
 
 

@@ -1,13 +1,96 @@
 import { createAction } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
+import Swal from 'sweetalert2'; // Importa SweetAlert2
 
 // Definimos las acciones como constantes
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 
 
+
+// Acción para crear una tarjeta
+export const createCard = createAsyncThunk("createCard", async (cardData, { rejectWithValue }) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:8080/api/cards/clients/current/cards', cardData, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Incluye el token en los encabezados
+            },
+        });
+        console.log("Respuesta de crear tarjeta:", response);
+        return response.data;
+    } catch (error) {
+        // Captura los mensajes de error del backend
+        const errorMessage = error.response && error.response.data ? 
+            error.response.data.message || error.response.data : 
+            'An error occurred';
+
+        // Muestra el mensaje de error específico del backend
+        Swal.fire({
+            title: 'Error Creating Card',
+            text: errorMessage,
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+
+        return rejectWithValue(errorMessage);
+    }
+});
+
+
+// Acción para crear una cuenta
+export const createAccount = createAsyncThunk("createAccount", async (_, { rejectWithValue }) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:8080/api/accounts/clients/current/accounts',{},{
+            headers: {
+                Authorization: `Bearer ${token}`, // Incluye el token en los encabezados
+            },
+        });
+        console.log("Respuesta de crear cuenta:", response);
+        return response.data;
+    } catch (error) {
+        console.error("Error creating account:", error);
+        Swal.fire({
+            title: 'Error Creating Account ,no podes tener mas de 3 ',
+            text: error.response ? error.response.data.message : 'An error occurred',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+        return rejectWithValue(error.response ? error.response.data : error.message);
+    }
+});
+
+// Acción para autenticar usuario
+export const authenticateUser = createAsyncThunk("authenticateUser", async (user, { rejectWithValue }) => {
+    try {
+        const response = await axios.post('http://localhost:8080/api/auth/login', user);
+        console.log("Respuesta de login:", response);
+
+        const token = response.data;
+        console.log("Token recibido:", token);
+
+        localStorage.setItem('token', token);
+        console.log("Token almacenado en localStorage:", localStorage.getItem('token'));  // Verifica que el token se almacena correctamente
+
+        return token;
+
+    } catch (error) {
+
+        Swal.fire({
+            title: 'Authentication Failed',
+            text: error.response ? error.response.data.message : 'An error occurred',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+        return rejectWithValue(error.response ? error.response.data : error.message);
+    }
+});
+
+
 // export const loadUser = createAsyncThunk("loadUser", async (data) => {
+
 
 
 
@@ -51,14 +134,23 @@ export const LOGOUT = 'LOGOUT';
 // })
 
 // Acción para cargar los datos del usuario
-export const loadUser = createAsyncThunk("loadUser", async (token, { rejectWithValue }) => {
+
+export const loadUser = createAsyncThunk("loadUser", async (_, { rejectWithValue }) => {
+
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.log('No token found');
+        return rejectWithValue('No token found');
+    }
+
     try {
 
         console.log("Token enviado en loadUser:", token);
 
         // Realizamos la solicitud GET a la API con el token del usuario
         const response = await axios.get('http://localhost:8080/api/auth/current', {
-            
+
             headers: {
                 Authorization: `Bearer ${token}`,  // El token correcto del usuario
             },
@@ -70,7 +162,7 @@ export const loadUser = createAsyncThunk("loadUser", async (token, { rejectWithV
 
         const responseData = response.data;
         console.log("Datos del usuario:", responseData);
-        
+
 
         // Creamos el objeto usuario a partir de la respuesta de la API
         let usuario = {
@@ -79,7 +171,8 @@ export const loadUser = createAsyncThunk("loadUser", async (token, { rejectWithV
             token: token,  // Aquí el token viene del argumento `token`
             isLoggedIn: true,
             accounts: responseData.accounts, // Incluimos las cuentas del 
-            
+            cards: responseData.cards,  // Asegúrate de incluir las tarjetas
+
         };
         console.log("Usuario cargado:", usuario);
 
@@ -88,6 +181,14 @@ export const loadUser = createAsyncThunk("loadUser", async (token, { rejectWithV
 
     } catch (error) {
         console.error("Error loading user:", error);
+
+        Swal.fire({
+            title: 'Error Loading User',
+            text: error.response ? error.response.data.message : 'Error loading user',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+
         // Si el token es inválido o expirado, eliminamos el token de localStorage
         if (error.response && error.response.status === 401) {
             localStorage.removeItem('token');  // Eliminamos el token
@@ -95,27 +196,6 @@ export const loadUser = createAsyncThunk("loadUser", async (token, { rejectWithV
         return rejectWithValue(error.response ? error.response.data : error.message);
     }
 });
-
-
-
-// Acción para autenticar usuario
-export const authenticateUser = createAsyncThunk("authenticateUser", async (user, { rejectWithValue }) => {
-    try {
-        const response = await axios.post('http://localhost:8080/api/auth/login', user);
-        console.log("Respuesta de login:", response);
-        
-        const token = response.data;
-        console.log("Token recibido:", token); 
-
-        localStorage.setItem('token', token);
-        console.log("Token almacenado en localStorage:", localStorage.getItem('token'));  // Verifica que el token se almacena correctamente
-        return token;
-    } catch (error) {
-        return rejectWithValue(error.response ? error.response.data : error.message);
-    }
-});
-
-
 
 
 

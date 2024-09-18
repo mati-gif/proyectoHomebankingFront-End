@@ -16,9 +16,9 @@ function CardMembershipSelector({ setCardColor, cardColor }) {
       >
         {/* setCardMembership(console.log(e.target.value)) */}
         <option value="">Select an option</option>
-        <option value="black"> Black</option>
-        <option value="gold">Gold</option>
-        <option value="platinum">Platinium</option>
+        <option value="SILVER"> SILVER</option>
+        <option value="GOLD">GOLD</option>
+        <option value="PLATINUM">PLATINUM</option>
       </select>
     </div>
   )

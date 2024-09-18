@@ -1,18 +1,72 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { LOGIN, LOGOUT, loadUser, logoutUser, authenticateUser } from '../actions/authActions';
+import { LOGIN, LOGOUT, loadUser, logoutUser, authenticateUser, createAccount ,createCard} from '../actions/authActions';
 
 const initialState = {
     isLoggedIn: !!localStorage.getItem('token'), // Si hay un token en localStorage, el usuario está logueado
-    token:  localStorage.getItem('token') || null, // Si hay un token en localStorage, lo cargamos al estado inicial
+    token: localStorage.getItem('token') || null, // Si hay un token en localStorage, lo cargamos al estado inicial
     email: null,
     name: null,
+    accounts: [],
     status: 'idle', // Estado inicial de la solicitud
     loading: false,
     error: null,
+    cards: []
 };
 
 const authReducer = createReducer(initialState, (builder) => {
     builder
+
+        .addCase(createCard.pending, (state) => {
+            return {
+                ...state,
+                status: "pending",
+                loading: true,
+                error: null,
+            };
+        })
+        .addCase(createCard.fulfilled, (state, action) => {
+            console.log("Tarjeta creada:", action.payload);
+            return {
+                ...state,
+                status: "succeeded",
+                loading: false,
+                cards: [...state.cards, action.payload],  // Añade la nueva tarjeta al estado
+            };
+        })
+        .addCase(createCard.rejected, (state, action) => {
+            return {
+                ...state,
+                status: "failed",
+                loading: false,
+                error: action.payload || 'Error creating card',
+            };
+        })
+
+        // Añadir en el reducer
+        .addCase(createAccount.pending, (state) => {
+            return {
+                ...state,
+                status: "pending",
+                loading: true,
+                error: null,
+            };
+        })
+        .addCase(createAccount.fulfilled, (state, action) => {
+            console.log("Cuenta creada:", action.payload);
+            return {
+                ...state,
+                status: "succeeded",
+                loading: false,
+            };
+        })
+        .addCase(createAccount.rejected, (state, action) => {
+            return {
+                ...state,
+                status: "failed",
+                loading: false,
+                error: action.payload || 'Error creating account',
+            };
+        })
 
         .addCase(authenticateUser.pending, (state) => {
             return {
@@ -27,7 +81,7 @@ const authReducer = createReducer(initialState, (builder) => {
             return {
                 ...state,
                 isLoggedIn: true,
-                token: action.payload.token,
+                token: action.payload,
                 status: "succeeded",
                 loading: false,
             };
@@ -59,6 +113,7 @@ const authReducer = createReducer(initialState, (builder) => {
                 email: action.payload.email,  // Asignamos el email del usuario
                 name: action.payload.name,    // Asignamos el nombre del usuario
                 accounts: action.payload.accounts,  // Añadimos las cuentas al estado
+                cards: action.payload.cards,
                 status: "succeeded",          // La solicitud fue exitosa
                 loading: false,               // Ya no está cargando
             };
@@ -91,6 +146,7 @@ const authReducer = createReducer(initialState, (builder) => {
                 token: null,
                 email: null,
                 name: null,
+                accounts: [],
                 status: "succeeded",
                 loading: false,
             };
