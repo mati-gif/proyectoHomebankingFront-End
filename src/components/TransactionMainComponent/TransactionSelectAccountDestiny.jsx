@@ -1,21 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+import { loadUser } from '../../redux/actions/authActions';
 
-function TransactionSelectAccountDestiny({ className, selectedAccount, onChange, excludedAccount, label }) {
-    const [accounts, setAccounts] = useState([]);
+
+function  TransactionSelectAccountDestiny({ className, selectedAccount, onChange, excludedAccount, label }) {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    // const [arrayAccounts, setArrayAccounts] = useState([]);
+    const { isLoggedIn, token, accounts } = useSelector((state) => state.auth);
+
     useEffect(() => {
-        const traerCuentasForm = () => {
-            axios.get("http://localhost:8080/api/clients/1")
-                .then((response) => {
-                    setAccounts(response.data.accounts);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        };
-
-        traerCuentasForm();
-    }, []);
+        if (isLoggedIn && token) {
+            // Solo si las cuentas están vacías, llamamos a loadUser
+            if (accounts.length === 0) {
+                dispatch(loadUser(token))
+                    .unwrap()
+                    .catch((error) => {
+                        console.error('Error al cargar usuario:', error);
+                        navigate('/login');
+                    });
+            }
+        } else {
+            // Redirigir al usuario si no está autenticado
+            navigate('/login');
+        }
+    }, [isLoggedIn, dispatch, navigate, token, accounts]);
     // Filtrar cuentas: Excluir la cuenta seleccionada en el otro campo (excludedAccount)
     const filteredAccounts = accounts.filter(account => account.number !== excludedAccount);
     return (

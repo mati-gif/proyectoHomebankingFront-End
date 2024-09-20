@@ -25,6 +25,8 @@ function MainAccount() {
   console.log(token);
   console.log(isLoggedIn);
   console.log(name);
+  console.log(accounts);
+  
   
   
 
@@ -55,7 +57,7 @@ function MainAccount() {
     if (isLoggedIn && token) {
       // solicitarDatosCuenta();
       console.log(accounts);
-      
+      // setArrayAccount(accounts);      
       dispatch(loadUser(token))
       .unwrap() .then((user) => {
         setArrayAccount(user.accounts);
@@ -123,6 +125,7 @@ function MainAccount() {
           </Link>
         ))}
       </div>
+
       {/* <div className="flex justify-center flex-wrap gap-10">
         {accounts && accounts.length > 0 ? (
           accounts.map((account) => (

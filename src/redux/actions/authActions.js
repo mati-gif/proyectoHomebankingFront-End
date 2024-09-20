@@ -9,6 +9,126 @@ export const LOGOUT = 'LOGOUT';
 
 
 
+// Acción para registrar un nuevo usuario
+export const registerUser = createAsyncThunk("registerUser", async (userData, { rejectWithValue }) => {
+    try {
+        const response = await axios.post('http://localhost:8080/api/auth/register', userData);
+        
+        return response.data;  // Retornamos la respuesta del backend si es exitoso
+    } catch (error) {
+        // Devolvemos el mensaje de error que venga del backend
+        return rejectWithValue(error.response ? error.response.data : error.message);
+    }
+});
+
+
+// Acción asincrónica para crear una transacción
+export const createTransaction = createAsyncThunk(
+    'transactions/createTransaction',
+    async (transactionData, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.post('http://localhost:8080/api/transactions', transactionData, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Incluye el token en los encabezados
+                },
+            });
+            console.log(response);
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Transacción Exitosa',
+                text: 'La transacción ha sido realizada con éxito',
+            });
+            return response.data;
+        } catch (error) {
+            const errorMessage = error.response && error.response.data
+                ? error.response.data.message || error.response.data
+                : 'Ocurrió un error al procesar la transacción';
+            Swal.fire({
+                icon: 'error',
+                title: 'Error en la Transacción',
+                text: errorMessage,
+            });
+            return rejectWithValue(errorMessage);
+        }
+    }
+);
+
+// Acción asincrónica para obtener préstamos disponibles
+export const fetchAvailableLoans = createAsyncThunk(
+    'fetchAvailableLoans',
+    async (_, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                return rejectWithValue('No token found');
+            }
+
+            const response = await axios.get('http://localhost:8080/api/loans', {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Incluye el token en los encabezados
+                },
+            });
+            console.log("estos son los prestamos disponibles", response);
+            console.log(response.data);
+
+            if (response.data === "No more loans available.") {
+                return rejectWithValue(response.data); // Retorna el mensaje como un error
+            }
+            return response.data; // Retorna los préstamos disponibles
+        } catch (error) {
+            const errorMessage = error.response && error.response.data
+                ? error.response.data.message || error.response.data
+                : 'An error occurred';
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error fetching loans',
+                text: errorMessage,
+            });
+
+            return rejectWithValue(errorMessage);
+        }
+    }
+);
+
+// Acción asincrónica para crear un préstamo
+export const createLoan = createAsyncThunk(
+    'loans/createLoan',
+    async (loanData, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem('token');
+
+            const response = await axios.post('http://localhost:8080/api/loans', loanData, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Incluye el token en los encabezados
+                },
+            });
+            console.log("Respuesta de crear loan:", response);
+            Swal.fire({
+                icon: 'success',
+                title: 'Préstamo creado exitosamente',
+                text: `Tu préstamo ha sido aprobado con ${loanData.installments} cuotas.`,
+            });
+            return response.data;
+        } catch (error) {
+            // Captura los mensajes de error del backend
+            const errorMessage = error.response && error.response.data ?
+                error.response.data.message || error.response.data :
+                'An error occurred';
+
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error en la solicitud de préstamo',
+                text: error.response?.data?.message || 'Algo salió mal, inténtalo nuevamente',
+            });
+            return rejectWithValue(errorMessage);
+        }
+    }
+);
+
 // Acción para crear una tarjeta
 export const createCard = createAsyncThunk("createCard", async (cardData, { rejectWithValue }) => {
     try {
@@ -22,8 +142,8 @@ export const createCard = createAsyncThunk("createCard", async (cardData, { reje
         return response.data;
     } catch (error) {
         // Captura los mensajes de error del backend
-        const errorMessage = error.response && error.response.data ? 
-            error.response.data.message || error.response.data : 
+        const errorMessage = error.response && error.response.data ?
+            error.response.data.message || error.response.data :
             'An error occurred';
 
         // Muestra el mensaje de error específico del backend
@@ -43,7 +163,7 @@ export const createCard = createAsyncThunk("createCard", async (cardData, { reje
 export const createAccount = createAsyncThunk("createAccount", async (_, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.post('http://localhost:8080/api/accounts/clients/current/accounts',{},{
+        const response = await axios.post('http://localhost:8080/api/accounts/clients/current/accounts', {}, {
             headers: {
                 Authorization: `Bearer ${token}`, // Incluye el token en los encabezados
             },
@@ -172,6 +292,8 @@ export const loadUser = createAsyncThunk("loadUser", async (_, { rejectWithValue
             isLoggedIn: true,
             accounts: responseData.accounts, // Incluimos las cuentas del 
             cards: responseData.cards,  // Asegúrate de incluir las tarjetas
+            loans: responseData.loans,
+
 
         };
         console.log("Usuario cargado:", usuario);
@@ -202,10 +324,7 @@ export const loadUser = createAsyncThunk("loadUser", async (_, { rejectWithValue
 // Acción para cerrar sesión
 export const logoutUser = createAsyncThunk("logoutUser", async (_, { rejectWithValue }) => {
     try {
-        // Opcional: Si tienes una API que maneja el cierre de sesión, puedes llamarla aquí
-        // await axios.post('http://localhost:8080/api/auth/logout');
 
-        // Limpiamos el token de localStorage
         localStorage.removeItem('token');
         return; // Retornamos vacío ya que no hay payload
     } catch (error) {

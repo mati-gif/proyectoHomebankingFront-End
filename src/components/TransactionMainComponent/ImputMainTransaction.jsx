@@ -1,30 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TransactionSelectAccountDestiny from './TransactionSelectAccountDestiny';
 
-function ImputMainTransaction() {
-    const [destinationType, setDestinationType] = useState('Otros');//Controla si el tipo de destino es "Propio" o "Otros", y se inicializa en "Otros".
-    const [selectedSourceAccount, setSelectedSourceAccount] = useState('');// Almacena la cuenta de origen seleccionada.
-    const [selectedDestinationAccount, setSelectedDestinationAccount] = useState('');// Almacena la cuenta de destino seleccionada.
+function ImputMainTransaction({ value, onChange }) {
+    const [destinationType, setDestinationType] = React.useState('Otros');
+    const [selectedSourceAccount, setSelectedSourceAccount] = React.useState('');
+    const [selectedDestinationAccount, setSelectedDestinationAccount] = React.useState('');
 
-    const handleDestinationTypeChange = (event) => { //se ejecuta cuando el usuario cambia el tipo de destino (Propio u Otros)
-        setDestinationType(event.target.value); //Actualiza el estado destinationType con el nuevo valor.
-        setSelectedSourceAccount(''); // Resetear para limpiar las cuentas seleccionadas cuando se cambia el tipo de destino.
+    const handleDestinationTypeChange = (event) => {
+        setDestinationType(event.target.value);
+        setSelectedSourceAccount('');
         setSelectedDestinationAccount('');
+        // Actualizar el formData en el componente padre
+        onChange({ target: { name: 'sourceAccountNumber', value: '' } });
+        onChange({ target: { name: 'destinationAccountNumber', value: '' } });
     };
 
-    const handleSourceAccountChange = (event) => {//se ejecuta cuando el usuario selecciona una cuenta de origen. 
-        setSelectedSourceAccount(event.target.value);//Actualiza el estado selectedSourceAccount con la cuenta seleccionada.
-        // Si se selecciona la cuenta de origen, resetear la cuenta destino si es la misma
+    const handleSourceAccountChange = (event) => {
+        setSelectedSourceAccount(event.target.value);
+        // Actualizar el formData en el componente padre
+        onChange({ target: { name: 'sourceAccountNumber', value: event.target.value } });
         if (event.target.value === selectedDestinationAccount) {
-            setSelectedDestinationAccount('');////Si la cuenta seleccionada es la misma que la cuenta de destino, resetea selectedDestinationAccount para evitar que ambas cuentas sean iguales.
+            setSelectedDestinationAccount('');
+            onChange({ target: { name: 'destinationAccountNumber', value: '' } });
         }
     };
 
-    const handleDestinationAccountChange = (event) => {//se ejecuta cuando el usuario selecciona una cuenta de destino.
-        setSelectedDestinationAccount(event.target.value);//Actualiza el estado selectedDestinationAccount con la cuenta seleccionada.
-
-        if (event.target.value === selectedSourceAccount) { //Si la cuenta seleccionada es la misma que la cuenta de origen, resetea selectedSourceAccount para evitar que ambas cuentas sean iguales.
+    const handleDestinationAccountChange = (event) => {
+        setSelectedDestinationAccount(event.target.value);
+        // Actualizar el formData en el componente padre
+        onChange({ target: { name: 'destinationAccountNumber', value: event.target.value } });
+        if (event.target.value === selectedSourceAccount) {
             setSelectedSourceAccount('');
+            onChange({ target: { name: 'sourceAccountNumber', value: '' } });
         }
     };
 
@@ -35,12 +42,24 @@ function ImputMainTransaction() {
             </label>
             <div className="flex space-x-4">
                 <label className='ml-10'> Owns
-                    <input className='ml-5' type="radio" name="destinationType" value="Propio" checked={destinationType === 'Propio'}
-                        onChange={handleDestinationTypeChange} />
+                    <input
+                        className='ml-5'
+                        type="radio"
+                        name="destinationType"
+                        value="Propio"
+                        checked={destinationType === 'Propio'}
+                        onChange={handleDestinationTypeChange}
+                    />
                 </label>
-                <label className='ml-10'>Others
-                    <input className='ml-5' type="radio" name="destinationType" value="Otros" checked={destinationType === 'Otros'}
-                        onChange={handleDestinationTypeChange} />
+                <label className='ml-10'> Others
+                    <input
+                        className='ml-5'
+                        type="radio"
+                        name="destinationType"
+                        value="Otros"
+                        checked={destinationType === 'Otros'}
+                        onChange={handleDestinationTypeChange}
+                    />
                 </label>
             </div>
 
@@ -50,14 +69,14 @@ function ImputMainTransaction() {
                         label="Source Account:"
                         selectedAccount={selectedSourceAccount}
                         onChange={handleSourceAccountChange}
-                        excludedAccount={selectedDestinationAccount}  // Excluir la cuenta destino.
+                        excludedAccount={selectedDestinationAccount}
                     />
 
                     <TransactionSelectAccountDestiny
                         label="Destination Account:"
                         selectedAccount={selectedDestinationAccount}
                         onChange={handleDestinationAccountChange}
-                        excludedAccount={selectedSourceAccount}  // Excluir la cuenta origen
+                        excludedAccount={selectedSourceAccount}
                     />
                 </div>
             )}
@@ -70,7 +89,7 @@ function ImputMainTransaction() {
                         onChange={handleSourceAccountChange}
                     />
 
-                    <div className="mb-4  mt-14">
+                    <div className="mb-4 mt-14">
                         <label htmlFor="destinationAccount" className="block text-gray-700 text-lg font-bold mb-4">
                             Destination Account:
                         </label>
@@ -80,7 +99,7 @@ function ImputMainTransaction() {
                             type="text"
                             value={selectedDestinationAccount}
                             onChange={handleDestinationAccountChange}
-                            required
+
                         />
                     </div>
                 </div>

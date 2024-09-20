@@ -41,9 +41,6 @@ function MainCards() {
 
     useEffect(() => {
         if (isLoggedIn && token) {
-
-
-
             dispatch(loadUser(token))
                 .unwrap().then((user) => {
                     setArrayCreditCards(user.cards.filter((item) => item.type === 'CREDIT'));
@@ -59,7 +56,6 @@ function MainCards() {
 
             // Redirigir al usuario si no está autenticado
             navigate('/login'); // Cambia '/login' por la ruta de tu página de login
-
         }
     }, [isLoggedIn, dispatch, navigate, token]);
 

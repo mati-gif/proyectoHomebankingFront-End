@@ -1,7 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { LOGIN, LOGOUT, loadUser, logoutUser, authenticateUser, createAccount ,createCard} from '../actions/authActions';
+import { registerUser,createTransaction, fetchAvailableLoans, createLoan, loadUser, logoutUser, authenticateUser, createAccount, createCard } from '../actions/authActions';
 
 const initialState = {
+
     isLoggedIn: !!localStorage.getItem('token'), // Si hay un token en localStorage, el usuario está logueado
     token: localStorage.getItem('token') || null, // Si hay un token en localStorage, lo cargamos al estado inicial
     email: null,
@@ -10,11 +11,119 @@ const initialState = {
     status: 'idle', // Estado inicial de la solicitud
     loading: false,
     error: null,
-    cards: []
+    cards: [],
+    loans: [], // Lista de préstamos
+    loansToSelect: []
 };
 
 const authReducer = createReducer(initialState, (builder) => {
     builder
+
+        // Registro de usuario pendiente
+        .addCase(registerUser.pending, (state) => {
+            return {
+                ...state,
+                loading: true,
+                error:null,
+            };
+        })
+        // Registro exitoso
+        .addCase(registerUser.fulfilled, (state, action) => {
+
+            return {
+                ...state,
+                isLoggedIn:false, // Aún no está logueado después del registro
+                loading: false,
+                error:null,
+            };
+        })
+        // Registro fallido
+        .addCase(registerUser.rejected, (state, action) => {
+            return {
+                ...state,
+                loading: false,
+                error:action.payload ||'Error during registration' ,
+            };
+        })
+
+
+        .addCase(createTransaction.pending, (state) => {
+            return {
+                ...state,
+                status: "pending",
+                loading: true,
+                error: null,
+            };
+        })
+        .addCase(createTransaction.fulfilled, (state, action) => {
+            console.log("Transacción creada:", action.payload);
+            return {
+                ...state,
+                status: "succeeded",
+                loading: false,
+                // Aquí podrías actualizar la lista de transacciones si es necesario
+            };
+        })
+        .addCase(createTransaction.rejected, (state, action) => {
+            return {
+                ...state,
+                status: "failed",
+                loading: false,
+                error: action.payload || 'Error creando la transacción',
+            };
+        })
+        .addCase(fetchAvailableLoans.pending, (state) => {
+            return {
+                ...state,
+                status: 'pending',
+                loading: true,
+                error: null,
+            };
+        })
+        .addCase(fetchAvailableLoans.fulfilled, (state, action) => {
+            console.log('Préstamos disponibles:', action.payload);
+            return {
+                ...state,
+                status: 'succeeded',
+                loading: false,
+                loansToSelect: action.payload, // Actualiza la lista de préstamos disponibles
+            };
+        })
+        .addCase(fetchAvailableLoans.rejected, (state, action) => {
+            return {
+                ...state,
+                status: 'failed',
+                loading: false,
+                error: action.payload || 'Error fetching available loans',
+            };
+        })
+
+        .addCase(createLoan.pending, (state) => {
+            return {
+                ...state,
+                status: "pending",
+                loading: true,
+                error: null,
+            };
+        })
+        .addCase(createLoan.fulfilled, (state, action) => {
+            console.log("Préstamo creado:", action.payload);
+            return {
+                ...state,
+                status: "succeeded",
+                loading: false,
+                loans: [...state.loans, action.payload],  // Añade el nuevo préstamo al estado
+            };
+        })
+        .addCase(createLoan.rejected, (state, action) => {
+            return {
+                ...state,
+                status: "failed",
+                loading: false,
+                error: action.payload || 'Error al crear el préstamo',
+            };
+        })
+
 
         .addCase(createCard.pending, (state) => {
             return {
@@ -114,8 +223,10 @@ const authReducer = createReducer(initialState, (builder) => {
                 name: action.payload.name,    // Asignamos el nombre del usuario
                 accounts: action.payload.accounts,  // Añadimos las cuentas al estado
                 cards: action.payload.cards,
+                loans: action.payload.loans,
                 status: "succeeded",          // La solicitud fue exitosa
-                loading: false,               // Ya no está cargando
+                loading: false,
+                // Ya no está cargando
             };
         })
         // Estado cuando la solicitud falla (rejected)
