@@ -224,6 +224,15 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
         localStorage.setItem('token', token);
         console.log("Token almacenado en localStorage:", localStorage.getItem('token'));  // Verifica que el token se almacena correctamente
 
+        // Mostrar alerta de éxito directamente en la acción
+        Swal.fire({
+            title: 'Login Successful!',
+            text: 'You have been logged in successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+        });
+
+
 
         return token;
 
@@ -231,7 +240,7 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
 
         Swal.fire({
             title: 'Authentication Failed',
-            text: error.response ? error.response.data.message : 'An error occurred',
+            text: error.response ? error.response.data.message : 'An error occurred during login',
             icon: 'error',
             confirmButtonText: 'Ok'
         });
