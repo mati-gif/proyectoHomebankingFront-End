@@ -225,19 +225,6 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
         console.log("Token almacenado en localStorage:", localStorage.getItem('token'));  // Verifica que el token se almacena correctamente
 
 
-
-        Swal.close(); // Cierra la alerta de "Logging in..."
-        Swal.fire({
-            title: 'Login Successful!',
-            text: 'You have been logged in successfully.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-        }).then(() => {
-            navigate('/'); // Redirigir al home después del login exitoso
-        });
-
-
-
         return token;
 
     } catch (error) {

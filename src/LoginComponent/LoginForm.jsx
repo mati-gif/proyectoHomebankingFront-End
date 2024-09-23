@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { Await, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
@@ -34,52 +34,60 @@ function LoginForm() {
 
   const errorMessage = useSelector((state) => state.auth.error);
 
+  const hasAttemptedLogin = useRef(false); // Ref para controlar el primer render
+
 
   // UseEffect para mostrar alertas basadas en el estado de autenticación
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   console.log('Status:', status);
-  //   console.log('IsLoggedIn:', isLoggedIn);
-  //   console.log('Error:', error);
+    console.log('Status:', status);
+    console.log('IsLoggedIn:', isLoggedIn);
+    console.log('Error:', error);
 
-  //   // Mostrar alerta cuando la autenticación está en progreso
-  //   if (status === 'pending' && !isLoggedIn) {
-  //     Swal.fire({
-  //       title: 'Logging in...',
-  //       text: 'Please wait while we log you in.',
-  //       icon: 'info',
-  //       allowOutsideClick: false,
-  //       showConfirmButton: false,
-  //       didOpen: () => {
-  //         Swal.showLoading(); // Muestra un spinner mientras está en proceso
-  //       },
-  //     });
-  //   }
 
-  //   // Mostrar alerta cuando la autenticación ha sido exitosa
-  //   if (status === 'succeeded' && isLoggedIn) {
-  //     Swal.close(); // Cierra la alerta de "Logging in..."
-  //     Swal.fire({
-  //       title: 'Login Successful!',
-  //       text: 'You have been logged in successfully.',
-  //       icon: 'success',
-  //       confirmButtonText: 'OK',
-  //     }).then(() => {
-  //       navigate('/'); // Redirigir al home después del login exitoso
-  //     });
-  //   }
+    // Ignorar el primer render o la primera carga
+    if (!hasAttemptedLogin.current) {
+      hasAttemptedLogin.current = true;
+      return;
+    }
+    // Mostrar alerta cuando la autenticación está en progreso
+    if (status === 'pending' && !isLoggedIn) {
+      Swal.fire({
+        title: 'Logging in...',
+        text: 'Please wait while we log you in.',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading(); // Muestra un spinner mientras está en proceso
+        },
+      });
+    }
 
-  //   // Mostrar alerta si falla la autenticación
-  //   if (status === 'failed') {
-  //     Swal.close(); // Cierra la alerta de "Logging in..." si falla
-  //     Swal.fire({
-  //       title: 'Login Failed!',
-  //       text: 'The email or password you entered is incorrect. Please try again...',
-  //       icon: 'error',
-  //       confirmButtonText: 'OK',
-  //     });
-  //   }
-  // }, [status, isLoggedIn, error]);
+    // Mostrar alerta cuando la autenticación ha sido exitosa
+    if (status === 'succeeded' && isLoggedIn) {
+      Swal.close(); // Cierra la alerta de "Logging in..."
+      Swal.fire({
+        title: 'Login Successful!',
+        text: 'You have been logged in successfully.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+      }).then(() => {
+        navigate('/'); // Redirigir al home después del login exitoso
+      });
+    }
+
+    // Mostrar alerta si falla la autenticación
+    if (status === 'failed') {
+      Swal.close(); // Cierra la alerta de "Logging in..." si falla
+      Swal.fire({
+        title: 'Login Failed!',
+        text: 'The email or password you entered is incorrect. Please try again...',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+  }, [status, isLoggedIn, error, navigate, dispatch]);
 
 
   const handleChange = (e) => {
@@ -159,13 +167,16 @@ function LoginForm() {
 
     try {
 
+      // Aquí indicamos que el usuario ya intentó loguearse
+      hasAttemptedLogin.current = true;
 
       const resultAction = await dispatch(authenticateUser({ email, password })).unwrap()
       console.log("Resultado de login:", resultAction);
 
 
-      // Aquí deberías cargar el usuario después de una autenticación exitosa
-      await dispatch(loadUser(token)).unwrap();
+  
+      // Si la autenticación es exitosa, cargamos el usuario
+      await dispatch(loadUser(resultAction.token)).unwrap();
 
       // // Asegúrate de que el token es correcto aquí
       // const token = localStorage.getItem('token');
