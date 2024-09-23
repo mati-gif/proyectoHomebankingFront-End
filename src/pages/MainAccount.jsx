@@ -53,7 +53,7 @@ function MainAccount() {
   // En este caso depende de la id, que si cambia se ejecuta de nuevo
 
   useEffect(() => {
-    if (isLoggedIn && token) {
+    if (isLoggedIn && token || name == null ) {
       // solicitarDatosCuenta();
       console.log(accounts);
       // setArrayAccount(accounts);
@@ -160,7 +160,7 @@ function MainAccount() {
           .then((newAccount) => {
             // Refrescar la lista de cuentas después de crear una nueva
             console.log("La cuenta se creó con éxito");
-            dispatch(fetchAccounts()).unwrap();
+
             console.log("se actualizo con la ueva cuenta ");
 
           })

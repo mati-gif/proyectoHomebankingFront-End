@@ -12,7 +12,7 @@ export const LOGOUT = 'LOGOUT';
 // Acción para registrar un nuevo usuario
 export const registerUser = createAsyncThunk("registerUser", async (userData, { rejectWithValue }) => {
     try {
-        const response = await axios.post('http://localhost:8080/api/auth/register', userData);
+        const response = await axios.post('https://proyectohomebanking-1.onrender.com/api/auth/current/api/auth/register', userData);
 
         return response.data;  // Retornamos la respuesta del backend si es exitoso
     } catch (error) {
@@ -28,7 +28,7 @@ export const createTransaction = createAsyncThunk(
     async (transactionData, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post('http://localhost:8080/api/transactions', transactionData, {
+            const response = await axios.post('https://proyectohomebanking-1.onrender.com/api/auth/current/api/transactions', transactionData, {
                 headers: {
                     Authorization: `Bearer ${token}`, // Incluye el token en los encabezados
                 },
@@ -65,7 +65,7 @@ export const fetchAvailableLoans = createAsyncThunk(
                 return rejectWithValue('No token found');
             }
 
-            const response = await axios.get('http://localhost:8080/api/loans', {
+            const response = await axios.get('https://proyectohomebanking-1.onrender.com/api/auth/current/api/loans', {
                 headers: {
                     Authorization: `Bearer ${token}`, // Incluye el token en los encabezados
                 },
@@ -100,7 +100,7 @@ export const createLoan = createAsyncThunk(
         try {
             const token = localStorage.getItem('token');
 
-            const response = await axios.post('http://localhost:8080/api/loans', loanData, {
+            const response = await axios.post('https://proyectohomebanking-1.onrender.com/api/auth/current/api/loans', loanData, {
                 headers: {
                     Authorization: `Bearer ${token}`, // Incluye el token en los encabezados
                 },
@@ -133,7 +133,7 @@ export const createLoan = createAsyncThunk(
 export const createCard = createAsyncThunk("createCard", async (cardData, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.post('http://localhost:8080/api/cards/clients/current/cards', cardData, {
+        const response = await axios.post('https://proyectohomebanking-1.onrender.com/api/auth/current/api/cards/clients/current/cards', cardData, {
             headers: {
                 Authorization: `Bearer ${token}`, // Incluye el token en los encabezados
             },
@@ -169,7 +169,7 @@ export const fetchAccounts = createAsyncThunk("fetchAccounts", async (_, { rejec
     }
 
     try {
-        const response = await axios.get('http://localhost:8080/api/accounts/clients/current/accounts', {
+        const response = await axios.get('https://proyectohomebanking-1.onrender.com/api/auth/current/api/accounts/clients/current/accounts', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -188,7 +188,7 @@ export const fetchAccounts = createAsyncThunk("fetchAccounts", async (_, { rejec
 export const createAccount = createAsyncThunk("createAccount", async (_, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.post('http://localhost:8080/api/accounts/clients/current/accounts', {}, {
+        const response = await axios.post('https://proyectohomebanking-1.onrender.com/api/accounts/clients/current/accounts', {}, {
             headers: {
                 Authorization: `Bearer ${token}`, // Incluye el token en los encabezados
             },
@@ -215,7 +215,7 @@ export const createAccount = createAsyncThunk("createAccount", async (_, { rejec
 // Acción para autenticar usuario
 export const authenticateUser = createAsyncThunk("authenticateUser", async (user, { rejectWithValue }) => {
     try {
-        const response = await axios.post('http://localhost:8080/api/auth/login', user);
+        const response = await axios.post('https://proyectohomebanking-1.onrender.com/api/auth/current/api/auth/login', user);
         console.log("Respuesta de login:", response);
 
         const token = response.data;
@@ -299,7 +299,7 @@ export const loadUser = createAsyncThunk("loadUser", async (_, { rejectWithValue
         console.log("Token enviado en loadUser:", token);
 
         // Realizamos la solicitud GET a la API con el token del usuario
-        const response = await axios.get('http://localhost:8080/api/auth/current', {
+        const response = await axios.get('https://proyectohomebanking-1.onrender.com/api/auth/current/api/auth/current', {
 
             headers: {
                 Authorization: `Bearer ${token}`,  // El token correcto del usuario
