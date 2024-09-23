@@ -1,14 +1,14 @@
 import { createAction } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'; // Importa SweetAlert2
 
 // Definimos las acciones como constantes
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 
-const navigate = useNavigate()
+// const navigate = useNavigate()
 
 
 // Acción para registrar un nuevo usuario
@@ -234,7 +234,7 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
             confirmButtonText: 'OK',
         });
 
-        navigate("/")
+        // navigate("/")
         return token;
 
     } catch (error) {

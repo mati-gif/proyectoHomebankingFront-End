@@ -209,7 +209,7 @@ function LoginForm() {
       // // Despachamos la acción para cargar el usuario
       // dispatch(loadUser(token));
       // navigate("/");
-
+      navigate('/');
     } catch (error) {
       // Manejo de errores desde el backend
       const backendErrorMessage = error?.response?.data?.message || error?.message || error;
