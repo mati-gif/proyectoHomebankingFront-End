@@ -69,16 +69,16 @@ function LoginForm() {
       });
     }
 
-    // Mostrar alerta si falla la autenticación
-    if (status === 'failed') {
-      Swal.close(); // Cierra la alerta de "Logging in..." si falla
-      Swal.fire({
-        title: 'Login Failed!',
-        text: 'The email or password you entered is incorrect. Please try again...',
-        icon: 'error',
-        confirmButtonText: 'OK',
-      });
-    }
+    // // Mostrar alerta si falla la autenticación
+    // if (status === 'failed') {
+    //   Swal.close(); // Cierra la alerta de "Logging in..." si falla
+    //   Swal.fire({
+    //     title: 'Login Failed!',
+    //     text: 'The email or password you entered is incorrect. Please try again...',
+    //     icon: 'error',
+    //     confirmButtonText: 'OK',
+    //   });
+    // }
   }, [status, isLoggedIn, error]);
 
 
@@ -216,6 +216,17 @@ function LoginForm() {
         }
         setErrors(newErrors);
       }
+
+      // Mostrar alerta si falla la autenticación
+      
+        Swal.close(); // Cierra la alerta de "Logging in..." si falla
+        Swal.fire({
+          title: 'Login Failed!',
+          text: 'The email or password you entered is incorrect. Please try again...',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      
     }
   }
 

@@ -32,7 +32,7 @@ function AccountTableDetailTransaction({ type, amount, date, description }) {
     return (
         <tr className="bg-gray-100 border-b bg-gray-700 text-white">
             <td className={`p-2 ${cardColors[type]}`}>{type}</td>
-            <td className={`p-2 ${cardColors[type]}`}>${formatAmount(amount)}</td>
+            <td className={`p-2 ${cardColors[type]} text-right`}>${formatAmount(amount)}</td>
             <td className="p-2">{formattedDate}</td>
             <td className="p-2">{formattedTime}</td>
             <td className="p-2">{description}</td>
