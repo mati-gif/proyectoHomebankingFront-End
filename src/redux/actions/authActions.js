@@ -163,7 +163,7 @@ export const createCard = createAsyncThunk("createCard", async (cardData, { reje
 export const fetchAccounts = createAsyncThunk("fetchAccounts", async (_, { rejectWithValue }) => {
     const token = localStorage.getItem('token');
     console.log(token);
-    
+
     if (!token) {
         return rejectWithValue("No token found");
     }
@@ -175,7 +175,7 @@ export const fetchAccounts = createAsyncThunk("fetchAccounts", async (_, { rejec
             },
         });
         console.log(response.data);
-        
+
         return response.data; // Devuelve la lista de cuentas
     } catch (error) {
         return rejectWithValue(error.response ? error.response.data : error.message);
@@ -223,6 +223,20 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
 
         localStorage.setItem('token', token);
         console.log("Token almacenado en localStorage:", localStorage.getItem('token'));  // Verifica que el token se almacena correctamente
+
+
+
+        Swal.close(); // Cierra la alerta de "Logging in..."
+        Swal.fire({
+            title: 'Login Successful!',
+            text: 'You have been logged in successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+        }).then(() => {
+            navigate('/'); // Redirigir al home después del login exitoso
+        });
+
+
 
         return token;
 

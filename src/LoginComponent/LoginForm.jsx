@@ -36,50 +36,50 @@ function LoginForm() {
 
 
   // UseEffect para mostrar alertas basadas en el estado de autenticación
-  useEffect(() => {
+  // useEffect(() => {
 
-    console.log('Status:', status);
-    console.log('IsLoggedIn:', isLoggedIn);
-    console.log('Error:', error);
+  //   console.log('Status:', status);
+  //   console.log('IsLoggedIn:', isLoggedIn);
+  //   console.log('Error:', error);
 
-    // Mostrar alerta cuando la autenticación está en progreso
-    if (status === 'pending' && !isLoggedIn) {
-      Swal.fire({
-        title: 'Logging in...',
-        text: 'Please wait while we log you in.',
-        icon: 'info',
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        didOpen: () => {
-          Swal.showLoading(); // Muestra un spinner mientras está en proceso
-        },
-      });
-    }
+  //   // Mostrar alerta cuando la autenticación está en progreso
+  //   if (status === 'pending' && !isLoggedIn) {
+  //     Swal.fire({
+  //       title: 'Logging in...',
+  //       text: 'Please wait while we log you in.',
+  //       icon: 'info',
+  //       allowOutsideClick: false,
+  //       showConfirmButton: false,
+  //       didOpen: () => {
+  //         Swal.showLoading(); // Muestra un spinner mientras está en proceso
+  //       },
+  //     });
+  //   }
 
-    // Mostrar alerta cuando la autenticación ha sido exitosa
-    if (status === 'succeeded' && isLoggedIn) {
-      Swal.close(); // Cierra la alerta de "Logging in..."
-      Swal.fire({
-        title: 'Login Successful!',
-        text: 'You have been logged in successfully.',
-        icon: 'success',
-        confirmButtonText: 'OK',
-      }).then(() => {
-        navigate('/'); // Redirigir al home después del login exitoso
-      });
-    }
+  //   // Mostrar alerta cuando la autenticación ha sido exitosa
+  //   if (status === 'succeeded' && isLoggedIn) {
+  //     Swal.close(); // Cierra la alerta de "Logging in..."
+  //     Swal.fire({
+  //       title: 'Login Successful!',
+  //       text: 'You have been logged in successfully.',
+  //       icon: 'success',
+  //       confirmButtonText: 'OK',
+  //     }).then(() => {
+  //       navigate('/'); // Redirigir al home después del login exitoso
+  //     });
+  //   }
 
-    // Mostrar alerta si falla la autenticación
-    if (status === 'failed') {
-      Swal.close(); // Cierra la alerta de "Logging in..." si falla
-      Swal.fire({
-        title: 'Login Failed!',
-        text: 'The email or password you entered is incorrect. Please try again...',
-        icon: 'error',
-        confirmButtonText: 'OK',
-      });
-    }
-  }, [status, isLoggedIn, error]);
+  //   // Mostrar alerta si falla la autenticación
+  //   if (status === 'failed') {
+  //     Swal.close(); // Cierra la alerta de "Logging in..." si falla
+  //     Swal.fire({
+  //       title: 'Login Failed!',
+  //       text: 'The email or password you entered is incorrect. Please try again...',
+  //       icon: 'error',
+  //       confirmButtonText: 'OK',
+  //     });
+  //   }
+  // }, [status, isLoggedIn, error]);
 
 
   const handleChange = (e) => {
