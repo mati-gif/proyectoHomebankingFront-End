@@ -34,7 +34,7 @@ function LoginForm() {
 
   const errorMessage = useSelector((state) => state.auth.error);
 
-  const hasAttemptedLogin = useRef(false); // Ref para controlar el primer render
+
 
 
   // // UseEffect para mostrar alertas basadas en el estado de autenticación
@@ -89,6 +89,19 @@ function LoginForm() {
   //   }
   // }, [status, isLoggedIn, error, navigate, dispatch]);
 
+
+
+
+  useEffect(() => {
+    if (error) {
+      Swal.fire({
+        title: 'Authentication Error',
+        text: error,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+  }, [error]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -173,7 +186,7 @@ function LoginForm() {
       console.log("Resultado de login:", resultAction);
 
 
-  
+
       // Si la autenticación es exitosa, cargamos el usuario
       await dispatch(loadUser(resultAction.token)).unwrap();
 

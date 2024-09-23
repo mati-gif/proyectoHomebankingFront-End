@@ -239,13 +239,18 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
 
     } catch (error) {
 
+        // Capturar el mensaje de error del backend
+        const errorMessage = error.response?.data?.message || error.message || 'An error occurred during login';
+
         Swal.fire({
             title: 'Authentication Failed',
-            text: error.response ? error.response.data.message : 'An error occurred during login',
+            text: errorMessage,
             icon: 'error',
             confirmButtonText: 'Ok'
         });
-        return rejectWithValue(error.response ? error.response.data : error.message);
+
+
+        return rejectWithValue(errorMessage);
     }
 });
 
