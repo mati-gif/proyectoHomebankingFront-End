@@ -91,18 +91,6 @@ function LoginForm() {
 
 
 
-
-  useEffect(() => {
-    if (error) {
-      Swal.fire({
-        title: 'Authentication Error',
-        text: error,
-        icon: 'error',
-        confirmButtonText: 'OK'
-      });
-    }
-  }, [error]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
