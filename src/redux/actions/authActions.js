@@ -240,7 +240,7 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
     } catch (error) {
 
         // Capturar el mensaje de error del backend
-        const errorMessage = error.response?.data || error.message || 'An error occurred during login';
+        const errorMessage = error.response?.data || error.message || 'The email o password you entered is incorrect,Please try again.';
 
         Swal.fire({
             title: 'Authentication Failed',
