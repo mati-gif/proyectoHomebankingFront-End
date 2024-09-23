@@ -249,7 +249,7 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
         });
 
 
-        return rejectWithValue(errorMessage);
+        return rejectWithValue(error.response ? error.response.data.message : error.message);
     }
 });
 
