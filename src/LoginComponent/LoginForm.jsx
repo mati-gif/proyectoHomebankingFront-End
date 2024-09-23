@@ -23,12 +23,16 @@ function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch(); // useDispatch para despachar la acción
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
+
 
 
   // Accedemos al estado de autenticación desde Redux
-  const { status, isLoggedIn, error } = useSelector((state) => state.auth);
+  const { status, isLoggedIn, error, token } = useSelector((state) => state.auth);
   console.log(status, isLoggedIn, error);
+  console.log(token);
 
+  const errorMessage = useSelector((state) => state.auth.error);
 
 
   // UseEffect para mostrar alertas basadas en el estado de autenticación
@@ -78,53 +82,74 @@ function LoginForm() {
   }, [status, isLoggedIn, error]);
 
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
+
+    if (name === 'email') setEmail(value.replace(/\s+/g, ''));    // Eliminar espacios en blanco en email
+    if (name === 'password') setPassword(value.replace(/\s+/g, '')); // Eliminar espacios en blanco en password
+  };
+
+
+
+
   // Validar el formulario antes de enviar
   const validateForm = () => {
-
+    const newErrors = {};
     if (!email) {
-      Swal.fire({
-        title: 'Error',
-        text: 'Email is required.',
-        icon: 'error',
-        confirmButtonText: 'OK'
-      });
-      return false;
+      // Swal.fire({
+      //   title: 'Error',
+      //   text: 'Email is required.',
+      //   icon: 'error',
+      //   confirmButtonText: 'OK'
+      // });
+      // return false;
+      newErrors.email = 'Email is required.';
+
     }
 
     if (!password) {
-      Swal.fire({
-        title: 'Error',
-        text: 'Password is required.',
-        icon: 'error',
-        confirmButtonText: 'OK'
-      });
-      return false;
+      // Swal.fire({
+      //   title: 'Error',
+      //   text: 'Password is required.',
+      //   icon: 'error',
+      //   confirmButtonText: 'OK'
+      // });
+      // return false;
+
+      newErrors.password = 'Password is required.';
     }
+
+
 
     // Verificar si el email contiene espacios en blanco
     if (email.includes(' ')) {
-      Swal.fire({
-        title: 'Error',
-        text: 'Email should not contain spaces.Try again',
-        icon: 'error',
-        confirmButtonText: 'OK'
-      });
-      return false;
+      // Swal.fire({
+      //   title: 'Error',
+      //   text: 'Email should not contain spaces.Try again',
+      //   icon: 'error',
+      //   confirmButtonText: 'OK'
+      // });
+      // return false;
+      newErrors.email = 'Email should not contain spaces.';
     }
 
     // Verificar si la contraseña contiene espacios en blanco
     if (password.includes(' ')) {
-      Swal.fire({
-        title: 'Error',
-        text: 'Password should not contain spaces. Try again',
-        icon: 'error',
-        confirmButtonText: 'OK'
-      });
-      return false;
+      // Swal.fire({
+      //   title: 'Error',
+      //   text: 'Password should not contain spaces. Try again',
+      //   icon: 'error',
+      //   confirmButtonText: 'OK'
+      // });
+      // return false;
+
+      newErrors.password = 'Password should not contain spaces.';
     }
 
-
-    return true; // Agrega esto para devolver true cuando el formulario sea válido
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
+    // return true; // Agrega esto para devolver true cuando el formulario sea válido
   };
 
 
@@ -134,12 +159,13 @@ function LoginForm() {
 
     try {
 
+
       const resultAction = await dispatch(authenticateUser({ email, password })).unwrap()
-      console.log("Resultado de authenticateUser:", resultAction);
+      console.log("Resultado de login:", resultAction);
 
 
       // Aquí deberías cargar el usuario después de una autenticación exitosa
-      await dispatch(loadUser()).unwrap();
+      await dispatch(loadUser(token)).unwrap();
 
       // // Asegúrate de que el token es correcto aquí
       // const token = localStorage.getItem('token');
@@ -175,29 +201,32 @@ function LoginForm() {
       // navigate("/");
 
     } catch (error) {
-      // Verifica si es un error de autenticación (401)
-      if (error.response && error.response.status === 401) {
-        Swal.fire({
-          title: 'Login Failed',
-          text: 'The email or password you entered is incorrect. Please try again.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
+      // Manejo de errores desde el backend
+      const backendErrorMessage = error?.response?.data?.message || error?.message || error;
+      const newErrors = {};
+
+
+
+      if (typeof backendErrorMessage === 'string') {
+        if (backendErrorMessage.includes('email field must not be empty') || backendErrorMessage.includes('Email is already in use')) {
+          newErrors.email = backendErrorMessage.includes('already in use') ? 'Email is already in use' : 'Email is required';
+        }
+        if (backendErrorMessage.includes('password field must not be empty') || backendErrorMessage.includes('Password must be at least 8 characters long')) {
+          newErrors.password = backendErrorMessage.includes('at least 8 characters') ? 'Password must be at least 8 characters' : 'Password is required';
+        }
+        setErrors(newErrors);
       }
-      // else {
-      //   Swal.fire({
-      //     title: 'Error',
-      //     text: error.response.data.message || 'An unexpected error occurred. Please try again.',
-      //     icon: 'error',
-      //     confirmButtonText: 'OK'
-      //   });
-      // }
     }
-  };
+  }
 
-
-
-
+  // else {
+  //   Swal.fire({
+  //     title: 'Error',
+  //     text: error.response.data.message || 'An unexpected error occurred. Please try again.',
+  //     icon: 'error',
+  //     confirmButtonText: 'OK'
+  //   });
+  // }
 
 
 
@@ -211,14 +240,16 @@ function LoginForm() {
         </label>
         <input
           id="Email"
-          name="Email"
+          name="email"
           required
           placeholder='Email'
-          className="border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none border-black border-2"
+          className={`border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none ${errors.email ? 'border-red-500' : 'border-none'}`}
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleChange}
         />
+        {errors.email && <p className="text-red-500 font-bold text-sm">{errors.email}</p>}
+
 
         <label htmlFor="Password" className="block text-gray-700 text-lg font-bold mb-2">
           Password:
@@ -226,13 +257,13 @@ function LoginForm() {
         <div className='relative'>
           <input
             id="Password"
-            name="Password"
+            name="password"
             required
             placeholder='Password'
-            className="border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none border-black border-2"
+            className={`border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none ${errors.password ? 'border-red-500' : 'border-none'}`}
             value={password}
             type={showPassword ? 'text' : 'password'} // Alternar entre texto y contraseña
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handleChange}
           />
           <button
             type="button"
@@ -242,7 +273,7 @@ function LoginForm() {
             {showPassword ? <FaEye /> : <FaEyeSlash />}
           </button>
         </div>
-
+        {errors.password && <p className="text-red-500 font-bold text-sm">{errors.password}</p>}
       </div>
       <div className='flex flex-col'>
         <Button

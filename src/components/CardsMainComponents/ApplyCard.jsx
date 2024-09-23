@@ -58,7 +58,7 @@ function ApplyCard() {
 }
 
   return (
-    <div className="p-8 rounded-lg bg-gray-100 min-h-screen border-4 border-green-500">
+    <div className="p-8 rounded-lg bg-gray-100 min-h-screen ">
       <h1 className="text-3xl font-bold text-center mb-8 mt-4">Apply for a Card</h1>
       <div className="flex flex-col  md:flex md:flex-row ">
         <div className="md:rounded-tl-lg md:rounded-bl-lg md:bg-[#d5d6d2]  md:shadow-lg md:w-6/12 md:flex md:flex-col md:gap-10  md:p-6 ">
