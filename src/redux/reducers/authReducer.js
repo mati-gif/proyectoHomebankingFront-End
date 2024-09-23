@@ -213,12 +213,16 @@ const authReducer = createReducer(initialState, (builder) => {
             };
         })
         .addCase(authenticateUser.rejected, (state, action) => {
+            console.log(action.payload)
+
             return {
                 ...state,
                 status: "failed",
                 loading: false,
+
                 error: action.error?.message || 'Error during authentication'
             };
+
         })
         // Estado de solicitud pendiente (pending)
         .addCase(loadUser.pending, (state) => {

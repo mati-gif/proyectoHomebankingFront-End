@@ -240,7 +240,7 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
     } catch (error) {
 
         // Capturar el mensaje de error del backend
-        const errorMessage = error.response?.data?.message || error.message || 'An error occurred during login';
+        const errorMessage = error.response?.data || error.message || 'An error occurred during login';
 
         Swal.fire({
             title: 'Authentication Failed',
