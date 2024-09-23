@@ -20,7 +20,7 @@ function CardActionsButtons({ crearTarjeta, navigate }) {
       </button>
       <button
         onClick={handleCancel}
-        className="bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-[10px] hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50"
+        className="bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded-[10px] hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50"
         type="button"
       >
         Cancel

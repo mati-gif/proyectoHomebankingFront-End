@@ -10,7 +10,9 @@ function Footer() {
             © 2024 - All rights reserved
           </p>
           <p className='text-[28px] font-bold'>|</p>
-          <a className='text-[20px] font-inter font-normal leading-[24.2px] ' href="https://www.linkedin.com/in/matias-soria-8706a719b/" target='blank'>linkedin</a>
+          <a className='text-[20px] font-inter font-normal leading-[24.2px] ' href="https://www.linkedin.com/in/matias-soria-8706a719b/" target='blank'>
+          <img src="https://freelogopng.com/images/all_img/1656997251linkedin-logo-black.png" className='text-[20px] font-inter font-normal leading-[24.2px] w-24 text-left' alt="" />
+          </a>
         </div>
 
         <div className='flex justify-center items-center gap-4'>

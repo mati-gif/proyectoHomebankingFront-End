@@ -5,9 +5,9 @@ function CardsCard(props) {
   console.log(props);
   
     const cardColors = {
-        BLACK: 'bg-[#222] text-white',
+      PLATINUM: 'bg-gradient-to-l from-[#2f3131] to-[#020509] text-white',
         GOLD: 'bg-gradient-to-l from-[#CB9547] to-[#f9db5c] text-black',
-        PLATINUM: 'bg-gradient-to-l from-[#95999c] to-[#d4d9dd] text-black',
+        SILVER: 'bg-gradient-to-l from-[#95999c] to-[#d4d9dd] text-black',
     };
   return (
     <div className="perspective-1000 w-96 h-56">
@@ -39,7 +39,7 @@ function CardsCard(props) {
         <div className="flex flex-col justify-center items-center h-full gap-4">
           <div className="w-96 h-12 bg-black"></div>
           <div className='w-full h-12 bg-white flex justify-end items-center'>
-          <h3 className=" text-xl font-bold">CVV: {props.cvv}</h3>
+          <h3 className={`text-xl font-bold ${props.cardColor === 'PLATINUM' ? 'text-black' : 'text-black'}`}>CVV: {props.cvv}</h3>
           </div>
           
         </div>

@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { unwrapResult } from '@reduxjs/toolkit';
 import { authenticateUser } from '../redux/actions/authActions';
 import Swal from 'sweetalert2'; // Importa SweetAlert2
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Importa los iconos
 
 
 
@@ -21,11 +22,11 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch(); // useDispatch para despachar la acción
-
+  const [showPassword, setShowPassword] = useState(false);
 
 
   // Accedemos al estado de autenticación desde Redux
-  const { status, isLoggedIn,error} = useSelector((state) => state.auth);
+  const { status, isLoggedIn, error } = useSelector((state) => state.auth);
   console.log(status, isLoggedIn, error);
 
 
@@ -38,7 +39,7 @@ function LoginForm() {
     console.log('Error:', error);
 
     // Mostrar alerta cuando la autenticación está en progreso
-    if (status === 'pending') {
+    if (status === 'pending' && !isLoggedIn) {
       Swal.fire({
         title: 'Logging in...',
         text: 'Please wait while we log you in.',
@@ -69,12 +70,12 @@ function LoginForm() {
       Swal.close(); // Cierra la alerta de "Logging in..." si falla
       Swal.fire({
         title: 'Login Failed!',
-        text:  'The email or password you entered is incorrect. Please try again...',
+        text: 'The email or password you entered is incorrect. Please try again...',
         icon: 'error',
         confirmButtonText: 'OK',
       });
     }
-  }, [status, isLoggedIn, error, navigate]);
+  }, [status, isLoggedIn, error]);
 
 
   // Validar el formulario antes de enviar
@@ -133,30 +134,28 @@ function LoginForm() {
 
     try {
 
-      const resultAction =   dispatch(authenticateUser({ email, password }))
+      const resultAction = await dispatch(authenticateUser({ email, password })).unwrap()
       console.log("Resultado de authenticateUser:", resultAction);
 
 
-      const result = unwrapResult(resultAction);
-      console.log("Resultado desenrollado:", result);
+      // Aquí deberías cargar el usuario después de una autenticación exitosa
+      await dispatch(loadUser()).unwrap();
 
-      // Asegúrate de que el token es correcto aquí
-      const token = localStorage.getItem('token');
-      console.log("Token recuperado de localStorage:", token);
-
-      if (!token) {
-        throw new Error("Token no encontrado en localStorage");
-      }
+      // // Asegúrate de que el token es correcto aquí
+      // const token = localStorage.getItem('token');
+      // console.log("Token recuperado de localStorage:", token);
 
 
 
-      // Despachamos la acción para cargar el usuario
-      const userResult =  dispatch(loadUser());  // Asegúrate de esperar el resultado
-      console.log("Resultado de loadUser:HOLAAAAAAAAAAAA", userResult);
-      unwrapResult(userResult);
+
+
+      // // Despachamos la acción para cargar el usuario
+      // const userResult = dispatch(loadUser());  // Asegúrate de esperar el resultado
+      // console.log("Resultado de loadUser:HOLAAAAAAAAAAAA", userResult);
+      // unwrapResult(userResult);
 
       // Redirige o realiza cualquier otra acción después de la autenticación exitosa
-      navigate("/");
+      // navigate("/");
       // const user = {
       //   email,
       //   password
@@ -199,12 +198,14 @@ function LoginForm() {
 
 
 
-  
+
+
+
   return (
-    <div className="mb-4 w-full flex flex-col justify-center gap-10 md:w-96">
+    <div className="   mb-4 w-full flex flex-col justify-center gap-10 md:w-96">
       <Img />
-      <p className='text-center text-[20px] font-bold'>Welcome to your Online Banking</p>
-      <div className="mb-4 w-full flex flex-col justify-center gap-3 md:w-96">
+      <p className='text-center text-[20px] font-bold text-[#0575A5]'>Welcome to your Online Banking</p>
+      <div className=" bg-opacity-75 rounded-lg shadow-lg bg-[#CDD0D3] p-6 mb-4 w-full flex flex-col justify-center gap-3 md:w-96">
         <label htmlFor="Email" className="block text-gray-700 text-lg font-bold mb-2">
           Email:
         </label>
@@ -222,16 +223,26 @@ function LoginForm() {
         <label htmlFor="Password" className="block text-gray-700 text-lg font-bold mb-2">
           Password:
         </label>
-        <input
-          id="Password"
-          name="Password"
-          required
-          placeholder='Password'
-          className="border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none border-black border-2"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className='relative'>
+          <input
+            id="Password"
+            name="Password"
+            required
+            placeholder='Password'
+            className="border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none border-black border-2"
+            value={password}
+            type={showPassword ? 'text' : 'password'} // Alternar entre texto y contraseña
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 focus:outline-none"
+            onClick={() => setShowPassword(prev => !prev)} // Alternar visibilidad
+          >
+            {showPassword ? <FaEye /> : <FaEyeSlash />}
+          </button>
+        </div>
+
       </div>
       <div className='flex flex-col'>
         <Button
@@ -246,6 +257,63 @@ function LoginForm() {
       </div>
     </div>
   );
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {/* <div className="flex items-center justify-center min-h-screen bg-gray-100">
+<div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+  <h2 className="text-2xl font-bold text-red-600 mb-6">Te damos la bienvenida a tu Banca Online</h2>
+  <form>
+    <div className="mb-4">
+      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="nif">
+        NIF
+      </label>
+      <input
+        type="text"
+        id="nif"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        placeholder="Introduce tu NIF"
+      />
+    </div>
+    <div className="mb-6">
+      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+        Clave de acceso
+      </label>
+      <input
+        type="password"
+        id="password"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+        placeholder="Introduce tu clave"
+      />
+    </div>
+    <div className="flex items-center justify-between">
+      <button
+        type="submit"
+        className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        Entrar
+      </button>
+      <a
+        href="#"
+        className="inline-block align-baseline font-bold text-sm text-red-600 hover:text-red-800"
+      >
+        ¿Problemas con tu clave de acceso?
+      </a>
+    </div>
+  </form>
+</div>
+</div> */}
+
 }
 
 

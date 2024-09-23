@@ -46,7 +46,7 @@ function MainCards() {
                     setArrayCreditCards(user.cards.filter((item) => item.type === 'CREDIT'));
                     setArrayDebitCards(user.cards.filter((item) => item.type === 'DEBIT'))
                     console.log(arrayCreditCards);
-                    
+
                 }).catch((error) => {
                     console.error('Error loading user:', error);
                     navigate('/login');
@@ -71,17 +71,24 @@ function MainCards() {
                 <h1 className="text-3xl font-bold text-center mb-8 mt-4 m-auto">Yours Cards</h1>
             </div>
             <h2 className="text-4xl font-bold mb-5">Credit Cards</h2>
-            <div className=" flex justify-center gap-10 " >
-                {arrayCreditCards.map((item) => (  //map: Itera sobre arrayCreditCards para renderizar un componente CardsCard por cada tarjeta de crédito en el array.
-                    <CardsCard key={item.id} typeCard={item.type} cardColor={item.color} numberCard={item.number} cvv={item.cvv} firstName={item.cardHolder} fechaVencimiento={item.thruDate} />
-                    //Renderiza una tarjeta utilizando las props pasadas (typeCard, cardColor, numberCard, etc.).
-                ))}
+            <div className="flex justify-center gap-10">
+                {arrayCreditCards.length > 0 ? (
+                    arrayCreditCards.map((item) => (
+                        <CardsCard key={item.id} typeCard={item.type} cardColor={item.color} numberCard={item.number} cvv={item.cvv} firstName={item.cardHolder} fechaVencimiento={item.thruDate} />
+                    ))
+                ) : (
+                    <p className="text-lg font-bold text-center text-red-600">you do not any have cards yet</p>
+                )}
             </div>
             <h2 className="text-4xl font-bold mb-5 mt-8">Debit Cards</h2>
-            <div className=" flex justify-center gap-10">
-                {arrayDebitCards.map((item) => (
-                    <CardsCard key={item.id} typeCard={item.type} cardColor={item.color} numberCard={item.number} cvv={item.cvv} firstName={item.cardHolder} fechaVencimiento={item.thruDate} />
-                ))}
+            <div className="flex justify-center gap-10">
+                {arrayDebitCards.length > 0 ? (
+                    arrayDebitCards.map((item) => (
+                        <CardsCard key={item.id} typeCard={item.type} cardColor={item.color} numberCard={item.number} cvv={item.cvv} firstName={item.cardHolder} fechaVencimiento={item.thruDate} />
+                    ))
+                ) : (
+                    <p className="text-lg font-bold text-center text-red-600">you do not have any cards yet .</p>
+                )}
             </div>
         </div>
     )

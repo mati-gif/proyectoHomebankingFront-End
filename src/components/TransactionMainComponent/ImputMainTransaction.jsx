@@ -36,7 +36,7 @@ function ImputMainTransaction({ value, onChange }) {
     };
 
     return (
-        <div className="mb-4">
+        <div className="">
             <label className="block text-gray-700 text-lg font-bold mb-2">
                 Type of destination:
             </label>
@@ -82,7 +82,7 @@ function ImputMainTransaction({ value, onChange }) {
             )}
 
             {destinationType === 'Otros' && (
-                <div className="mb-4 mt-14">
+                <div className="mb-4 mt-14 border-[#18e]">
                     <TransactionSelectAccountDestiny
                         label="Source Account:"
                         selectedAccount={selectedSourceAccount}

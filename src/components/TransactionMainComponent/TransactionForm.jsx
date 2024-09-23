@@ -33,8 +33,8 @@ function TransactionForm() {
     if (!formData.sourceAccountNumber || !formData.destinationAccountNumber || !formData.amount || !formData.description) {
       Swal.fire({
         icon: 'error',
-        title: 'Campos Requeridos',
-        text: 'Por favor completa todos los campos del formulario',
+        title: 'Fields obligatory',
+        text: 'Plase complete all the fields of form',
       });
       return;
     }
@@ -46,8 +46,8 @@ function TransactionForm() {
     if (!validSourceAccount || !validDestinationAccount) {
       Swal.fire({
         icon: 'error',
-        title: 'Cuenta Inválida',
-        text: 'El número de cuenta de origen o destino no es válido.',
+        title: 'Invalid account',
+        text: 'The source account o destiny account number is invalid.',
       });
       return;
     }
@@ -56,8 +56,8 @@ function TransactionForm() {
     if (formData.sourceAccountNumber === formData.destinationAccountNumber) {
       Swal.fire({
         icon: 'error',
-        title: 'Cuentas Iguales',
-        text: 'La cuenta de origen y la cuenta de destino no pueden ser la misma.',
+        title: 'Equals Accounts',
+        text: 'The source account and destiny account could not be same',
       });
       return;
     }
@@ -68,8 +68,8 @@ function TransactionForm() {
 
       Swal.fire({
         icon: 'success',
-        title: 'Transacción Exitosa',
-        text: 'La transacción se realizó con éxito.',
+        title: 'Transaction successfully',
+        text: 'The transaction complete successfully.',
       });
 
       // Reiniciar el formulario después de la transacción exitosa
@@ -84,30 +84,32 @@ function TransactionForm() {
       console.error('Error al procesar la transacción:', error);
 
       // Captura el error del backend (maneja casos de cuenta inexistente, montos inválidos, etc.)
-      let errorMessage = 'Hubo un error al procesar la transacción';
+      let errorMessage = 'An unexpected error ocurred,try again please';
       if (error.response.data.message && error.response.data) {
         errorMessage = error.response.data.message || error.response.data;
       }
 
       Swal.fire({
         icon: 'error',
-        title: 'Error en la Transacción',
+        title: 'Error about transaction,please try again',
         text: errorMessage, // Mostrar el mensaje devuelto desde el backend
       });
     }
   };
   return (
-    <form className='bg-gray-300 flex flex-col gap-10 p-6 rounded-lg md:w-6/12' onSubmit={handleSubmit}>
+    <form className=' w-full rounded-lg p-6 flex  flex-col gap-10  bg-[#D4D9DD] ' onSubmit={handleSubmit}>
+      <div className=' rounded-lg shadow-lg w-96 m-auto bg-[#F2F3F2] p-6 '>
+        <ImputMainTransaction
+          value={formData}
+          onChange={handleChange}
+        />
+        <TransactionAmoutImput value={formData.amount} onChange={handleChange} name="amount" />
+        <TransactionDescriptionImput value={formData.description} onChange={handleChange} name="description" />
+        <Button className=" w-52 bg-green-500 text-white font-bold py-2 px-4 rounded-[15px] hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50" type="submit">
+          Make
+        </Button>
+      </div>
 
-      <ImputMainTransaction
-        value={formData}
-        onChange={handleChange}
-      />
-      <TransactionAmoutImput value={formData.amount} onChange={handleChange} name="amount" />
-      <TransactionDescriptionImput value={formData.description} onChange={handleChange} name="description" />
-      <Button className="w-52 bg-green-500 text-white font-bold py-2 px-4 rounded-[15px] hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50" type="submit">
-        Make
-      </Button>
     </form>
   );
 }

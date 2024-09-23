@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { registerUser,createTransaction, fetchAvailableLoans, createLoan, loadUser, logoutUser, authenticateUser, createAccount, createCard } from '../actions/authActions';
+import { registerUser, createTransaction, fetchAvailableLoans, createLoan, loadUser, logoutUser, authenticateUser, createAccount, createCard, fetchAccounts } from '../actions/authActions';
 
 const initialState = {
 
@@ -24,7 +24,7 @@ const authReducer = createReducer(initialState, (builder) => {
             return {
                 ...state,
                 loading: true,
-                error:null,
+                error: null,
             };
         })
         // Registro exitoso
@@ -32,9 +32,9 @@ const authReducer = createReducer(initialState, (builder) => {
 
             return {
                 ...state,
-                isLoggedIn:false, // Aún no está logueado después del registro
+                isLoggedIn: false, // Aún no está logueado después del registro
                 loading: false,
-                error:null,
+                error: null,
             };
         })
         // Registro fallido
@@ -42,7 +42,7 @@ const authReducer = createReducer(initialState, (builder) => {
             return {
                 ...state,
                 loading: false,
-                error:action.payload ||'Error during registration' ,
+                error: action.payload || 'Error during registration',
             };
         })
 
@@ -150,6 +150,22 @@ const authReducer = createReducer(initialState, (builder) => {
                 error: action.payload || 'Error creating card',
             };
         })
+        .addCase(fetchAccounts.pending,(state)=>{
+            return{
+                ...state,
+                status:"pending",
+                loading:true,
+                error:null
+            }
+        })
+        .addCase(fetchAccounts.fulfilled,(state,action)=>{
+            return {
+                ...state,
+                status: "succeeded",
+                loading: false,
+                accounts: [...state.accounts, action.payload],  // Añade la nueva cuenta a la lista
+            };
+        })
 
         // Añadir en el reducer
         .addCase(createAccount.pending, (state) => {
@@ -166,6 +182,7 @@ const authReducer = createReducer(initialState, (builder) => {
                 ...state,
                 status: "succeeded",
                 loading: false,
+                accounts:   [...state.accounts, action.payload],  // Añade la nueva cuenta a la lista
             };
         })
         .addCase(createAccount.rejected, (state, action) => {
@@ -205,6 +222,7 @@ const authReducer = createReducer(initialState, (builder) => {
         })
         // Estado de solicitud pendiente (pending)
         .addCase(loadUser.pending, (state) => {
+            console.log("Cargando usuario..."); // Log al iniciar la carga
             return {
                 ...state, // Mantenemos el estado anterior
                 status: "pending", // Actualizamos el estado de la solicitud
@@ -215,7 +233,7 @@ const authReducer = createReducer(initialState, (builder) => {
         // Estado cuando la solicitud es exitosa (fulfilled)
         .addCase(loadUser.fulfilled, (state, action) => {
             console.log("Usuario cargado:", action.payload);
-            return {
+            const newState = {
                 ...state, // Mantenemos el estado anterior
                 isLoggedIn: true,
                 token: action.payload.token,  // Asignamos el nuevo token
@@ -228,6 +246,10 @@ const authReducer = createReducer(initialState, (builder) => {
                 loading: false,
                 // Ya no está cargando
             };
+
+            console.log("Estado actualizado (fulfilled):", newState)
+
+            return newState
         })
         // Estado cuando la solicitud falla (rejected)
         .addCase(loadUser.rejected, (state, action) => {

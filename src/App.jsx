@@ -22,9 +22,25 @@ import LoanLoan from './components/LoanMainComponent/LoanLoan'
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from './Layout/MainLayout'
+import { loadUser } from './redux/actions/authActions';
+import { useDispatch } from 'react-redux';
+import React, { useEffect } from "react"
+
+
 
 
 function App() {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token'); // Verifica si hay un token almacenado
+    console.log(token);
+    
+    if (token) {
+      dispatch(loadUser()); // Solo intenta cargar el usuario si hay un token
+    }
+  }, [dispatch]);
   return (
     <>
       <BrowserRouter>

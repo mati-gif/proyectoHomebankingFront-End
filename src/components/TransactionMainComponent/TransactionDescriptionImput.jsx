@@ -2,7 +2,7 @@ import React from 'react';
 
 function TransactionDescriptionImput({ value, onChange, name }) {
     return (
-        <div className="mb-4">
+        <div className="mb-4 ">
             <label htmlFor={name} className="block text-gray-700 text-lg font-bold mb-2">
                 Description:
             </label>

@@ -13,7 +13,7 @@ export const LOGOUT = 'LOGOUT';
 export const registerUser = createAsyncThunk("registerUser", async (userData, { rejectWithValue }) => {
     try {
         const response = await axios.post('http://localhost:8080/api/auth/register', userData);
-        
+
         return response.data;  // Retornamos la respuesta del backend si es exitoso
     } catch (error) {
         // Devolvemos el mensaje de error que venga del backend
@@ -34,7 +34,7 @@ export const createTransaction = createAsyncThunk(
                 },
             });
             console.log(response);
-            
+
             Swal.fire({
                 icon: 'success',
                 title: 'Transacción Exitosa',
@@ -159,6 +159,31 @@ export const createCard = createAsyncThunk("createCard", async (cardData, { reje
 });
 
 
+
+export const fetchAccounts = createAsyncThunk("fetchAccounts", async (_, { rejectWithValue }) => {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    
+    if (!token) {
+        return rejectWithValue("No token found");
+    }
+
+    try {
+        const response = await axios.get('http://localhost:8080/api/accounts/clients/current/accounts', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log(response.data);
+        
+        return response.data; // Devuelve la lista de cuentas
+    } catch (error) {
+        return rejectWithValue(error.response ? error.response.data : error.message);
+    }
+});
+
+
+
 // Acción para crear una cuenta
 export const createAccount = createAsyncThunk("createAccount", async (_, { rejectWithValue }) => {
     try {
@@ -168,16 +193,21 @@ export const createAccount = createAsyncThunk("createAccount", async (_, { rejec
                 Authorization: `Bearer ${token}`, // Incluye el token en los encabezados
             },
         });
-        console.log("Respuesta de crear cuenta:", response);
+        console.log("Respuesta de crear cuenta:", response.data);
+        // Mostrar alerta de éxito
+        Swal.fire('Created!', 'Your account has been generated successfully.', 'success');
         return response.data;
     } catch (error) {
         console.error("Error creating account:", error);
+
+        // Mostrar alerta de error si hay algún problema
         Swal.fire({
-            title: 'Error Creating Account ,no podes tener mas de 3 ',
-            text: error.response ? error.response.data.message : 'An error occurred',
+            title: 'Error Creating Account',
+            text: error.response?.data || 'An unknown error occurred.',
             icon: 'error',
-            confirmButtonText: 'Ok'
+            confirmButtonText: 'Ok',
         });
+
         return rejectWithValue(error.response ? error.response.data : error.message);
     }
 });
