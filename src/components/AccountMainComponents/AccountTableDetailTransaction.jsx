@@ -17,8 +17,13 @@ function AccountTableDetailTransaction({ type, amount, date, description }) {
     // Función para separar fecha y hora
     const formatDateTime = (dateTime) => {
         const date = new Date(dateTime);
+        console.log("Parsed Date object:", date); // Verifica el objeto de fecha
+
         const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' });
-        const formattedTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+        const formattedTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit'});
+
+        console.log("Formatted Date:", formattedDate); // Debugging
+        console.log("Formatted Time:", formattedTime); // Debugging
         return { date: formattedDate, time: formattedTime };
     };
     const cardColors = {
