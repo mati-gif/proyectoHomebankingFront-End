@@ -225,29 +225,24 @@ function LoginForm() {
         if (backendErrorMessage.includes('password field must not be empty') || backendErrorMessage.includes('Password must be at least 8 characters long')) {
           newErrors.password = backendErrorMessage.includes('at least 8 characters') ? 'Password must be at least 8 characters' : 'Password is required';
         }
+
+        // Si el backend envía un mensaje general, lo mostramos bajo los campos correspondientes
+      if (backendErrorMessage.toLowerCase().includes('email')) {
+        newErrors.email = 'Invalid email. Please try again.';
+      }
+
+      if (backendErrorMessage.toLowerCase().includes('password')) {
+        newErrors.password = 'Incorrect password. Please try again.';
+      }
+
+      if (!newErrors.email && !newErrors.password) {
+        // Si el error no está relacionado específicamente con email o password, lo mostramos como un error general
+        newErrors.general = backendErrorMessage;
+      }
         setErrors(newErrors);
       }
     }
   }
-
-  // else {
-  //   Swal.fire({
-  //     title: 'Error',
-  //     text: error.response.data.message || 'An unexpected error occurred. Please try again.',
-  //     icon: 'error',
-  //     confirmButtonText: 'OK'
-  //   });
-  // }
-
-
-
-
-
-
-
-
-
-
 
   return (
     <div className="   mb-4 w-full flex flex-col justify-center gap-10 md:w-96">

@@ -13,7 +13,7 @@ function MainAccount() {
   // // useState es un hook que me permite añadir un estado a un componente. Este estado va a controlar que el componente se renderice cada vez que se actualice account
   // // Aca tengo un estado, y defino que ese estado inicialmente va a tener como valor un objeto vacio. El nombre de ese estado va a ser "arrayAccount", y va a tener un metodo
   // // que me permite actualizar ese estado. Cada vez que se llama a ese estado React vuelve a renderizar el componente con el estado actualizado.
-  const [arrayAccount, setArrayAccount] = useState([]);
+
 
   const navigate = useNavigate(); // Declara useNavigate
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ function MainAccount() {
       // setArrayAccount(accounts);
       dispatch(loadUser())
         .unwrap().then((user) => {
-          setArrayAccount(user.accounts);
+          
         }).catch((error) => {
           console.error('Error loading user:', error);
           navigate('/login');

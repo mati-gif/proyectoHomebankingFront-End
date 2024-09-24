@@ -239,15 +239,12 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
 
     } catch (error) {
 
-    
-
-        Swal.fire({
-            title: 'Authentication Failed',
-            text: 'The email o password you entered is incorrect,Please try again.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-        });
-
+        // Swal.fire({
+        //     title: 'Authentication Failed',
+        //     text: 'The email o password you entered is incorrect,Please try again.',
+        //     icon: 'error',
+        //     confirmButtonText: 'Ok'
+        // });
 
         return rejectWithValue(error.response ? error.response.data.message : error.message);
     }
@@ -302,17 +299,10 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
 
 export const loadUser = createAsyncThunk("loadUser", async (_, { rejectWithValue }) => {
 
-
-
-
     try {
-
 
         const token = localStorage.getItem('token');
         if (token) {
-            // console.log('No token found');
-            // return rejectWithValue('No token found');
-       
 
         console.log("Token enviado en loadUser:", token);
 
@@ -327,10 +317,8 @@ export const loadUser = createAsyncThunk("loadUser", async (_, { rejectWithValue
 
         console.log("Respuesta de loadUser:", response);
 
-
         const responseData = response.data;
         console.log("Datos del usuario:", responseData);
-
 
         // Creamos el objeto usuario a partir de la respuesta de la API
         let usuario = {
@@ -341,7 +329,6 @@ export const loadUser = createAsyncThunk("loadUser", async (_, { rejectWithValue
             accounts: responseData.accounts, // Incluimos las cuentas del 
             cards: responseData.cards,  // Asegúrate de incluir las tarjetas
             loans: responseData.loans,
-
 
         };
         console.log("Usuario cargado:", usuario);
