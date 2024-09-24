@@ -26,6 +26,32 @@ function LoanForm() {
 
   console.log(loansToSelect);
 
+
+  // Función para formatear el número con comas
+  const formatNumberWithCommas = (num) => {
+    if (!num) return '';
+    const parts = num.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');  // Agrega comas
+    return parts.join('.');
+  };
+
+  // Función para limpiar el número, eliminando comas y espacios
+  const cleanNumber = (num) => {
+    return num.replace(/,/g, '').replace(/ /g, '');
+  };
+
+
+  // Manejar el cambio en el campo de entrada del monto
+  const handleAmountChange = (e) => {
+    const inputValue = e.target.value;
+    const cleanValue = cleanNumber(inputValue);  // Elimina las comas del valor ingresado
+
+    // Actualiza el estado formateando el número con comas
+    setAmount(formatNumberWithCommas(cleanValue));
+  };
+
+
+
   useEffect(() => {
     if (isLoggedIn && token) {
       // Solo si las cuentas están vacías, llamamos a loadUser
@@ -90,11 +116,6 @@ function LoanForm() {
       setLoanSelectedPayments([]); // Si no hay préstamo seleccionado, limpia las cuotas
     }
   };
-
-
-
-
-
 
 
 
@@ -273,6 +294,9 @@ function LoanForm() {
   const handleApplyClick = (e) => {
     e.preventDefault();
 
+    // Limpiar el valor de amount antes de usarlo (sin comas)
+    const amountValue = parseFloat(cleanNumber(amount));
+
     // Mostrar alerta de confirmación con SweetAlert2
     Swal.fire({
       title: 'Confirm please',
@@ -300,28 +324,29 @@ function LoanForm() {
 
         if (selectedLoanData) {
           const { id, maxAmount } = selectedLoanData;
+          
 
-          // Limpiar el monto antes de convertirlo a número
-          const amountValue = parseFloat(amount.replace(/,/g, '').replace(/ /g, ''));
-          console.log(amountValue);
+          // // Limpiar el monto antes de convertirlo a número
+          // const amountValue = parseFloat(amount.replace(/,/g, '').replace(/ /g, ''));
+          // console.log(amountValue);
 
           const maxAmountValue = parseFloat(maxAmount);
           console.log(maxAmountValue);
 
-          // Formateo del monto ingresado y el monto máximo
-          const formattedAmount = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          }).format(amountValue);
+          // // Formateo del monto ingresado y el monto máximo
+          // const formattedAmount = new Intl.NumberFormat('en-US', {
+          //   style: 'currency',
+          //   currency: 'USD',
+          //   minimumFractionDigits: 2,
+          //   maximumFractionDigits: 2,
+          // }).format(amountValue);
 
-          const formattedMaxAmount = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          }).format(maxAmountValue);
+          // const formattedMaxAmount = new Intl.NumberFormat('en-US', {
+          //   style: 'currency',
+          //   currency: 'USD',
+          //   minimumFractionDigits: 2,
+          //   maximumFractionDigits: 2,
+          // }).format(maxAmountValue);
 
           if (amountValue > maxAmountValue) {
             Swal.fire({
@@ -382,7 +407,7 @@ function LoanForm() {
             text: 'The selected loan could not be found.',
           });
         }
-      } 
+      }
       // else {
       //   // Si el usuario cancela, no se hace nada
       //   Swal.fire({
@@ -517,7 +542,16 @@ function LoanForm() {
           </label>
           <div className=' flex '>
             <span className="px-2 text-gray-700 font-bold text-3xl ">$</span>
-            <input id="amount" name="amount" value={amount} onChange={(e) => setAmount(e.target.value)} required className=" w-80 text-right border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none border-none border-black border-2" type="text" placeholder="$0.00" />
+            <input 
+              id="amount"
+              name="amount"
+              value={amount}
+              onChange={handleAmountChange}
+              required
+              className=" w-80 text-right border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none border-none border-black border-2"
+              type="text"
+              placeholder="0.00"
+            />
           </div>
           {/* onInput={(e) => formatCurrency(e.target)} */}
         </div>
