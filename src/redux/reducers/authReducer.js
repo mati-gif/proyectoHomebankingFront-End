@@ -194,14 +194,14 @@ const authReducer = createReducer(initialState, (builder) => {
             };
         })
 
-        .addCase(authenticateUser.pending, (state) => {
-            return {
-                ...state,
-                status: "pending",
-                loading: true,
-                error: null,
-            };
-        })
+        // .addCase(authenticateUser.pending, (state) => {
+        //     return {
+        //         ...state,
+        //         status: "pending",
+        //         loading: true,
+        //         error: null,
+        //     };
+        // })
         .addCase(authenticateUser.fulfilled, (state, action) => {
             console.log("Autenticación exitosa, token:", action.payload);
             return {
