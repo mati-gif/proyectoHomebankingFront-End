@@ -215,7 +215,6 @@ function LoginForm() {
 
       console.log("entro en el catch del back en el loadUser", error);
 
-      console.log("este es el error del back", backendErrorMessage);
 
       const newErrors = {};
 
@@ -254,6 +253,7 @@ function LoginForm() {
   // }
 
 
+console.log("Son los errores que tiene que renderizar",errors);
 
 
 
