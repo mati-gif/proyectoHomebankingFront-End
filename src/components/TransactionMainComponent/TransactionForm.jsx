@@ -167,11 +167,11 @@ function TransactionForm() {
         } catch (error) {
           console.error('Error al procesar la transacción:', error);
 
-          // Capturar el error del backend
-          let errorMessage = 'An unexpected error occurred, please try again.';
-          if (error.response && error.response.data.message) {
-            errorMessage = error.response.data.message;
-          }
+          // // Capturar el error del backend
+          let errorMessage = error.response.data;
+          // if (error.response && error.response.data.message) {
+          //   errorMessage = error.response.data.message;
+          // }
 
           Swal.fire({
             icon: 'error',
