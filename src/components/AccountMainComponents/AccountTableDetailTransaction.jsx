@@ -18,7 +18,7 @@ function AccountTableDetailTransaction({ type, amount, date, description }) {
     const formatDateTime = (dateTime) => {
         const date = new Date(dateTime);
         const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' });
-        const formattedTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        const formattedTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
         return { date: formattedDate, time: formattedTime };
     };
     const cardColors = {
@@ -29,6 +29,9 @@ function AccountTableDetailTransaction({ type, amount, date, description }) {
     // Separar la fecha y la hora
     const { date: formattedDate, time: formattedTime } = formatDateTime(date);
 
+
+    console.log("Current local time:", new Date().toString());
+    console.log("Current UTC time:", new Date().toUTCString());
     return (
         <tr className="bg-gray-100 border-b bg-gray-700 text-white">
             <td className={`p-2 ${cardColors[type]}`}>{type}</td>
