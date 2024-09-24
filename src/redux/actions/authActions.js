@@ -257,7 +257,7 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
         //     confirmButtonText: 'Ok'
         // });
 
-        return rejectWithValue(error.response ? error.response.data.message : error.message);
+        return rejectWithValue( error.response.data );
     }
 });
 
