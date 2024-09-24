@@ -213,7 +213,7 @@ function LoginForm() {
       navigate('/');
     } catch (error) {
 
-      console.log("entro en el catch del back en el loadUser", error.response.data);
+      console.log("entro en el catch del back en el loadUser", error);
 
       console.log("este es el error del back", backendErrorMessage);
 
@@ -225,6 +225,8 @@ function LoginForm() {
       // Manejo de los mensajes de error que provienen del backend
       if (error === "Email or Password invalid.") {
         newErrors.email = "The email or password you entered is incorrect.";
+        console.log(newErrors.email);
+        
       } else if (error === "Email not found.") {
         newErrors.email = "The email you entered doesn't exist, try another.";
       } else if (error === "Password incorrect.") {
