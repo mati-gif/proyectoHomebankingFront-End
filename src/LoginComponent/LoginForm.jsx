@@ -156,6 +156,13 @@ function LoginForm() {
       newErrors.password = 'Password should not contain spaces.';
     }
 
+
+    if (errorMessage == "Email or Password invalid") {
+      newErrors.email = "The email or password you entered is incorrect.Please try again";
+      console.log(newErrors.email);
+
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
     // return true; // Agrega esto para devolver true cuando el formulario sea válido
