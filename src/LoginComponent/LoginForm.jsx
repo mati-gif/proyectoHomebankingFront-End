@@ -219,18 +219,21 @@ function LoginForm() {
       const newErrors = {};
 
       console.log("error en la variable newError", newErrors);
+      // El mensaje de error es una cadena de texto, limpiamos con .trim() para evitar problemas con espacios
+      const errorMessage = error.trim();
+      console.log("Mensaje de error capturado:", errorMessage);
 
 
       // Manejo de los mensajes de error que provienen del backend
-      if (error === "Email or Password invalid.") {
-        newErrors.email = "The email or password you entered is incorrect.";
+      if (errorMessage === "Email or Password invalid") {
+        newErrors.email = "The email or password you entered is incorrect.Please try again";
         console.log(newErrors.email);
-        
-      } else if (error === "Email not found.") {
-        newErrors.email = "The email you entered doesn't exist, try another.";
-      } else if (error === "Password incorrect.") {
+
+      } else if (errorMessage === "Email not found") {
+        newErrors.email = "The email you entered doesn't exist, try another";
+      } else if (errorMessage === "Password incorrect") {
         newErrors.password = "The password is incorrect.";
-      } else if (error === "Invalid email format.") {
+      } else if (errorMessage === "Invalid email format") {
         newErrors.email = "The email you entered is incorrect, try again.";
       } else {
         newErrors.general = "An unexpected error occurred. Please try again.";
@@ -253,7 +256,7 @@ function LoginForm() {
   // }
 
 
-console.log("Son los errores que tiene que renderizar",errors);
+  console.log("Son los errores que tiene que renderizar", errors);
 
 
 
