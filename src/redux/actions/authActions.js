@@ -247,14 +247,14 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
         console.log(  "entro por el catch y este es el error del back", error);
         
 
-        Swal.fire({
-            title: 'Authentication Failed',
-            text: 'The email o password you entered is incorrect,Please try again.',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-        });
+        // Swal.fire({
+        //     title: 'Authentication Failed',
+        //     text: 'The email o password you entered is incorrect,Please try again.',
+        //     icon: 'error',
+        //     confirmButtonText: 'Ok'
+        // });
 
-        return rejectWithValue(error.response ? error.response.data.message : error.message);
+        // return rejectWithValue(error.response ? error.response.data.message : error.message);
     }
 });
 

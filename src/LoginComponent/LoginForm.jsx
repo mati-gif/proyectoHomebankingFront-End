@@ -213,16 +213,16 @@ function LoginForm() {
       navigate('/');
     } catch (error) {
 
-      console.log("entro en el catch del back en el loadUser",error);
-      
+      console.log("entro en el catch del back en el loadUser", error.response.data);
+
       // Manejo de errores desde el backend
       const backendErrorMessage = error?.response?.data?.message || error?.message || error;
 
-      console.log("este es el error del back",backendErrorMessage);
-      
+      console.log("este es el error del back", backendErrorMessage);
+
       const newErrors = {};
 
-console.log("error en la variable newError",newErrors);
+      console.log("error en la variable newError", newErrors);
 
 
       if (typeof backendErrorMessage === 'string') {
@@ -233,7 +233,7 @@ console.log("error en la variable newError",newErrors);
           newErrors.password = backendErrorMessage.includes('at least 8 characters') ? 'Password must be at least 8 characters' : 'Password is required';
         }
 
-        
+
         setErrors(newErrors);
       }
     }
