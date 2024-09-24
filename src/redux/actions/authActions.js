@@ -303,13 +303,16 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
 export const loadUser = createAsyncThunk("loadUser", async (_, { rejectWithValue }) => {
 
 
-    const token = localStorage.getItem('token');
-    if (!token) {
-        console.log('No token found');
-        return rejectWithValue('No token found');
-    }
+
 
     try {
+
+
+        const token = localStorage.getItem('token');
+        if (token) {
+            // console.log('No token found');
+            // return rejectWithValue('No token found');
+       
 
         console.log("Token enviado en loadUser:", token);
 
@@ -345,6 +348,7 @@ export const loadUser = createAsyncThunk("loadUser", async (_, { rejectWithValue
 
         // Retornamos el objeto usuario para almacenarlo en el estado global
         return usuario;
+    }
 
     } catch (error) {
         console.error("Error loading user:", error);

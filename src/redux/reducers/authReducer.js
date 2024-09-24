@@ -256,14 +256,14 @@ const authReducer = createReducer(initialState, (builder) => {
             return newState
         })
         // Estado cuando la solicitud falla (rejected)
-        .addCase(loadUser.rejected, (state, action) => {
-            return {
-                ...state, // Mantenemos el estado anterior
-                status: "failed", // Indicamos que la solicitud falló
-                loading: false, // Dejamos de estar en estado de carga
-                error: action.payload || 'Error loading user', // Capturamos el error
-            };
-        })
+        // .addCase(loadUser.rejected, (state, action) => {
+        //     return {
+        //         ...state, // Mantenemos el estado anterior
+        //         status: "failed", // Indicamos que la solicitud falló
+        //         loading: false, // Dejamos de estar en estado de carga
+        //         error: action.payload || 'Error loading user', // Capturamos el error
+        //     };
+        // })
 
         // Estado de solicitud de cierre de sesión pendiente (pending)
         .addCase(logoutUser.pending, (state) => {
