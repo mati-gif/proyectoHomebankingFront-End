@@ -215,9 +215,6 @@ function LoginForm() {
 
       console.log("entro en el catch del back en el loadUser", error.response.data);
 
-      // Manejo de errores desde el backend
-      const backendErrorMessage = error?.response?.data?.message || error?.message || error;
-
       console.log("este es el error del back", backendErrorMessage);
 
       const newErrors = {};
@@ -225,17 +222,23 @@ function LoginForm() {
       console.log("error en la variable newError", newErrors);
 
 
-      if (typeof backendErrorMessage === 'string') {
-        if (backendErrorMessage.includes('email field must not be empty') || backendErrorMessage.includes('Email is already in use')) {
-          newErrors.email = backendErrorMessage.includes('already in use') ? 'Email is already in use' : 'Email is required';
-        }
-        if (backendErrorMessage.includes('password field must not be empty') || backendErrorMessage.includes('Password must be at least 8 characters long')) {
-          newErrors.password = backendErrorMessage.includes('at least 8 characters') ? 'Password must be at least 8 characters' : 'Password is required';
-        }
-
-
-        setErrors(newErrors);
+      // Manejo de los mensajes de error que provienen del backend
+      if (error === "Email or Password invalid.") {
+        newErrors.email = "The email or password you entered is incorrect.";
+      } else if (error === "Email not found.") {
+        newErrors.email = "The email you entered doesn't exist, try another.";
+      } else if (error === "Password incorrect.") {
+        newErrors.password = "The password is incorrect.";
+      } else if (error === "Invalid email format.") {
+        newErrors.email = "The email you entered is incorrect, try again.";
+      } else {
+        newErrors.general = "An unexpected error occurred. Please try again.";
       }
+
+
+
+      setErrors(newErrors);
+
     }
   }
 
@@ -314,6 +317,8 @@ function LoginForm() {
         <p className='w-full flex justify-center'>o</p>
         <Link className='w-full flex justify-center' to="/register">Register</Link>
       </div>
+      {/* Mensaje de error general */}
+      {errors.general && <p className="text-red-500 font-bold text-center mt-4">{errors.general}</p>}
     </div>
   );
 
