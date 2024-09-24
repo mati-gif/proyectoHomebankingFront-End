@@ -212,10 +212,17 @@ function LoginForm() {
       // navigate("/");
       navigate('/');
     } catch (error) {
+
+      console.log("entro en el catch del back en el loadUser",error);
+      
       // Manejo de errores desde el backend
       const backendErrorMessage = error?.response?.data?.message || error?.message || error;
+
+      console.log("este es el error del back",backendErrorMessage);
+      
       const newErrors = {};
 
+console.log("error en la variable newError",newErrors);
 
 
       if (typeof backendErrorMessage === 'string') {
