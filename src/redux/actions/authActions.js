@@ -50,10 +50,7 @@ export const createTransaction = createAsyncThunk(
 
             console.log("error del back",error);
             
-
-            if (error.response && typeof error.response.data === 'string') {
-                errorMessage = error.response.data; // Si error.response.data es un string, úsalo directamente
-            }
+            let errorMessage = error.response.data
         
             Swal.fire({
                 icon: 'error',
