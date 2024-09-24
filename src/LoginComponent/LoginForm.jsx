@@ -225,15 +225,15 @@ function LoginForm() {
 
 
       // Manejo de los mensajes de error que provienen del backend
-      if (errorMessage === "Email or Password invalid") {
+      if (errorMessage == "Email or Password invalid") {
         newErrors.email = "The email or password you entered is incorrect.Please try again";
         console.log(newErrors.email);
 
-      } else if (errorMessage === "Email not found") {
+      } else if (errorMessage == "Email not found") {
         newErrors.email = "The email you entered doesn't exist, try another";
-      } else if (errorMessage === "Password incorrect") {
+      } else if (errorMessage == "Password incorrect") {
         newErrors.password = "The password is incorrect.";
-      } else if (errorMessage === "Invalid email format") {
+      } else if (errorMessage == "Invalid email format") {
         newErrors.email = "The email you entered is incorrect, try again.";
       } else {
         newErrors.general = "An unexpected error occurred. Please try again.";
