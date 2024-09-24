@@ -225,15 +225,15 @@ const authReducer = createReducer(initialState, (builder) => {
 
         })
         // Estado de solicitud pendiente (pending)
-        .addCase(loadUser.pending, (state) => {
-            console.log("Cargando usuario..."); // Log al iniciar la carga
-            return {
-                ...state, // Mantenemos el estado anterior
-                status: "pending", // Actualizamos el estado de la solicitud
-                loading: true,
-                error: null, // Reseteamos el error
-            };
-        })
+        // .addCase(loadUser.pending, (state) => {
+        //     console.log("Cargando usuario..."); // Log al iniciar la carga
+        //     return {
+        //         ...state, // Mantenemos el estado anterior
+        //         status: "pending", // Actualizamos el estado de la solicitud
+        //         loading: true,
+        //         error: null, // Reseteamos el error
+        //     };
+        // })
         // Estado cuando la solicitud es exitosa (fulfilled)
         .addCase(loadUser.fulfilled, (state, action) => {
             console.log("Usuario cargado:", action.payload);
