@@ -44,9 +44,17 @@ export const createTransaction = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
-            const errorMessage = error.response && error.response.data
-                ? error.response.data.message || error.response.data
-                : 'Ocurrió un error al procesar la transacción';
+            // const errorMessage = error.response && error.response.data
+            //     ? error.response.data.message || error.response.data
+            //     : 'Ocurrió un error al procesar la transacción';
+
+            console.log("error del back",error);
+            
+
+            if (error.response && typeof error.response.data === 'string') {
+                errorMessage = error.response.data; // Si error.response.data es un string, úsalo directamente
+            }
+        
             Swal.fire({
                 icon: 'error',
                 title: 'Error en la Transacción',
