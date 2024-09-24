@@ -244,6 +244,9 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
 
     } catch (error) {
 
+        console.log(  "entro por el catch y este es el error del back", error);
+        
+
         Swal.fire({
             title: 'Authentication Failed',
             text: 'The email o password you entered is incorrect,Please try again.',
