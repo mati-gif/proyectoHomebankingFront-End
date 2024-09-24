@@ -352,7 +352,7 @@ function LoanForm() {
             Swal.fire({
               icon: 'error',
               title: 'Excessive Amount',
-              text: `The amount entered (${formattedAmount}) is greater than the maximum amount allowed (${formattedMaxAmount}).`,
+              text: `The amount entered (${formatNumberWithCommas(amountValue)}) is greater than the maximum amount allowed (${formatNumberWithCommas(maxAmountValue)}).`,
             });
             return;
           }
