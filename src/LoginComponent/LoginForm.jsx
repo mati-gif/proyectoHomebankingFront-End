@@ -157,12 +157,6 @@ function LoginForm() {
     }
 
 
-    if (errorMessage == "Email or Password invalid") {
-      newErrors.email = "The email or password you entered is incorrect.Please try again";
-      console.log(newErrors.email);
-
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
     // return true; // Agrega esto para devolver true cuando el formulario sea válido
@@ -226,30 +220,15 @@ function LoginForm() {
       const newErrors = {};
 
       console.log("error en la variable newError", newErrors);
-      // El mensaje de error es una cadena de texto, limpiamos con .trim() para evitar problemas con espacios
-      const errorMessage = error.trim();
-      console.log("Mensaje de error capturado:", errorMessage);
 
 
       // Manejo de los mensajes de error que provienen del backend
-      if (errorMessage == "Email or Password invalid") {
+      if (error) {
         newErrors.email = "The email or password you entered is incorrect.Please try again";
         console.log(newErrors.email);
 
-      } else if (errorMessage == "Email not found") {
-        newErrors.email = "The email you entered doesn't exist, try another";
-      } else if (errorMessage == "Password incorrect") {
-        newErrors.password = "The password is incorrect.";
-      } else if (errorMessage == "Invalid email format") {
-        newErrors.email = "The email you entered is incorrect, try again.";
-      } else {
-        newErrors.general = "An unexpected error occurred. Please try again.";
       }
-
-
-
-      setErrors(newErrors);
-
+      setErrors(newErrors)
     }
   }
 
