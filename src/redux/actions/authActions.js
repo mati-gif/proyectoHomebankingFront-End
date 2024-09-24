@@ -246,6 +246,9 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
 
         console.log(  "entro por el catch y este es el error del back", error);
         
+        const errorBack = error.response.data
+        console.log("este es el string del error del back",errorBack);
+        
 
         // Swal.fire({
         //     title: 'Authentication Failed',
@@ -254,7 +257,7 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
         //     confirmButtonText: 'Ok'
         // });
 
-        // return rejectWithValue(error.response ? error.response.data.message : error.message);
+        return rejectWithValue(error.response ? error.response.data.message : error.message);
     }
 });
 
