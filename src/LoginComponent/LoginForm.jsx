@@ -117,6 +117,10 @@ function LoginForm() {
 
     }
 
+    if (!email.includes('@')) {
+      newErrors.email = "The email format is invalid.The email must contain '@' ";
+    }
+
     if (!password) {
       // Swal.fire({
       //   title: 'Error',
@@ -127,6 +131,10 @@ function LoginForm() {
       // return false;
 
       newErrors.password = 'Password is required.';
+    }
+
+    if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters.";
     }
 
 
@@ -223,14 +231,39 @@ function LoginForm() {
 
 
       // Manejo de los mensajes de error que provienen del backend
-      
-      if (error) {
-        newErrors.email = "The email or password you entered is incorrect.Please try again";
-        console.log(newErrors.email);
-        newErrors.password = "The email or password you entered is incorrect.Please try again";
 
+      // if (error) {
+      //   newErrors.email = "The email or password you entered is incorrect.Please try again";
+      //   console.log(newErrors.email);
+      //   newErrors.password = "The email or password you entered is incorrect.Please try again";
+
+      // }
+
+      // Si las validaciones de formato están correctas pero hay un error genérico del backend
+      if (error === "Email or Password invalid.") {
+        // Si el email y el password pasan las validaciones de formato pero el backend da error,
+        // intentamos inferir cuál puede ser el problema.
+
+        if (!newErrors.email && !newErrors.password) {
+          // Caso 1: Si el email parece estar bien pero el error es genérico,
+          // asumimos que el problema es con el password.
+          if (email.includes('@')) {
+            newErrors.password = "The password you entered is incorrect. Please try again.";
+          }
+
+          // Caso 2: Si el password parece bien pero el error es genérico,
+          // asumimos que el problema es con el email.
+          if (password.length >= 8) {
+            newErrors.email = "The email you entered is incorrect. Please try again.";
+          }
+
+          // Caso 3: Si no podemos inferir, mostramos el error en ambos inputs.
+          if (!newErrors.email && !newErrors.password) {
+            newErrors.email = "The email or password you entered is incorrect. Please try again.";
+            newErrors.password = "The email or password you entered is incorrect. Please try again.";
+          }
+        }
       }
-
 
       setErrors(newErrors)
     }
