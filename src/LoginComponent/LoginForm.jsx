@@ -105,56 +105,22 @@ function LoginForm() {
   // Validar el formulario antes de enviar
   const validateForm = () => {
     const newErrors = {};
+    // Validar que el email no esté vacío
     if (!email) {
-      // Swal.fire({
-      //   title: 'Error',
-      //   text: 'Email is required.',
-      //   icon: 'error',
-      //   confirmButtonText: 'OK'
-      // });
-      // return false;
       newErrors.email = 'Email is required.';
+    } else {
+      // Verificar si el email contiene espacios en blanco
+      if (email.includes(' ')) {
+        newErrors.email = 'Email should not contain spaces.';
+      } else if (!email.includes('@')) {
+        newErrors.email = "The email format is invalid. The email must contain '@'.";
+      }
     }
 
-    // Verificar si el email contiene espacios en blanco
-    if (email.includes(' ')) {
-      // Swal.fire({
-      //   title: 'Error',
-      //   text: 'Email should not contain spaces.Try again',
-      //   icon: 'error',
-      //   confirmButtonText: 'OK'
-      // });
-      // return false;
-      newErrors.email = 'Email should not contain spaces.';
-    }
-
-    if (!email.includes('@')) {
-      newErrors.email = "The email format is invalid.The email must contain '@' ";
-    }
-
+    // Validar que la contraseña no esté vacía
     if (!password) {
-      // Swal.fire({
-      //   title: 'Error',
-      //   text: 'Password is required.',
-      //   icon: 'error',
-      //   confirmButtonText: 'OK'
-      // });
-      // return false;
-
       newErrors.password = 'Password is required.';
-    }
-
-
-    // Verificar si la contraseña contiene espacios en blanco
-    if (password.includes(' ')) {
-      // Swal.fire({
-      //   title: 'Error',
-      //   text: 'Password should not contain spaces. Try again',
-      //   icon: 'error',
-      //   confirmButtonText: 'OK'
-      // });
-      // return false;
-
+    } else if (password.includes(' ')) {
       newErrors.password = 'Password should not contain spaces.';
     }
 
@@ -233,10 +199,6 @@ function LoginForm() {
 
       // }
 
-      if(error){
-        newErrors.email = "The email yo entered is incorrct . Please try again."
-      }
-
       // Si las validaciones de formato están correctas pero hay un error genérico del backend
       if (error === "Email o Password invalid") {
         // Si el email y el password pasan las validaciones de formato pero el backend da error,
@@ -248,7 +210,7 @@ function LoginForm() {
           if (email.includes('@')) {
             newErrors.password = "The password you entered is incorrect. Please try again.";
           }
-          
+
 
           // Caso 3: Si no podemos inferir, mostramos el error en ambos inputs.
           if (!newErrors.email && !newErrors.password) {
