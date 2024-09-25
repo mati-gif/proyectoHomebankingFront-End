@@ -223,13 +223,15 @@ function LoginForm() {
 
 
       // Manejo de los mensajes de error que provienen del backend
+      
       if (error) {
         newErrors.email = "The email or password you entered is incorrect.Please try again";
         console.log(newErrors.email);
-
-      }else if(error){
         newErrors.password = "The email or password you entered is incorrect.Please try again";
+
       }
+
+
       setErrors(newErrors)
     }
   }
