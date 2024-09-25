@@ -227,6 +227,8 @@ function LoginForm() {
         newErrors.email = "The email or password you entered is incorrect.Please try again";
         console.log(newErrors.email);
 
+      }else if(error){
+        newErrors.password = "The email or password you entered is incorrect.Please try again";
       }
       setErrors(newErrors)
     }
