@@ -47,7 +47,7 @@ function CardAccount(props) { //permite pasar datos de un componente padre a un 
 
 
 <div className="bg-gradient-to-br from-gray-100 to-gray-200 w-80 flex flex-col justify-between items-stretch border-gray-300 border rounded-xl shadow-lg overflow-hidden md:w-96">
-  <div className="bg-[#2271b3] text-white p-4">
+  <div className="bg-blue-600 text-white p-4">
     <h2 className="text-lg font-bold">Name Account</h2>
 
     {/* Separamos el "VIN" del resto del número y aplicamos diferentes colores */}
