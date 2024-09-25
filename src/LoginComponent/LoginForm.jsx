@@ -203,7 +203,7 @@ function LoginForm() {
       // }
 
       // Manejar el error específico del backend
-      if (error === "Email or Password invalid.") {
+      if (error === "Email o Password invalid") {
         // Si el email está en un formato correcto, consideramos que el problema puede ser la contraseña
         if (email.includes('@')) {
           newErrors.password = "The password you entered is incorrect. Please try again.";
