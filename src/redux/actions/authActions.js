@@ -83,6 +83,7 @@ export const fetchAvailableLoans = createAsyncThunk(
             if (response.data != "No more loans available.") {
                 return response.data; // Retorna el mensaje como un error
             }
+            return []
             // return response.data; // Retorna los préstamos disponibles
         } catch (error) {
             const errorMessage = error.response && error.response.data
