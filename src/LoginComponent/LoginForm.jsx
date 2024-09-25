@@ -133,9 +133,9 @@ function LoginForm() {
       newErrors.password = 'Password is required.';
     }
 
-    if (password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters.";
-    }
+    // if (password.length < 8) {
+    //   newErrors.password = "Password must be at least 8 characters.";
+    // }
 
 
 
@@ -253,9 +253,9 @@ function LoginForm() {
 
           // Caso 2: Si el password parece bien pero el error es genérico,
           // asumimos que el problema es con el email.
-          if (password.length >= 8) {
-            newErrors.email = "The email you entered is incorrect. Please try again.";
-          }
+          // if (password.length >= 8) {
+          //   newErrors.email = "The email you entered is incorrect. Please try again.";
+          // }
 
           // Caso 3: Si no podemos inferir, mostramos el error en ambos inputs.
           if (!newErrors.email && !newErrors.password) {
