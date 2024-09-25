@@ -115,6 +115,20 @@ function LoginForm() {
       // return false;
       newErrors.email = 'Email is required.';
 
+      return;
+
+    }
+
+    // Verificar si el email contiene espacios en blanco
+    if (email.includes(' ')) {
+      // Swal.fire({
+      //   title: 'Error',
+      //   text: 'Email should not contain spaces.Try again',
+      //   icon: 'error',
+      //   confirmButtonText: 'OK'
+      // });
+      // return false;
+      newErrors.email = 'Email should not contain spaces.';
     }
 
     if (!email.includes('@')) {
@@ -137,19 +151,6 @@ function LoginForm() {
     //   newErrors.password = "Password must be at least 8 characters.";
     // }
 
-
-
-    // Verificar si el email contiene espacios en blanco
-    if (email.includes(' ')) {
-      // Swal.fire({
-      //   title: 'Error',
-      //   text: 'Email should not contain spaces.Try again',
-      //   icon: 'error',
-      //   confirmButtonText: 'OK'
-      // });
-      // return false;
-      newErrors.email = 'Email should not contain spaces.';
-    }
 
     // Verificar si la contraseña contiene espacios en blanco
     if (password.includes(' ')) {
@@ -240,7 +241,7 @@ function LoginForm() {
       // }
 
       // Si las validaciones de formato están correctas pero hay un error genérico del backend
-      if (error === "Email or Password invalid.") {
+      if (error === "Email o Password invalid") {
         // Si el email y el password pasan las validaciones de formato pero el backend da error,
         // intentamos inferir cuál puede ser el problema.
 
