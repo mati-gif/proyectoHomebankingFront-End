@@ -372,8 +372,10 @@ function LoanForm() {
                 title: 'Loan created successfully',
                 text: 'Your loan has been created successfully.',
               }).then(() => {
-                dispatch(fetchAvailableLoans()).then(() => {
-                  if (loansToSelect.length === 0) {
+                dispatch(fetchAvailableLoans())
+                .unwrap()
+                .then((updatedLoansToSelect) => {
+                  if (updatedLoansToSelect.length === 0) {
                     Swal.fire({
                       icon: 'info',
                       title: 'There are no more loans available',
@@ -431,7 +433,7 @@ function LoanForm() {
 
   // Condiciones para mostrar mensajes y formulario
   const isLoading = status === 'pending';
-  const noLoansAvailable = loansToSelect.length === 0 && error === "No more loans available.";
+  const noLoansAvailable = loansToSelect.length === 0 ;
 
 
   console.log('loansToSelect:', loansToSelect);
@@ -489,7 +491,9 @@ function LoanForm() {
   // }
 
 
-
+  useEffect(() => {
+    console.log("Updated loansToSelect after loan creation:", loansToSelect);
+  }, [loansToSelect]);
 
 
 
