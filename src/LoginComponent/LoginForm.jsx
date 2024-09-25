@@ -114,6 +114,9 @@ function LoginForm() {
         newErrors.email = 'Email should not contain spaces.';
       } else if (!email.includes('@')) {
         newErrors.email = "The email format is invalid. The email must contain '@'.";
+      } else if (!/^[\w-.]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(email)) {
+        // Validación adicional para comprobar el formato del email
+        newErrors.email = "The email format is invalid. Please enter a valid email address.";
       }
     }
 
@@ -203,11 +206,7 @@ function LoginForm() {
       if (error === "Email o Password invalid") {
         // Si el email y el password pasan las validaciones de formato pero el backend da error,
         // intentamos inferir cuál puede ser el problema.
-
-        if (!newErrors.email && !newErrors.password) {
-          // Caso 1: Si el email parece estar bien pero el error es genérico,
-          // asumimos que el problema es con el password.
-          if (email.includes('@')) {
+          if (!errors.email && email.includes('@')) {
             newErrors.password = "The password you entered is incorrect. Please try again.";
           }
 
@@ -218,11 +217,17 @@ function LoginForm() {
             newErrors.password = "The email or password you entered is incorrect. Please try again.";
           }
         }
+        
+        // Si no viene un error específico del backend, solo asignamos el mensaje general al email
+        if (error === "Email or Password invalid." && !newErrors.password) {
+          newErrors.email = "The email or password you entered is incorrect. Please try again.";
+        }
+        setErrors(newErrors)
+
       }
 
-      setErrors(newErrors)
     }
-  }
+  
 
   // else {
   //   Swal.fire({
