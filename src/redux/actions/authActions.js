@@ -80,10 +80,10 @@ export const fetchAvailableLoans = createAsyncThunk(
             console.log("estos son los prestamos disponibles", response);
             console.log(response.data);
 
-            if (response.data === "No more loans available.") {
-                return rejectWithValue(response.data); // Retorna el mensaje como un error
+            if (response.data != "No more loans available") {
+                return response.data; // Retorna el mensaje como un error
             }
-            return response.data; // Retorna los préstamos disponibles
+            // return response.data; // Retorna los préstamos disponibles
         } catch (error) {
             const errorMessage = error.response && error.response.data
                 ? error.response.data.message || error.response.data
@@ -118,6 +118,8 @@ export const createLoan = createAsyncThunk(
                 title: 'Préstamo creado exitosamente',
                 text: `Tu préstamo ha sido aprobado con ${loanData.installments} cuotas.`,
             });
+            console.log(response.data);
+            
             return response.data;
         } catch (error) {
             // Captura los mensajes de error del backend
