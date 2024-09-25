@@ -86,13 +86,6 @@ function LoanForm() {
   }, [error]);
 
 
-
-
-
-
-
-
-
   // Manejar el cambio de selección de préstamo
   const handleLoanChange = (e) => {
     const selectedLoanName = e.target.value;
@@ -116,8 +109,6 @@ function LoanForm() {
       setLoanSelectedPayments([]); // Si no hay préstamo seleccionado, limpia las cuotas
     }
   };
-
-
 
   // const handleApplyClick = (e) => {
   //   e.preventDefault();
@@ -325,7 +316,6 @@ function LoanForm() {
         if (selectedLoanData) {
           const { id, maxAmount } = selectedLoanData;
           
-
           // // Limpiar el monto antes de convertirlo a número
           // const amountValue = parseFloat(amount.replace(/,/g, '').replace(/ /g, ''));
           // console.log(amountValue);
@@ -421,14 +411,11 @@ function LoanForm() {
     });
   };
 
-
   useEffect(() => {
     if (isLoggedIn && token) {
       dispatch(fetchAvailableLoans());
     }
   }, [dispatch, isLoggedIn, token]);
-
-
 
 
   // Condiciones para mostrar mensajes y formulario
@@ -494,8 +481,6 @@ function LoanForm() {
   useEffect(() => {
     console.log("Updated loansToSelect after loan creation:", loansToSelect);
   }, [loansToSelect]);
-
-
 
   return (
 

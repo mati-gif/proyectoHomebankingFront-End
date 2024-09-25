@@ -194,7 +194,7 @@ function TransactionForm() {
 
 
   return (
-    <form className=' w-full rounded-lg p-6 flex  flex-col gap-10  bg-[#D4D9DD] ' onSubmit={handleSubmit}>
+    <form className=' w-full rounded-lg p-6 flex  flex-col gap-10  bg-[#D4D9DD] border-4 border-blue-700' onSubmit={handleSubmit}>
       <div className=' rounded-lg shadow-lg w-96 m-auto bg-[#F2F3F2] p-6 '>
         <ImputMainTransaction
           value={formData}
