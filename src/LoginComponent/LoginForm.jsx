@@ -125,9 +125,10 @@ function LoginForm() {
       newErrors.password = 'Password is required.';
     } else if (password.includes(' ')) {
       newErrors.password = 'Password should not contain spaces.';
-    } else if(email.includes('@')){
-      newErrors.password = "The password you entered is incorrect. Please try again.";
-    }
+    } 
+    // else if(email.includes('@')){
+    //   newErrors.password = "The password you entered is incorrect. Please try again.";
+    // }
 
 
     setErrors(newErrors);
@@ -218,7 +219,8 @@ function LoginForm() {
   
       // Mostrar el mensaje de error para email solo si el email parece válido
       if (email.includes('@') && !newErrors.password) {
-        newErrors.email = "The email is incorrect. Please try again.";
+        newErrors.email = "The email o password you entered is incorrect. Please check both and try again";
+        newErrors.password = "The email o password you entered is incorrect. Please check both and try again";
       }
   
       setErrors(newErrors)
