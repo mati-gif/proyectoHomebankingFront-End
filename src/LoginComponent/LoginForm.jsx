@@ -202,32 +202,28 @@ function LoginForm() {
 
       // }
 
-      // Si las validaciones de formato están correctas pero hay un error genérico del backend
-      if (error === "Email o Password invalid") {
-        // Si el email y el password pasan las validaciones de formato pero el backend da error,
-        // intentamos inferir cuál puede ser el problema.
-          if (!errors.email && email.includes('@')) {
-            newErrors.password = "The password you entered is incorrect. Please try again.";
-          }
-
-
-          // Caso 3: Si no podemos inferir, mostramos el error en ambos inputs.
-          if (!newErrors.email && !newErrors.password) {
-            newErrors.email = "The email or password you entered is incorrect. Please try again.";
-            newErrors.password = "The email or password you entered is incorrect. Please try again.";
-          }
+      // Manejar el error específico del backend
+      if (error === "Email or Password invalid.") {
+        // Si el email está en un formato correcto, consideramos que el problema puede ser la contraseña
+        if (email.includes('@')) {
+          newErrors.password = "The password you entered is incorrect. Please try again.";
+        } else {
+          // Si el email no tiene un formato correcto, mostramos el error de email.
+          newErrors.email = "The email format is invalid. Please enter a valid email address.";
         }
-        
-        // Si no viene un error específico del backend, solo asignamos el mensaje general al email
-        if (error === "Email or Password invalid." && !newErrors.password) {
-          newErrors.email = "The email or password you entered is incorrect. Please try again.";
-        }
-        setErrors(newErrors)
-
+      } else if (error === "Email not found.") {
+        // Si el error es específico para el email no encontrado
+        newErrors.email = "The email you entered does not exist. Please check and try again.";
+      } else {
+        // Si el error es diferente, asignamos un mensaje genérico
+        newErrors.email = "The email or password you entered is incorrect. Please try again.";
       }
+      setErrors(newErrors)
 
     }
-  
+
+  }
+
 
   // else {
   //   Swal.fire({
