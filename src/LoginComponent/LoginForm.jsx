@@ -114,9 +114,6 @@ function LoginForm() {
       // });
       // return false;
       newErrors.email = 'Email is required.';
-
-      return;
-
     }
 
     // Verificar si el email contiene espacios en blanco
@@ -146,10 +143,6 @@ function LoginForm() {
 
       newErrors.password = 'Password is required.';
     }
-
-    // if (password.length < 8) {
-    //   newErrors.password = "Password must be at least 8 characters.";
-    // }
 
 
     // Verificar si la contraseña contiene espacios en blanco
@@ -240,6 +233,10 @@ function LoginForm() {
 
       // }
 
+      if(error){
+        newErrors.email = "The email yo entered is incorrct . Please try again."
+      }
+
       // Si las validaciones de formato están correctas pero hay un error genérico del backend
       if (error === "Email o Password invalid") {
         // Si el email y el password pasan las validaciones de formato pero el backend da error,
@@ -251,12 +248,7 @@ function LoginForm() {
           if (email.includes('@')) {
             newErrors.password = "The password you entered is incorrect. Please try again.";
           }
-
-          // Caso 2: Si el password parece bien pero el error es genérico,
-          // asumimos que el problema es con el email.
-          // if (password.length >= 8) {
-          //   newErrors.email = "The email you entered is incorrect. Please try again.";
-          // }
+          
 
           // Caso 3: Si no podemos inferir, mostramos el error en ambos inputs.
           if (!newErrors.email && !newErrors.password) {
