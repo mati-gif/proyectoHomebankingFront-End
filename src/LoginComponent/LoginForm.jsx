@@ -203,21 +203,21 @@ function LoginForm() {
       // }
 
       // Manejar el error específico del backend
-      if (error === "Email o Password invalid") {
-        // Si el email está en un formato correcto, consideramos que el problema puede ser la contraseña
-        if (email.includes('@')) {
-          newErrors.password = "The password you entered is incorrect. Please try again.";
+      if (error === "Email o Password invalid.") {
+        // Verificar si el email tiene un formato correcto
+        if (!email.includes('@')) {
+          newErrors.email = "The email format is invalid. Please try again.";
         } else {
-          // Si el email no tiene un formato correcto, mostramos el error de email.
-          newErrors.email = "The email format is invalid. Please enter a valid email address.";
+          // Email tiene un formato correcto, asumimos que el problema es la contraseña
+          newErrors.password = "The password you entered is incorrect. Please try again.";
         }
-      } else if (error === "Email not found.") {
-        // Si el error es específico para el email no encontrado
-        newErrors.email = "The email you entered does not exist. Please check and try again.";
-      } else {
-        // Si el error es diferente, asignamos un mensaje genérico
-        newErrors.email = "The email or password you entered is incorrect. Please try again.";
       }
+  
+      // Mostrar el mensaje de error para email solo si el email parece válido
+      if (email.includes('@') && !newErrors.password) {
+        newErrors.email = "The email is incorrect. Please try again.";
+      }
+  
       setErrors(newErrors)
 
     }
