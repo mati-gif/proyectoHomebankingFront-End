@@ -54,7 +54,7 @@ function CardAccount(props) { //permite pasar datos de un componente padre a un 
     <p className="text-xl opacity-80">
       {props.number.startsWith('VIN') ? (
         <>
-          <span className="text-[#16A34A] font-bold">VIN-</span>
+          <span className="text-[#86EFB5] font-bold">VIN</span>
           <span className="text-white">{props.number.slice(3)}</span>
         </>
       ) : (
@@ -76,7 +76,7 @@ function CardAccount(props) { //permite pasar datos de un componente padre a un 
       <DollarSignIcon className="text-green-600" />
       <div>
         <p className="text-lg text-gray-600">Amount:</p>
-        <p className="text-2xl font-bold">{formatAmount(props.balance)}</p>
+        <p className="text-3xl font-bold">{formatAmount(props.balance)}</p>
       </div>
     </div>
   </div>
