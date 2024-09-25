@@ -7,7 +7,7 @@ function MainTransaction() {
       <h1 className="text-3xl font-bold text-center mb-8 mt-4">Make a Transaction</h1>
       <div className='flex- flex-col justify-center  bg-[#D5D6D2]  border-4 border-green-200  md:flex md:flex-row rounded-lg' >
         <TransactionForm />
-        <div className=' w-full   flex flex-col   p-6 border-balck border-4'   >
+        <div className=' w-full   flex flex-col   p-6 border-black border-4 bg-[#D4D9DD]'  >
         <div className='rounded-lg w-[550px] h-[650px]' style={{ backgroundImage: "url('https://cdn-icons-gif.flaticon.com/15579/15579001.gif')", backgroundSize: 'cover',backgroundPositionY:"top" }}>
 
         </div>
