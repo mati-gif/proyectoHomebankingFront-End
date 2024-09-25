@@ -80,7 +80,7 @@ export const fetchAvailableLoans = createAsyncThunk(
             console.log("estos son los prestamos disponibles", response);
             console.log(response.data);
 
-            if (response.data != "No more loans available") {
+            if (response.data != "No more loans available.") {
                 return response.data; // Retorna el mensaje como un error
             }
             // return response.data; // Retorna los préstamos disponibles
