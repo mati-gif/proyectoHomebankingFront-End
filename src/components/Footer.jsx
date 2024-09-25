@@ -4,7 +4,7 @@ function Footer() {
   return (
 
     <footer >
-      <div className='h-[75px]  flex flex-col justify-evenly bg-[#B2B5E0] mt-auto md:flex-col'>
+      <div className='h-[75px]  flex flex-col justify-evenly bg-[#B2B5E0] mt-auto md:flex-row'>
         <div className=' h-full gap-4 flex  justify-center items-center '>
           <p className=' font-inter text-[20px]  font-normal leading-[24.2px]   '>
             © 2024 - All rights reserved
@@ -15,7 +15,7 @@ function Footer() {
           </a>
         </div>
 
-        <div className='flex justify-center items-center gap-4'>
+        <div className='flex justify-center items-center gap-4 '>
           <a href="http://instagram.com  " target='blank' >
             <img className='w-10 h-10 ' src="https://cdn-icons-png.flaticon.com/256/1216/1216929.png" alt="" />
           </a>
