@@ -125,6 +125,8 @@ function LoginForm() {
       newErrors.password = 'Password is required.';
     } else if (password.includes(' ')) {
       newErrors.password = 'Password should not contain spaces.';
+    } else if(email.includes('@')){
+      newErrors.password = "The password you entered is incorrect. Please try again.";
     }
 
 
@@ -207,10 +209,11 @@ function LoginForm() {
         // Verificar si el email tiene un formato correcto
         if (email.includes('@')) {
           newErrors.email = "The email format is invalid. Please try again.";
-        } else {
-          // Email tiene un formato correcto, asumimos que el problema es la contraseña
-          newErrors.password = "The password you entered is incorrect. Please try again.";
-        }
+        } 
+        // else {
+        //   // Email tiene un formato correcto, asumimos que el problema es la contraseña
+        //   newErrors.password = "The password you entered is incorrect. Please try again.";
+        // }
       }
   
       // Mostrar el mensaje de error para email solo si el email parece válido
