@@ -22,10 +22,12 @@ function LoanForm() {
 
   const [selectedLoan, setSelectedLoan] = useState(''); // Estado para manejar el préstamo seleccionado
 
-  const { isLoggedIn, token, accounts, loansToSelect, status, error } = useSelector((state) => state.auth);
+  const { isLoggedIn, token, accounts, status, error } = useSelector((state) => state.auth);
 
+
+
+  const {loans, loansToSelect, loanStatus = status, loanError = error} = useSelector ((state)=> state.loanReducer)
   console.log(loansToSelect);
-
 
   // Función para formatear el número con comas
   const formatNumberWithCommas = (num) => {
@@ -76,7 +78,7 @@ function LoanForm() {
   }, [dispatch, isLoggedIn, token]);
 
   useEffect(() => {
-    if (error && error !== "No more loans available.") {
+    if (error === "No more loans available.") {
       Swal.fire({
         icon: 'error',
         title: 'Error fetching loans',
@@ -318,7 +320,7 @@ function LoanForm() {
           await Swal.fire({
             icon: 'error',
             title: 'Excessive Amount',
-            text: `The amount entered (${formatNumberWithCommas(amountValue)}) is greater than the maximum amount allowed (${formatNumberWithCommas(maxAmount)}).`,
+            text: `The amount entered ($${formatNumberWithCommas(amountValue)}) is greater than the maximum amount allowed ($${formatNumberWithCommas(maxAmount)}).`,
           });
           return;
         }

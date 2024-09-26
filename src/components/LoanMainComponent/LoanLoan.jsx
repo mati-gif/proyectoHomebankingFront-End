@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { loadUser } from '../../redux/actions/authActions';
 import { useDispatch, useSelector } from 'react-redux';
+import { loadLoans } from '../../redux/actions/loanAction';
 
 
 
@@ -14,7 +15,8 @@ function LoanLoan() {
     const navigate = useNavigate(); // Declara useNavigate
     const dispatch = useDispatch();
 
-    const { isLoggedIn, token, loans } = useSelector((state) => state.auth);
+    const { isLoggedIn, token } = useSelector((state) => state.auth);
+    const {loans} = useSelector ((state)=>state.loanReducer)
 
     // const solicitarDatosPrestamos = () => {
 
@@ -36,11 +38,7 @@ function LoanLoan() {
 
     useEffect(() => {
         if (isLoggedIn && token) {
-            dispatch(loadUser(token))
-                .unwrap().then((user) => {
-
-                    setAllLoans(user.loans)
-                }).catch((error) => {
+            dispatch(loadLoans()).catch((error) => {
                     console.error('Error loading user:', error);
                     navigate('/login');
                 });
@@ -58,8 +56,8 @@ function LoanLoan() {
             <h1 className="text-3xl font-bold text-center mb-8 mt-4">Yours Loans</h1>
             <div className='flex justify-center  md:w-full '>
                 <div className="gap-4 flex flex-col md:flex md:flex-row md:justify-center md:gap-10">
-                    {allLoans && allLoans.length > 0 ? (
-                        allLoans.map((item) => (
+                    {loans && loans.length > 0 ? (
+                        loans.map((item) => (
                             <LoanCard key={item.id} typeLoan={item.name} amount={item.amount} fechaSolicitud={item.fechaSolicitud} />
                         ))
                     ) : (

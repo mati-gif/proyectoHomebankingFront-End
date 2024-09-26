@@ -19,15 +19,19 @@ function MainAccount() {
   const dispatch = useDispatch();
 
   // Acceder a los datos del usuario desde el estado global de Redux
-  const { isLoggedIn, name, accounts, status, token } = useSelector(
+  const { isLoggedIn, name, token } = useSelector(
     (state) => state.auth
+  );
+
+  const { accounts } = useSelector(
+    (state) => state.accountReducer
   );
 
   // console.log(token);
   console.log(isLoggedIn);
   console.log(name);
   console.log(accounts);
-  console.log(status);
+
 
 
   // const solicitarDatosCuenta = async () => {
@@ -59,7 +63,7 @@ function MainAccount() {
       // setArrayAccount(accounts);
       dispatch(loadUser())
         .unwrap().then((user) => {
-          
+          dispatch(fetchAccounts())
         }).catch((error) => {
           console.error('Error loading user:', error);
           navigate('/login');
@@ -160,11 +164,8 @@ function MainAccount() {
           .then((newAccount) => {
             // Refrescar la lista de cuentas después de crear una nueva
             console.log("La cuenta se creó con éxito");
-            dispatch(loadUser())
-
-
+            dispatch(fetchAccounts())
             console.log("se actualizo con la ueva cuenta ");
-
           })
           .catch((error) => {
             console.error("Error creating account:", error);

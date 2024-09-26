@@ -68,3 +68,12 @@
   transform: rotateY(180deg);
   /* La parte trasera de la tarjeta */
 }
+
+/* 
+.modificar_vin::before{
+content: "VIN-";
+color:#00bb2d;
+font-weight: bold;
+
+  
+} */
