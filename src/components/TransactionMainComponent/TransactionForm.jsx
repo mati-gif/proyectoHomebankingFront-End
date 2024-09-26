@@ -101,37 +101,38 @@ function TransactionForm() {
     e.preventDefault();
 
     // Validar campos vacíos (frontend)
-    if (!formData.sourceAccountNumber || !formData.destinationAccountNumber || !formData.amount || !formData.description) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Fields obligatory',
-        text: 'Please complete all the fields of the form',
-      });
-      return;
-    }
+    // if (!formData.sourceAccountNumber || !formData.destinationAccountNumber || !formData.amount || !formData.description) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Fields obligatory',
+    //     text: 'Please complete all the fields of the form',
+    //   });
+    //   return;
+    // }
 
     // Validar existencia de cuentas
     const validSourceAccount = accounts.some(account => account.number === formData.sourceAccountNumber);
     const validDestinationAccount = accounts.some(account => account.number === formData.destinationAccountNumber);
 
-    if (!validSourceAccount || !validDestinationAccount) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Invalid account',
-        text: 'The source account or destination account number is invalid.',
-      });
-      return;
-    }
+    // if (!validSourceAccount || !validDestinationAccount) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Invalid account',
+    //     text: 'The source account or destination account number is invalid.',
+    //   });
+    //   return;
+    // }
 
-    // Validar que las cuentas de origen y destino no sean iguales
-    if (formData.sourceAccountNumber === formData.destinationAccountNumber) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Equals Accounts',
-        text: 'The source account and destination account cannot be the same.',
-      });
-      return;
-    }
+    // // Validar que las cuentas de origen y destino no sean iguales
+    // if (formData.sourceAccountNumber === formData.destinationAccountNumber) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Equals Accounts',
+    //     text: 'The source account and destination account cannot be the same.',
+    //   });
+    //   return;
+    // }
+
 
     // Mostrar alerta de confirmación
     Swal.fire({
@@ -146,9 +147,39 @@ function TransactionForm() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
+
+          // if (!validSourceAccount) {
+          //   Swal.fire({
+          //     icon: 'error',
+          //     title: 'Source account',
+          //     text: 'The source account must not be empty',
+          //   });
+          //   return;
+          // }
+
+          // if (!validDestinationAccount) {
+          //   Swal.fire({
+          //     icon: 'error',
+          //     title: 'Destination account',
+          //     text: 'The destination account must not be empty',
+          //   });
+          //   return;
+          // }
+
+          // if (!description) {
+          //   Swal.fire({
+          //     icon: 'error',
+          //     title: 'Description',
+          //     text: 'Description fields must not be empty',
+          //   });
+          //   return;
+
+          // }
+
+
           // Enviar los datos al backend para crear una transacción
           const resultAction = await dispatch(createTransaction(formData)).unwrap();
-          
+
 
           Swal.fire({
             icon: 'success',
@@ -168,10 +199,11 @@ function TransactionForm() {
           console.error('Error al procesar la transacción:', error);
 
           // // Capturar el error del backend
-          let errorMessage = error.response.data;
+          let errorMessage = error
           // if (error.response && error.response.data.message) {
           //   errorMessage = error.response.data.message;
           // }
+          console.log(errorMessage);
 
           Swal.fire({
             icon: 'error',
@@ -179,7 +211,7 @@ function TransactionForm() {
             text: errorMessage, // Mostrar el mensaje devuelto desde el backend
           });
         }
-      } 
+      }
       // else {
       //   // Si el usuario cancela, mostrar un mensaje de cancelación
       //   Swal.fire({

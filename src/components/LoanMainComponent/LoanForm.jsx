@@ -86,6 +86,7 @@ function LoanForm() {
   }, [error]);
 
 
+
   // Manejar el cambio de selección de préstamo
   const handleLoanChange = (e) => {
     const selectedLoanName = e.target.value;
@@ -110,167 +111,117 @@ function LoanForm() {
     }
   };
 
-  // const handleApplyClick = (e) => {
-  //   e.preventDefault();
-
-  //   if (!selectedLoan || !amount  || !payment || !account) {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: 'Incomplete Form',
-  //       text: 'Please, complete all the fields.',
-  //     });
-  //     return;
-  //   }
-
-  //   const selectedLoanData = loansToSelect.find((loan) => loan.name === selectedLoan);
-
-  //   if (selectedLoanData) {
-  //     const { id, maxAmount } = selectedLoanData;
-
-  //     const amountValue = amount; // `amount` ya es numérico ahora
-  //     const maxAmountValue = parseFloat(maxAmount);
-
-  //     // Formateo del monto ingresado y el monto máximo
-  //     const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amountValue);
-  //     const formattedMaxAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(maxAmountValue);
-
-  //     if (amountValue > maxAmountValue) {
-  //       Swal.fire({
-  //         icon: 'error',
-  //         title: 'Excessive Amount',
-  //         text: `The amount entered (${formattedAmount}) is greater than the maximum amount allowed (${formattedMaxAmount}).`,
-  //       });
-  //       return;
-  //     }
-
-  //     // Si todo es válido, crea el préstamo
-  //     const loanData = {
-  //       loanId: id,
-  //       amount: amountValue, // Aquí usamos el valor numérico puro
-  //       payments: parseInt(payment),
-  //       destinationAccountNumber: account,
-  //     };
-
-  //     dispatch(createLoan(loanData))
-  //       .unwrap()
-  //       .then((response) => {
-  //         Swal.fire({
-  //           icon: 'success',
-  //           title: 'Loan created successfully',
-  //           text: 'Your loan has been created successfully.',
-  //         }).then(() => {
-  //           dispatch(fetchAvailableLoans()).then(() => {
-  //             if (loansToSelect.length === 0) {
-  //               Swal.fire({
-  //                 icon: 'info',
-  //                 title: 'There are no more loans available',
-  //                 text: 'You have applied for all available loans',
-  //               });
-  //             }
-  //           }).catch((error) => {
-  //             console.error('Error al actualizar la lista de préstamos:', error);
-  //           });
-  //         });
-  //       })
-  //       .catch((error) => {
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: 'Error',
-  //           text: error.message || 'An unexpected error occurred.',
-  //         });
-  //       });
-  //   } else {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: 'Error',
-  //       text: 'The selected loan could not be found.',
-  //     });
-  //   }
-  // };
-
-
 
   // const handleApplyClick = (e) => {
   //   e.preventDefault();
 
+  //   // Limpiar el valor de amount antes de usarlo (sin comas)
+  //   const amountValue = parseFloat(cleanNumber(amount));
 
 
 
-  //   if (!selectedLoan || !amount || !payment || !account) {
-  //       Swal.fire({
+
+  //   // Mostrar alerta de confirmación con SweetAlert2
+  //   Swal.fire({
+  //     title: 'Confirm please',
+  //     text: "You are about to apply for a loan. Do you want to proceed? ",
+  //     icon: 'warning',
+  //     showCancelButton: true, // Muestra el botón para cancelar
+  //     confirmButtonColor: '#16A34A', // Color del botón de confirmar
+  //     cancelButtonColor: '#9CA3AF ', // Color del botón de cancelar
+  //     confirmButtonText: 'Yes, apply!',
+  //     cancelButtonText: 'No, cancel',
+  //   }).then((result) => {
+  //     // Si el usuario confirma
+  //     if (result.isConfirmed) {
+  //       // Verificar si los campos están completos
+  //       if (!selectedLoan || !amount || !payment || !account) {
+  //         Swal.fire({
   //           icon: 'error',
   //           title: 'Incomplete Form',
   //           text: 'Please, complete all the fields.',
-  //       });
-  //       return;
-  //   }
-
-  //   const selectedLoanData = loansToSelect.find((loan) => loan.name === selectedLoan);
-
-  //   if (selectedLoanData) {
-  //       const { id, maxAmount } = selectedLoanData;
-
-  //       // Limpiar el monto antes de convertirlo a número
-  //       const amountValue = parseFloat(amount.replace(/,/g, '').replace(/ /g, '')); 
-  //       console.log(amountValue);
-
-  //       const maxAmountValue = parseFloat(maxAmount);
-  //       console.log(maxAmountValue);
-
-
-  //       // Formateo del monto ingresado y el monto máximo
-  //       const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amountValue);
-  //       const formattedMaxAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(maxAmountValue);
-
-  //       if (amountValue > maxAmountValue) {
-  //           Swal.fire({
-  //               icon: 'error',
-  //               title: 'Excessive Amount',
-  //               text: `The amount entered (${formattedAmount}) is greater than the maximum amount allowed (${formattedMaxAmount}).`,
-  //           });
-  //           return;
+  //         });
+  //         return;
   //       }
 
-  //       const loanData = {
+  //       const selectedLoanData = loansToSelect.find((loan) => loan.name === selectedLoan);
+
+  //       if (selectedLoanData) {
+  //         const { id, maxAmount } = selectedLoanData;
+
+  //         // // Limpiar el monto antes de convertirlo a número
+  //         // const amountValue = parseFloat(amount.replace(/,/g, '').replace(/ /g, ''));
+  //         // console.log(amountValue);
+
+  //         const maxAmountValue = parseFloat(maxAmount);
+  //         console.log(maxAmountValue);
+
+  //         // // Formateo del monto ingresado y el monto máximo
+  //         // const formattedAmount = new Intl.NumberFormat('en-US', {
+  //         //   style: 'currency',
+  //         //   currency: 'USD',
+  //         //   minimumFractionDigits: 2,
+  //         //   maximumFractionDigits: 2,
+  //         // }).format(amountValue);
+
+  //         // const formattedMaxAmount = new Intl.NumberFormat('en-US', {
+  //         //   style: 'currency',
+  //         //   currency: 'USD',
+  //         //   minimumFractionDigits: 2,
+  //         //   maximumFractionDigits: 2,
+  //         // }).format(maxAmountValue);
+
+  //         if (amountValue > maxAmountValue) {
+  //           Swal.fire({
+  //             icon: 'error',
+  //             title: 'Excessive Amount',
+  //             text: `The amount entered (${formatNumberWithCommas(amountValue)}) is greater than the maximum amount allowed (${formatNumberWithCommas(maxAmountValue)}).`,
+  //           });
+  //           return;
+  //         }
+
+  //         const loanData = {
   //           loanId: id,
   //           amount: amountValue,
   //           payments: parseInt(payment),
   //           destinationAccountNumber: account,
-  //       };
+  //         };
 
-  //       dispatch(createLoan(loanData))
+  //         dispatch(createLoan(loanData))
   //           .unwrap()
   //           .then((response) => {
-  //               Swal.fire({
-  //                   icon: 'success',
-  //                   title: 'Loan created successfully',
-  //                   text: 'Your loan has been created successfully.',
-  //               }).then(() => {
-  //                   dispatch(fetchAvailableLoans()).then(() => {
-  //                       if (loansToSelect.length === 0) {
-  //                           Swal.fire({
-  //                               icon: 'info',
-  //                               title: 'There are no more loans available',
-  //                               text: 'You have applied for all available loans',
-  //                           });
-  //                       }
-  //                   }).catch((error) => {
-  //                       console.error('Error al actualizar la lista de préstamos:', error);
+  //             Swal.fire({
+  //               icon: 'success',
+  //               title: 'Loan created successfully',
+  //               text: 'Your loan has been created successfully.',
+  //             }).then(() => {
+  //               dispatch(fetchAvailableLoans())
+  //               .unwrap()
+  //               .then((updatedLoansToSelect) => {
+  //                 if (updatedLoansToSelect.length === 0) {
+  //                   Swal.fire({
+  //                     icon: 'info',
+  //                     title: 'There are no more loans available',
+  //                     text: 'You have applied for all available loans.',
   //                   });
+  //                 }
+  //               }).catch((error) => {
+  //                 console.error('Error al actualizar la lista de préstamos:', error);
   //               });
+  //             });
   //           })
   //           .catch((error) => {
-  //             if (error.message.includes('amount grater than allowed')) {
+  //             if (error.response.data.includes('the amount requested exceeds the maximum loan amount')) {
   //               Swal.fire({
   //                 icon: 'error',
   //                 title: 'Monto excesivo',
-  //                 text: `The amount entered (${formattedAmount}) is greater than the maximun amount allowed (${formattedMaxAmount}).`,
+  //                 text: `The amount entered (${formattedAmount}) is greater than the maximum amount allowed (${formattedMaxAmount}).`,
   //               });
   //             } else {
   //               Swal.fire({
   //                 icon: 'error',
   //                 title: 'Error',
-  //                 text: error.message || 'Ha ocurrido un error inesperado.',
+  //                 text: error.response.data ,
   //               });
   //             }
   //           });
@@ -281,135 +232,162 @@ function LoanForm() {
   //           text: 'The selected loan could not be found.',
   //         });
   //       }
-  //     };
-  const handleApplyClick = (e) => {
+  //     }
+  //     // else {
+  //     //   // Si el usuario cancela, no se hace nada
+  //     //   Swal.fire({
+  //     //     icon: 'info',
+  //     //     title: 'Cancelled',
+  //     //     text: 'You have cancelled the loan application.',
+  //     //   });
+  //     // }
+  //   });
+  // };
+
+  const handleApplyClick = async (e) => {
     e.preventDefault();
+
+    const confirmResult = await Swal.fire({
+      title: 'Confirm please',
+      text: "You are about to apply for a loan. Do you want to proceed?",
+      icon: 'warning',
+      showCancelButton: true, // Muestra el botón para cancelar
+      confirmButtonColor: '#16A34A', // Color del botón de confirmar
+      cancelButtonColor: '#9CA3AF', // Color del botón de cancelar
+      confirmButtonText: 'Yes, apply!',
+      cancelButtonText: 'No, cancel',
+    });
+
+    // Si el usuario cancela, salir de la función
+    if (!confirmResult.isConfirmed) {
+      return;
+    }
+
+
+
+    // Verificar si el tipo de préstamo no ha sido seleccionado
+    if (!selectedLoan) {
+      await Swal.fire({
+        icon: 'error',
+        title: 'Select a Loan',
+        text: 'Please ,first you have to select a loan.',
+      });
+      return; // Salir de la función si no se ha seleccionado un préstamo
+    }
+
 
     // Limpiar el valor de amount antes de usarlo (sin comas)
     const amountValue = parseFloat(cleanNumber(amount));
 
-    // Mostrar alerta de confirmación con SweetAlert2
-    Swal.fire({
-      title: 'Confirm please',
-      text: "You are about to apply for a loan. Do you want to proceed? ",
-      icon: 'warning',
-      showCancelButton: true, // Muestra el botón para cancelar
-      confirmButtonColor: '#16A34A', // Color del botón de confirmar
-      cancelButtonColor: '#9CA3AF ', // Color del botón de cancelar
-      confirmButtonText: 'Yes, apply!',
-      cancelButtonText: 'No, cancel',
-    }).then((result) => {
-      // Si el usuario confirma
-      if (result.isConfirmed) {
-        // Verificar si los campos están completos
-        if (!selectedLoan || !amount || !payment || !account) {
-          Swal.fire({
+    try {
+      // Verificar si los campos están completos
+      // if (!selectedLoan || !account || !amountValue || amountValue <= 0 || !payment) {
+      //   let errorMessage = 'Please, complete all the fields.';
+
+      //   if (!selectedLoan) {
+      //     errorMessage = 'Please select a loan.';
+      //   }
+      //   if (!account) {
+      //     errorMessage = 'The source account must not be empty.';
+      //   } else if (isNaN(amountValue) || amountValue <= 0) {
+      //     errorMessage = 'The amount is obligatory and must be greater than 0.';
+      //   } else if (!payment) {
+      //     errorMessage = 'The payments must be obligatory and must be greater than 0.';
+      //   }
+
+      // Si falta información, muestra la alerta y termina la ejecución
+      // await Swal.fire({
+      //   icon: 'error',
+      //   title: 'Incomplete Form',
+      //   text: errorMessage,
+      // });
+      //   return;
+      // }
+
+
+      const selectedLoanData = loansToSelect.find((loan) => loan.name === selectedLoan);
+
+      if (selectedLoanData) {
+        const { id, maxAmount } = selectedLoanData;
+
+        // Mostrar alerta de confirmación con SweetAlert2
+
+
+        // Verificar si el monto excede el máximo permitido
+        if (amountValue > maxAmount) {
+          await Swal.fire({
             icon: 'error',
-            title: 'Incomplete Form',
-            text: 'Please, complete all the fields.',
+            title: 'Excessive Amount',
+            text: `The amount entered (${formatNumberWithCommas(amountValue)}) is greater than the maximum amount allowed (${formatNumberWithCommas(maxAmount)}).`,
           });
           return;
         }
 
-        const selectedLoanData = loansToSelect.find((loan) => loan.name === selectedLoan);
 
-        if (selectedLoanData) {
-          const { id, maxAmount } = selectedLoanData;
-          
-          // // Limpiar el monto antes de convertirlo a número
-          // const amountValue = parseFloat(amount.replace(/,/g, '').replace(/ /g, ''));
-          // console.log(amountValue);
 
-          const maxAmountValue = parseFloat(maxAmount);
-          console.log(maxAmountValue);
 
-          // // Formateo del monto ingresado y el monto máximo
-          // const formattedAmount = new Intl.NumberFormat('en-US', {
-          //   style: 'currency',
-          //   currency: 'USD',
-          //   minimumFractionDigits: 2,
-          //   maximumFractionDigits: 2,
-          // }).format(amountValue);
+        const loanData = {
+          loanId: id,
+          amount: amountValue,
+          payments: parseInt(payment),
+          destinationAccountNumber: account,
+        };
 
-          // const formattedMaxAmount = new Intl.NumberFormat('en-US', {
-          //   style: 'currency',
-          //   currency: 'USD',
-          //   minimumFractionDigits: 2,
-          //   maximumFractionDigits: 2,
-          // }).format(maxAmountValue);
+        //   // Intentar crear el préstamo
+        await dispatch(createLoan(loanData)).unwrap();
 
-          if (amountValue > maxAmountValue) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Excessive Amount',
-              text: `The amount entered (${formatNumberWithCommas(amountValue)}) is greater than the maximum amount allowed (${formatNumberWithCommas(maxAmountValue)}).`,
-            });
-            return;
-          }
+        // Si la creación del préstamo es exitosa
+        await Swal.fire({
+          icon: 'success',
+          title: 'Loan created successfully',
+          text: 'Your loan has been created successfully.',
+        });
 
-          const loanData = {
-            loanId: id,
-            amount: amountValue,
-            payments: parseInt(payment),
-            destinationAccountNumber: account,
-          };
+        const updatedLoansToSelect = await dispatch(fetchAvailableLoans()).unwrap();
 
-          dispatch(createLoan(loanData))
-            .unwrap()
-            .then((response) => {
-              Swal.fire({
-                icon: 'success',
-                title: 'Loan created successfully',
-                text: 'Your loan has been created successfully.',
-              }).then(() => {
-                dispatch(fetchAvailableLoans())
-                .unwrap()
-                .then((updatedLoansToSelect) => {
-                  if (updatedLoansToSelect.length === 0) {
-                    Swal.fire({
-                      icon: 'info',
-                      title: 'There are no more loans available',
-                      text: 'You have applied for all available loans.',
-                    });
-                  }
-                }).catch((error) => {
-                  console.error('Error al actualizar la lista de préstamos:', error);
-                });
-              });
-            })
-            .catch((error) => {
-              if (error.message.includes('amount greater than allowed')) {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Monto excesivo',
-                  text: `The amount entered (${formattedAmount}) is greater than the maximum amount allowed (${formattedMaxAmount}).`,
-                });
-              } else {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error',
-                  text: error.message || 'An unexpected error occurred.',
-                });
-              }
-            });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'The selected loan could not be found.',
+        if (updatedLoansToSelect.length === 0) {
+          await Swal.fire({
+            icon: 'info',
+            title: 'There are no more loans available',
+            text: 'You have applied for all available loans.',
           });
         }
+
       }
       // else {
-      //   // Si el usuario cancela, no se hace nada
-      //   Swal.fire({
-      //     icon: 'info',
-      //     title: 'Cancelled',
-      //     text: 'You have cancelled the loan application.',
+      //   await Swal.fire({
+      //     icon: 'error',
+      //     title: 'Error',
+      //     text: 'The selected loan could not be found.',
       //   });
       // }
-    });
+
+    }
+    catch (error) {
+      // Manejo de errores global
+      if (error.includes('the amount requested exceeds the maximum loan amount')) {
+        console.log(error.response);
+
+        await Swal.fire({
+          icon: 'error',
+          title: 'Excessive Amount',
+          text: `The amount entered (${formatNumberWithCommas(amountValue)}) is greater than the maximum amount allowed.`,
+        });
+      }
+
+      else {
+        await Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error,
+        });
+      }
+
+      console.log(error);
+
+    }
   };
+
 
   useEffect(() => {
     if (isLoggedIn && token) {
@@ -420,7 +398,7 @@ function LoanForm() {
 
   // Condiciones para mostrar mensajes y formulario
   const isLoading = status === 'pending';
-  const noLoansAvailable = loansToSelect.length === 0 ;
+  const noLoansAvailable = loansToSelect.length === 0;
 
 
   console.log('loansToSelect:', loansToSelect);
@@ -514,7 +492,7 @@ function LoanForm() {
         </div>
         <div className="mb-4">
           <label htmlFor="account" className=" block text-gray-700 text-lg font-bold mb-4">
-            Source Account:
+            Destination Account:
           </label>
           <select id="account" name="account" value={account} onChange={(e) => setAccount(e.target.value)} required className="border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none">
             <option value="">Select an Option</option>
@@ -531,7 +509,7 @@ function LoanForm() {
           </label>
           <div className=' flex '>
             <span className="px-2 text-gray-700 font-bold text-3xl ">$</span>
-            <input 
+            <input
               id="amount"
               name="amount"
               value={amount}

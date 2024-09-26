@@ -48,10 +48,10 @@ export const createTransaction = createAsyncThunk(
             //     ? error.response.data.message || error.response.data
             //     : 'Ocurrió un error al procesar la transacción';
 
-            console.log("error del back",error);
-            
+            console.log("error del back", error);
+
             let errorMessage = error.response.data
-        
+
             Swal.fire({
                 icon: 'error',
                 title: 'Error en la Transacción',
@@ -120,21 +120,24 @@ export const createLoan = createAsyncThunk(
                 text: `Tu préstamo ha sido aprobado con ${loanData.installments} cuotas.`,
             });
             console.log(response.data);
-            
+
             return response.data;
         } catch (error) {
             // Captura los mensajes de error del backend
-            const errorMessage = error.response && error.response.data ?
-                error.response.data.message || error.response.data :
-                'An error occurred';
+
+            console.log("entro por el catch y este es el error del back para la solicitud de prestamos", error);
+
+            const errorBack = error.response.data
+            console.log("este es el string del error del back para la solicitud de prestamos", errorBack);
+
 
 
             Swal.fire({
                 icon: 'error',
                 title: 'Error en la solicitud de préstamo',
-                text: error.response?.data?.message || 'Algo salió mal, inténtalo nuevamente',
+                text: error.response.data || 'Algo salió mal, inténtalo nuevamente',
             });
-            return rejectWithValue(errorMessage);
+            return rejectWithValue(errorBack);
         }
     }
 );
@@ -247,11 +250,11 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
 
     } catch (error) {
 
-        console.log(  "entro por el catch y este es el error del back", error);
-        
+        console.log("entro por el catch y este es el error del back", error);
+
         const errorBack = error.response.data
-        console.log("este es el string del error del back",errorBack);
-        
+        console.log("este es el string del error del back", errorBack);
+
 
         // Swal.fire({
         //     title: 'Authentication Failed',
@@ -260,7 +263,7 @@ export const authenticateUser = createAsyncThunk("authenticateUser", async (user
         //     confirmButtonText: 'Ok'
         // });
 
-        return rejectWithValue( errorBack );
+        return rejectWithValue(errorBack);
     }
 });
 
@@ -318,38 +321,38 @@ export const loadUser = createAsyncThunk("loadUser", async (_, { rejectWithValue
         const token = localStorage.getItem('token');
         if (token) {
 
-        console.log("Token enviado en loadUser:", token);
+            console.log("Token enviado en loadUser:", token);
 
-        // Realizamos la solicitud GET a la API con el token del usuario
-        const response = await axios.get('https://proyectohomebanking-1.onrender.com/api/auth/current', {
+            // Realizamos la solicitud GET a la API con el token del usuario
+            const response = await axios.get('https://proyectohomebanking-1.onrender.com/api/auth/current', {
 
-            headers: {
-                Authorization: `Bearer ${token}`,  // El token correcto del usuario
-            },
+                headers: {
+                    Authorization: `Bearer ${token}`,  // El token correcto del usuario
+                },
 
-        });
+            });
 
-        console.log("Respuesta de loadUser:", response);
+            console.log("Respuesta de loadUser:", response);
 
-        const responseData = response.data;
-        console.log("Datos del usuario:", responseData);
+            const responseData = response.data;
+            console.log("Datos del usuario:", responseData);
 
-        // Creamos el objeto usuario a partir de la respuesta de la API
-        let usuario = {
-            email: responseData.email,
-            name: responseData.firstName + " " + responseData.lastName,
-            token: token,  // Aquí el token viene del argumento `token`
-            isLoggedIn: true,
-            accounts: responseData.accounts, // Incluimos las cuentas del 
-            cards: responseData.cards,  // Asegúrate de incluir las tarjetas
-            loans: responseData.loans,
+            // Creamos el objeto usuario a partir de la respuesta de la API
+            let usuario = {
+                email: responseData.email,
+                name: responseData.firstName + " " + responseData.lastName,
+                token: token,  // Aquí el token viene del argumento `token`
+                isLoggedIn: true,
+                accounts: responseData.accounts, // Incluimos las cuentas del 
+                cards: responseData.cards,  // Asegúrate de incluir las tarjetas
+                loans: responseData.loans,
 
-        };
-        console.log("Usuario cargado:", usuario);
+            };
+            console.log("Usuario cargado:", usuario);
 
-        // Retornamos el objeto usuario para almacenarlo en el estado global
-        return usuario;
-    }
+            // Retornamos el objeto usuario para almacenarlo en el estado global
+            return usuario;
+        }
 
     } catch (error) {
         console.error("Error loading user:", error);
