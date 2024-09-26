@@ -33,10 +33,10 @@ function CardAccount(props) { //permite pasar datos de un componente padre a un 
 
         <p className="modificar_vin   text-xl opacity-90 ">
           <span className=' text-green-400 font-bold'>
-            {props.number ? `${props.number.substring(0, 3)}-`  : "****"}
+            {props.number ? `${props.number.substring(0, 3)}`  : "****"}
           </span>
           <span className='font-bold'>
-            {props.number ? props.number.substring(4, 7) : "***"}
+            {props.number ? props.number.substring(3, 11) : "***"}
           </span>
         </p>
       </div>
