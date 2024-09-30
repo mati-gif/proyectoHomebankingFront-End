@@ -161,15 +161,15 @@ console.log(maxDebitCards);
 
 // Función para crear tarjeta
 const crearTarjeta = async () => {
-  if (!cardType || !cardColor) {
-    Swal.fire({
-      title: 'Error',
-      text: 'Please select both card type and color.',
-      icon: 'error',
-      confirmButtonText: 'Ok'
-    });
-    return;
-  }
+  // if (!cardType || !cardColor) {
+  //   Swal.fire({
+  //     title: 'Error',
+  //     text: 'Please select both card type and color.',
+  //     icon: 'error',
+  //     confirmButtonText: 'Ok'
+  //   });
+  //   return;
+  // }
 
   // Si ya tiene 3 tarjetas de crédito y 3 de débito, no permitir crear una nueva tarjeta
   if (maxCreditCards && maxDebitCards) {
@@ -177,17 +177,17 @@ const crearTarjeta = async () => {
   }
 
   // Alerta de confirmación
-  const result = await Swal.fire({
-    title: 'Confirm please',
-    text: 'Are you sure you want to create a new card?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, apply',
-    cancelButtonText: 'No',
-    confirmButtonColor: "#16A34A",
-  });
+  // const result = await Swal.fire({
+  //   title: 'Confirm please',
+  //   text: 'Are you sure you want to create a new card?',
+  //   icon: 'warning',
+  //   showCancelButton: true,
+  //   confirmButtonText: 'Yes, apply',
+  //   cancelButtonText: 'No',
+  //   confirmButtonColor: "#16A34A",
+  // });
 
-  if (result.isConfirmed) {
+  // if (result.isConfirmed) {
     try {
       await dispatch(createCard({ type: cardType, color: cardColor })).unwrap();
       Swal.fire({
@@ -200,7 +200,7 @@ const crearTarjeta = async () => {
     } catch (error) {
       console.error('Error creating card:', error);
     }
-  }
+  // }
 };
 
 // Función para cancelar
