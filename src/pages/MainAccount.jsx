@@ -72,7 +72,7 @@ function MainAccount() {
     } else {
 
       // Redirigir al usuario si no está autenticado
-      navigate('/login'); // Cambia '/login' por la ruta de tu página de login
+      navigate('/login'); 
 
     }
   }, [isLoggedIn, dispatch, navigate, token]);//si tuviera una dependencia por ejemplo arrayAccount se va a ejecutar cuando se modifica arrayAccount por
@@ -143,9 +143,137 @@ function MainAccount() {
 
 
 
+  //funciona correctamente,es la funcion original.Sigue mostrando el mensaje de cofirmacino antes de crear una cuarta cuenta y despues muestra el error.
+  // const añadirAccountArray = () => {
+  //   // Mostrar la alerta de confirmación antes de crear una cuenta
+  //   Swal.fire({
+  //     title: "Are you sure you want to create a new account?",
+  //     text: "You can only have up to 3 accounts.",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#16A34A",
+  //     cancelButtonColor: "#9CA3AF",
+  //     confirmButtonText: "Yes, create it!",
+  //     cancelButtonText: "Cancel",
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       // Si el usuario confirma, intenta crear la cuenta
+  //       dispatch(createAccount())
+  //         .unwrap()
+  //         .then((newAccount) => {
+  //           // Refrescar la lista de cuentas después de crear una nueva
+  //           console.log("La cuenta se creó con éxito");
+  //           dispatch(fetchAccounts())
+  //           console.log("se actualizo con la ueva cuenta ");
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error creating account:", error);
+  //         });
+
+  //     }
+  //   });
+  // };
 
 
+
+//Funciona pero no se si esta correcto ya que despacha dos veces la accion de createAccount,pero no muestra el mensaje de confirmacion antes crear una cuarta cachea correctamente el error del back
+  // const añadirAccountArray = () => {
+  //   // Validar si el usuario ya tiene 3 cuentas
+  //   if (accounts && accounts.length >= 3) {
+  //     // Intentar crear la cuenta, pero sin mostrar la confirmación
+  //     dispatch(createAccount())
+  //       .unwrap()
+  //       .then((newAccount) => {
+  //         console.log("La cuenta se creó con éxito");
+  //         dispatch(fetchAccounts());
+  //       })
+  //       .catch((error) => {
+  //         // Manejar el error del backend
+  //         console.error("Error al crear la cuenta:", error);
+  //         Swal.fire({
+  //           title: "Error",
+  //           text: error || "You cannot create more than 3 accounts.",
+  //           icon: "error",
+  //           confirmButtonColor: "#d33",
+  //         });
+  //       });
+  //   } else {
+  //     // Mostrar la alerta de confirmación si no ha alcanzado el límite
+  //     Swal.fire({
+  //       title: "Are you sure you want to create a new account?",
+  //       text: "You can only have up to 3 accounts.",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#16A34A",
+  //       cancelButtonColor: "#9CA3AF",
+  //       confirmButtonText: "Yes, create it!",
+  //       cancelButtonText: "Cancel",
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         // Intentar crear la cuenta
+  //         dispatch(createAccount())
+  //           .unwrap()
+  //           .then((newAccount) => {
+  //             console.log("La cuenta se creó con éxito");
+  //             dispatch(fetchAccounts());
+  //           })
+  //           .catch((error) => {
+  //             console.error("Error creating account:", error);
+  //           });
+  //       }
+  //     });
+  //   }
+  // };
+  
+  console.log(accounts);
+
+//Si elijo usar la funcion "que despacha dos veces create account" tengo que descomentar este return y comentar todo lo que esta debajo.
+  // return (
+  //   <div className="bg-[#E5EDF1] p-8 min-h-screen">
+  //     <h1 className="text-3xl font-bold text-center mb-8">Welcome, {name}!</h1>
+  //     <div className="  flex justify-center mb-6">
+  //       <img
+  //         src="https://images.ctfassets.net/h7wmg0jhythh/59bBPtUVTa1ScIxYr6HZgZ/eb3e9026c052542f0df5cbf976f1d8da/2_AYUDA_708x275.webp"
+  //         alt=""
+  //         className="rounded-lg shadow-md w-full  md:w-2/3"
+  //       />
+  //     </div>
+  //     <div className="flex justify-center  mb-6">
+  //       <Button
+  //         onClick={añadirAccountArray}
+  //         className="bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 text-white font-bold py-2 px-4 rounded-full shadow-md"
+  //       >
+  //         {" "}
+  //         Request Account{" "}
+  //       </Button>
+  //     </div>
+  //     <div className="flex justify-center flex-wrap gap-10">
+  //       {accounts && accounts.length > 0 ? (
+  //         accounts.map((account) => (
+  //           <Link key={account.id} to={`/accounts/${account.id}`}>
+  //             <CardAccount
+  //               number={account.number}
+  //               balance={account.balance}
+  //               creationDate={account.creationDate}
+  //             />
+  //           </Link>
+  //         ))
+  //       ) : (
+  //         <p className="text-lg font-bold text-center text-red-600">No accounts found.</p>
+  //       )}
+  //     </div>
+  //   </div>
+  // );
+  
+  
   const añadirAccountArray = () => {
+    // Validar si el usuario ya tiene 3 cuentas antes de mostrar el Swal
+    if (accounts && accounts.length >= 3) {
+      // Mostrar un mensaje de error en vez del Sweet Alert
+      console.error("No puedes tener más de 3 cuentas");
+      return;
+    }
+  
     // Mostrar la alerta de confirmación antes de crear una cuenta
     Swal.fire({
       title: "Are you sure you want to create a new account?",
@@ -164,85 +292,44 @@ function MainAccount() {
           .then((newAccount) => {
             // Refrescar la lista de cuentas después de crear una nueva
             console.log("La cuenta se creó con éxito");
-            dispatch(fetchAccounts())
-            console.log("se actualizo con la ueva cuenta ");
+            dispatch(fetchAccounts());
+            console.log("se actualizó con la nueva cuenta ");
           })
           .catch((error) => {
             console.error("Error creating account:", error);
           });
-
-
-
-
       }
     });
   };
-
-  console.log(accounts);
-
-
-
-  // Función para crear una nueva cuenta ,el sweet alert esta aca .
-  // const añadirAccountArray = () => {
-  //   // Muestra la alerta de verificación usando SweetAlert2
-  //   Swal.fire({
-  //     title: 'Are you sure you want to create a new account?',
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#16A34A',
-  //     cancelButtonColor: '#9CA3AF',
-  //     confirmButtonText: 'Yes, generate',
-  //     cancelButtonText: 'Cancel'
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-
-  //       dispatch(createAccount()).unwrap()
-  //         .then(() => {
-  //           Swal.fire('Created!', 'Your account has been generated.', 'success');
-  //           // Refresh the accounts after creating a new one
-  //           dispatch(loadUser()).unwrap()
-  //             .then((user) => {
-  //               setArrayAccount(user.accounts);
-  //             });
-  //         })
-  //         .catch((error) => {
-  //           // // Captura el mensaje de error del backend
-  //           // const backendErrorMessage = error?.response?.data || error.message  || error.response.data;
-
-  //           // Aquí manejamos el error que viene desde el backend
-  //         const backendErrorMessage =
-  //         typeof error === 'string'
-  //           ? error
-  //           : error?.message || 'An unknown error occurred';
-
-  //       // Muestra el error capturado en el alert
-  //       Swal.fire('Failed!', backendErrorMessage, 'error');
-
-  //         });
-  //     }
-
-  //   });
-  // };
-
+  
   return (
     <div className="bg-[#E5EDF1] p-8 min-h-screen">
       <h1 className="text-3xl font-bold text-center mb-8">Welcome, {name}!</h1>
-      <div className="  flex justify-center mb-6">
+      <div className="flex justify-center mb-6">
         <img
           src="https://images.ctfassets.net/h7wmg0jhythh/59bBPtUVTa1ScIxYr6HZgZ/eb3e9026c052542f0df5cbf976f1d8da/2_AYUDA_708x275.webp"
           alt=""
-          className="rounded-lg shadow-md w-full  md:w-2/3"
+          className="rounded-lg shadow-md w-full md:w-2/3"
         />
       </div>
-      <div className="flex justify-center  mb-6">
+      <div className="flex justify-center mb-6">
         <Button
           onClick={añadirAccountArray}
-          className="bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 text-white font-bold py-2 px-4 rounded-full shadow-md"
+          className={`${
+            accounts && accounts.length >= 3
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-green-500 hover:bg-green-600"
+          } focus:outline-none  text-white font-bold py-2 px-4 rounded-full shadow-md`}
+          disabled={accounts && accounts.length >= 3}
         >
-          {" "}
-          Request Account{" "}
+          Request Account
         </Button>
       </div>
+      {accounts && accounts.length >= 3 && (
+        <p className="text-lg font-bold text-center text-red-600">
+          You cannot create more than 3 accounts.
+        </p>
+      )}
       <div className="flex justify-center flex-wrap gap-10">
         {accounts && accounts.length > 0 ? (
           accounts.map((account) => (
@@ -260,5 +347,7 @@ function MainAccount() {
       </div>
     </div>
   );
+  
+
 }
 export default MainAccount;

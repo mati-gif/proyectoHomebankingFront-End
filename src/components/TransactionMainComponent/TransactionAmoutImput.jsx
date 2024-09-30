@@ -18,7 +18,7 @@ const formatNumberWithCommas = (num) => {
 
 // Función para limpiar el número (quitar comas y espacios)
 const cleanNumber = (num) => {
-    return num.replace(/,/g, '').replace(/ /g, '');
+    return num.replace(/[$,-]/g, '').replace(/ /g, '');
 };
 
 // Manejar el cambio en el campo de entrada

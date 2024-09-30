@@ -101,7 +101,7 @@ export const fetchAvailableLoans = createAsyncThunk(
     }
 );
 
-// Acción asincrónica para crear un préstamo
+// // Acción asincrónica para crear un préstamo
 export const createLoan = createAsyncThunk(
     'loans/createLoan',
     async (loanData, { rejectWithValue }) => {

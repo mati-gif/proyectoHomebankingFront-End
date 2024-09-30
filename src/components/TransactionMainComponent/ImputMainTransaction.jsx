@@ -37,10 +37,10 @@ function ImputMainTransaction({ value, onChange }) {
 
     return (
         <div className="">
-            <label className="block text-gray-700 text-lg font-bold mb-2">
+            <label className="block text-gray-700 text-lg font-bold mb-2 ">
                 Type of destination:
             </label>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 ">
                 <label className='ml-10'> Owns
                     <input
                         className='ml-5'
@@ -51,7 +51,7 @@ function ImputMainTransaction({ value, onChange }) {
                         onChange={handleDestinationTypeChange}
                     />
                 </label>
-                <label className='ml-10'> Others
+                <label className='ml-10  '> Others
                     <input
                         className='ml-5'
                         type="radio"
@@ -65,7 +65,7 @@ function ImputMainTransaction({ value, onChange }) {
 
             {destinationType === 'Propio' && (
                 <div className="mb-4 mt-14">
-                    <TransactionSelectAccountDestiny
+                    <TransactionSelectAccountDestiny className=""
                         label="Source Account:"
                         selectedAccount={selectedSourceAccount}
                         onChange={handleSourceAccountChange}
@@ -77,6 +77,7 @@ function ImputMainTransaction({ value, onChange }) {
                         selectedAccount={selectedDestinationAccount}
                         onChange={handleDestinationAccountChange}
                         excludedAccount={selectedSourceAccount}
+                        className=""
                     />
                 </div>
             )}
@@ -87,15 +88,16 @@ function ImputMainTransaction({ value, onChange }) {
                         label="Source Account:"
                         selectedAccount={selectedSourceAccount}
                         onChange={handleSourceAccountChange}
+                        className=""
                     />
 
-                    <div className="mb-4 mt-14">
-                        <label htmlFor="destinationAccount" className="block text-gray-700 text-lg font-bold mb-4">
+                    <div className="   ">
+                        <label htmlFor="destinationAccount" className="block text-gray-700 text-lg font-bold mb-4 ">
                             Destination Account:
                         </label>
                         <input
                             id="destinationAccount"
-                            className="mt-2 border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none"
+                            className=" border rounded-[10px] w-full py-2 px-3 text-gray-700 focus:outline-none"
                             type="text"
                             value={selectedDestinationAccount}
                             onChange={handleDestinationAccountChange}

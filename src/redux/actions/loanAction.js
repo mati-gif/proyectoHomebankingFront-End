@@ -55,11 +55,13 @@ export const createLoan = createAsyncThunk(
                     Authorization: `Bearer ${token}`, // Incluye el token en los encabezados
                 },
             });
+
+
             console.log("Respuesta de crear loan:", response);
             Swal.fire({
                 icon: 'success',
-                title: 'Préstamo creado exitosamente',
-                text: `Tu préstamo ha sido aprobado con ${loanData.installments} cuotas.`,
+                title: 'Loan created successfully',
+                text: `Your loan has been created successfully.`,
             });
             console.log(response.data);
 
@@ -77,7 +79,7 @@ export const createLoan = createAsyncThunk(
             Swal.fire({
                 icon: 'error',
                 title: 'Error en la solicitud de préstamo',
-                text: error.response.data || 'Algo salió mal, inténtalo nuevamente',
+                text: error.response.data,
             });
             return rejectWithValue(errorBack);
         }
